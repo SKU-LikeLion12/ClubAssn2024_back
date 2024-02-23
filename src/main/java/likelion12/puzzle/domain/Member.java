@@ -17,7 +17,7 @@ public class Member {
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "club_id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     private Club iconClub;
 
     @Column(nullable = false)
