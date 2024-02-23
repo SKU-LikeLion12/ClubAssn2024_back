@@ -25,8 +25,7 @@ public class ClubRepository {
     }
 
     // 동아리 삭제
-    public boolean deleteClub(String clubName) {
-        Club club = findByName(clubName);
+    public boolean deleteClub(Club club) {
         em.remove(club);
 
         return true;

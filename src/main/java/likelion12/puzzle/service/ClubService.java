@@ -20,13 +20,14 @@ public class ClubService {
     }
 
     // 동아리 조회
-    public Club findByClubName(String clubName) {
+    public Club findByName(String clubName) {
         return clubRepository.findByName(clubName);
     }
 
     // 동아리 삭제
     @Transactional
     public boolean deleteClub(String clubName) {
-        return clubRepository.deleteClub(clubName);
+        Club club = clubRepository.findByName(clubName);
+        return clubRepository.deleteClub(club);
     }
 }

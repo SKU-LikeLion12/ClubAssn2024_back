@@ -31,6 +31,5 @@ public class Member {
         this.studentId = studentId;
         this.name = name;
         this.iconClub = iconClub;
-        this.isAgree = false;
     }
 }

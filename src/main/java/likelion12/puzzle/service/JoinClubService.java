@@ -1,5 +1,6 @@
 package likelion12.puzzle.service;
 
+import likelion12.puzzle.domain.Club;
 import likelion12.puzzle.domain.JoinClub;
 import likelion12.puzzle.domain.Member;
 import likelion12.puzzle.repository.ClubRepository;
@@ -16,6 +17,8 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class JoinClubService {
     private final JoinClubRepository joinClubRepository;
+    private final ClubService clubService;
+    private final MemberService memberService;
 
     // 동아리에 새로운 학생 추가
     @Transactional
@@ -36,6 +39,8 @@ public class JoinClubService {
     // 동아리에서 학생 탈퇴
     @Transactional
     public boolean deleteMember(int studentId, String clubName) {
-        return joinClubRepository.deleteMember(studentId, clubName);
+        JoinClub joinClub = joinClubRepository.findJoinClub(clubName, studentId);
+
+        return joinClubRepository.deleteJoinClub(joinClub);
     }
 }

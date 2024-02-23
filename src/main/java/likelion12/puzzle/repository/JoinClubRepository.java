@@ -38,17 +38,19 @@ public class JoinClubRepository {
                 .setParameter("clubName", clubName).getResultList();
     }
 
-    // 동아리에서 해당 학생 삭제
-    public boolean deleteMember(int studentId, String clubName) {
-//        Member member = memberRepository.findByStudentId(studentId);
-//        Club club = clubRepository.findByName(clubName);
-
-        int deleteCount = em.createQuery("delete from JoinClub jc where jc.member.studentId = :id and jc.club.name = :name")
+    // 동아리 이름과 학번으로 찾기
+    public JoinClub findJoinClub(String clubName, int studentId) {
+        JoinClub joinClub = em.createQuery("select jc from JoinClub jc where jc.member.studentId = :id and jc.club.name = :name", JoinClub.class)
                 .setParameter("id", studentId).setParameter("name", clubName)
-                .executeUpdate();
-        if (deleteCount > 0) {
-            return true;
-        }
-        return false;
+                .getSingleResult();
+
+        return joinClub;
     }
+
+    // 동아리에서 해당 학생 삭제
+    public boolean deleteJoinClub(JoinClub joinClub) {
+        em.remove(joinClub);
+        return true;
+    }
+
 }

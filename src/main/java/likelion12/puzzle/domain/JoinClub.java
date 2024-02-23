@@ -22,7 +22,7 @@ public class JoinClub {
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "club_id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     private Club club;
 
     public JoinClub(Club club, Member member) {

@@ -16,8 +16,8 @@ public class MemberService {
 
     // 첫 화면 로그인
     public Member login(int studentId, String name) {
-        Member member = memberRepository.findByStudentId(studentId);
-        if (member.getName() == name) {
+        Member member = findByStudentId(studentId);
+        if (member.getName().equals(name)) {
             return member;
         } else {
             return null;
@@ -42,7 +42,8 @@ public class MemberService {
     // 학생 삭제
     @Transactional
     public boolean deleteMember(int studentId) {
-        memberRepository.deleteMember(studentId);
-        return true;
+        Member member = findByStudentId(studentId);
+
+        return memberRepository.deleteMember(member);
     }
 }
