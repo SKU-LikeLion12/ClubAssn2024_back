@@ -21,7 +21,7 @@ public class JoinEventService {
 
 
     // 내가 참여한 이벤트 하나 이벤트 id와 studentId 로 조회
-    public JoinEvent findJoinEvent(int studentId, Long eventId) { // 호주가 Long으로 바꾸면 매개변수 자료형 Long으로 바꿔야함
+    public JoinEvent findJoinEvent(int studentId, Long eventId) {
         Member member = memberRepository.findByStudentId(studentId);
         Event event = eventRepository.findByEventId(eventId);
         JoinEvent joinEvent = joinEventRepository.findJoinEvent(member, event);
@@ -35,7 +35,7 @@ public class JoinEventService {
     // (관리자용) 멤버에게 참여한 이벤트(퍼즐) 추가
     // 관리자 인증 로직 추가해야함
     @Transactional
-    public JoinEvent saveJoinEvent(int studentId, Long eventId) { // 호주가 Long으로 바꾸면 매개변수 자료형 Long으로 바꿔야함
+    public JoinEvent saveJoinEvent(int studentId, Long eventId) {
         Member member = memberRepository.findByStudentId(studentId);
         Event event = eventRepository.findByEventId(eventId);
         JoinEvent joinEvent = joinEventRepository.addJoinEvent(member, event);
@@ -46,13 +46,10 @@ public class JoinEventService {
     // (관리자용) 멤버의 이벤트(퍼즐) 삭제 => 잘못 넣었을 경우
     // 관리자 인증 로직 추가해야함
     @Transactional
-    public boolean removeJoinEvent(int studentId, Long eventId) {// 호주가 Long으로 바꾸면 매개변수 자료형 Long으로 바꿔야함
+    public boolean removeJoinEvent(int studentId, Long eventId) {
         JoinEvent joinEvent = findJoinEvent(studentId, eventId);
-        if (joinEvent != null) {
-            return true;
-        } else {
-            return false;
-        }
+        joinEventRepository.removeJoinEvent(joinEvent);
+        return true;
     }
 
 

@@ -24,8 +24,7 @@ public class EventRepository {
     }
 
     // 이벤트 삭제
-    public boolean removeEvent(Long eventId) {
-        Event event = findByEventId(eventId);
+    public boolean removeEvent(Event event) {
         em.remove(event);
         return true;
     }

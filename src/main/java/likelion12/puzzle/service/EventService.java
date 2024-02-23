@@ -17,7 +17,7 @@ import java.util.List;
 public class EventService {
 
     private final EventRepository eventRepository;
-    private final MemberRepository memberRepository;
+    private final MemberService memberService;
 
 
     // 이벤트 추가
@@ -30,7 +30,8 @@ public class EventService {
     // 이벤트 삭제
     @Transactional
     public boolean remoteEvent(Long eventId) {
-        boolean result = eventRepository.removeEvent(eventId);
+        Event event = eventRepository.findByEventId(eventId);
+        boolean result = eventRepository.removeEvent(event);
         if (!result) {
             return false;
         } else {
@@ -60,12 +61,12 @@ public class EventService {
 
     // 내가 참여한 행사 리스트 반환 (id로)
     public List<Event> findAllEvents(int studentId) { // 호주가 Long으로 바꾸면 Long으로 바꿀것.
-        Member member = memberRepository.findByStudentId(studentId);
+        Member member = memberService.findByStudentId(studentId);
         List<Event> eventList = eventRepository.findAllEvents(member);
-        if (eventList != null) {
-            return eventList;
-        } else {
+        if (eventList.isEmpty()) {
             return null;
+        } else {
+            return eventList;
         }
     }
 

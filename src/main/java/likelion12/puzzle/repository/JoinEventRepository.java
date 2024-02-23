@@ -30,14 +30,6 @@ public class JoinEventRepository {
 
     // (관리자용) 멤버의 이벤트(퍼즐) 삭제 => 잘못 넣었을 경우
     public boolean removeJoinEvent(JoinEvent joinEvent) {
-//        int deleteCount = em.createQuery("DELETE FROM JoinEvent je WHERE je.member = :member and je.event = :event")
-//                .setParameter("member", member).setParameter("event", event)
-//                .executeUpdate();
-//        if (deleteCount > 0) {
-//            return true;
-//        } else {
-//            return false;
-//        }
         em.remove(joinEvent);
         return true;
     }
