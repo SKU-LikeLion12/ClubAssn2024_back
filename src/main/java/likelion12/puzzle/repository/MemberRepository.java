@@ -12,6 +12,11 @@ import java.util.List;
 public class MemberRepository {
     private final EntityManager em;
 
+    // 기본키로 조회
+    public Member findById(Long id) {
+        return em.find(Member.class, id);
+    }
+
     // 학번으로 학생 조회
     public Member findByStudentId(int studentId) {
         return em.createQuery("select m from Member m where m.studentId =:id", Member.class)
@@ -33,6 +38,7 @@ public class MemberRepository {
     // 학생 삭제
     public boolean deleteMember(Member member) {
         em.remove(member);
+
         return true;
     }
 }
