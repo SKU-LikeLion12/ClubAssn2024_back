@@ -38,6 +38,7 @@ public class MemberRepository {
     // 학생 삭제
     public boolean deleteMember(Member member) {
         em.remove(member);
+
         return true;
     }
 }

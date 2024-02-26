@@ -22,8 +22,8 @@ public class JoinClubService {
 
     // 동아리에 새로운 학생 추가
     @Transactional
-    public JoinClub saveNewMember(int studentId, String studentName, String clubName) {
-        return joinClubRepository.saveNewMember(studentId, studentName, clubName);
+    public JoinClub saveNewMember(int studentId, String studentName, Club club) {
+        return joinClubRepository.saveNewMember(studentId, studentName, club);
     }
 
     // 동아리에 가입된 학생들 찾기

@@ -13,12 +13,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class JoinClubRepository {
     private final EntityManager em;
-    private final MemberRepository memberRepository;
-    private final ClubRepository clubRepository;
 
     // 새로운 동아리원 추가
-    public JoinClub saveNewMember(int studentId, String name, String clubName) {
-        Club club = clubRepository.findByName(clubName);
+    public JoinClub saveNewMember(int studentId, String name, Club club) {
         Member member = new Member(studentId, name, club);
         JoinClub joinClub = new JoinClub(club, member);
 
