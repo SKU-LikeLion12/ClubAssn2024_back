@@ -15,10 +15,7 @@ public class JoinClubRepository {
     private final EntityManager em;
 
     // 새로운 동아리원 추가
-    public JoinClub saveNewMember(int studentId, String name, Club club) {
-        Member member = new Member(studentId, name, club);
-        JoinClub joinClub = new JoinClub(club, member);
-
+    public JoinClub saveNewMember(JoinClub joinClub) {
         em.persist(joinClub);
         return joinClub;
     }
@@ -30,15 +27,15 @@ public class JoinClubRepository {
     }
 
     // 동아리에 있는 동아리원 조회
-    public List<JoinClub> findAllByClubName(String clubName) {
-        return em.createQuery("select jc.member from JoinClub jc where jc.club.name = :clubName", JoinClub.class)
-                .setParameter("clubName", clubName).getResultList();
+    public List<JoinClub> findAllByClubName(Club club) {
+        return em.createQuery("select jc.member from JoinClub jc where jc.club = :club", JoinClub.class)
+                .setParameter("club", club).getResultList();
     }
 
     // 동아리 이름과 학번으로 찾기
-    public JoinClub findJoinClub(String clubName, int studentId) {
-        JoinClub joinClub = em.createQuery("select jc from JoinClub jc where jc.member.studentId = :id and jc.club.name = :name", JoinClub.class)
-                .setParameter("id", studentId).setParameter("name", clubName)
+    public JoinClub findJoinClub(Club club, Member student) {
+        JoinClub joinClub = em.createQuery("select jc from JoinClub jc where jc.member = :student and jc.club = :club", JoinClub.class)
+                .setParameter("student", student).setParameter("club", club)
                 .getSingleResult();
 
         return joinClub;
@@ -47,6 +44,7 @@ public class JoinClubRepository {
     // 동아리에서 해당 학생 삭제
     public boolean deleteJoinClub(JoinClub joinClub) {
         em.remove(joinClub);
+
         return true;
     }
 
