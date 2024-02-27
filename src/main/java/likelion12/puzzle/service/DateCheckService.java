@@ -42,7 +42,7 @@ public class DateCheckService {
     }
 
     @Transactional
-    public boolean isBreak(LocalDate date){
+    public Boolean isBreak(LocalDate date){
 
         DateCheck byDate = dateCheckRepository.findByDate(date);
         if(byDate!=null){
@@ -55,7 +55,7 @@ public class DateCheckService {
         }catch (Exception e){
             System.out.println("e = " + e);
         }
-        return false;
+        return null;
     }
 
     private boolean isWeekend(LocalDate date){

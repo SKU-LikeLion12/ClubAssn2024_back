@@ -1,6 +1,7 @@
 package likelion12.puzzle.repository;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import likelion12.puzzle.domain.DateCheck;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -22,10 +23,12 @@ public class DateCheckRepository {
     }
 
     public DateCheck findByDate(LocalDate date){
-        List<DateCheck> data = em.createQuery("select dc from DateCheck dc where dc.date = :date", DateCheck.class)
-                .setParameter("date", date).getResultList();
-        if(data.isEmpty()) return null;
-        return data.get(0);
+        try{
+            return em.createQuery("select dc from DateCheck dc where dc.date = :date", DateCheck.class)
+                    .setParameter("date", date).getSingleResult();
+        }catch (NoResultException e){
+            return null;
+        }
     }
 
     public void remove(DateCheck date){
