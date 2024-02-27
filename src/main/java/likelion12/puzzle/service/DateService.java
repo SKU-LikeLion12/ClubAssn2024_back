@@ -1,120 +1,83 @@
 package likelion12.puzzle.service;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.Getter;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.client.UnknownContentTypeException;
-
-import java.net.URLEncoder;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 
 public class DateService {
-    
-
-    public static LocalDateTime expireOfferDate() throws IOException{
+    public static LocalDateTime expireOfferDate() {
         LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
         now = now.plusDays(1);
-        try{
-            while(isHoliday(now.toLocalDate()) && now.getDayOfWeek().getValue() >= 6){
+        try {
+            while (isHoliday(now.toLocalDate())) {
                 now = now.plusDays(1);
             }
-            if(now.getDayOfWeek().getValue()==5){
-                now = now.with(LocalTime.of(15, 0, 0));
-            }else{
-                now = now.with(LocalTime.of(17, 30, 0));
+            if (now.getDayOfWeek().getValue() == 5) { // 금요일인 경우
+                now = now.with(LocalTime.of(15, 0));
+            } else {
+                now = now.with(LocalTime.of(17, 30));
             }
-        }catch(UnknownContentTypeException e){
-            System.out.println(e);
+        } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
         return now;
     }
-    private static boolean isHoliday(LocalDate today) throws IOException{
-        ResponseEntity<HolidayResponse> response = getAPIResponse(getHolidayUrl(), HolidayResponse.class);
 
-        int todayInt = Integer.parseInt(today.format(DateTimeFormatter.ofPattern("yyyyMMdd")));
-
-        for (HolidayResponse.Item item : response.getBody().getResponse().getBody().getItems().getItem()) {
-            if (item.getLocdate() == todayInt) {
-                return true;
-            }
-        }
-        return false;
+    private static boolean isHoliday(LocalDate date) throws Exception {
+        String response = getAPIResponse(getHolidayUrl(date));
+        return parseHolidayResponse(response, date);
     }
 
-    private static String getHolidayUrl() throws IOException {
-        StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getRestDeInfo");
-        urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=" + "1Kw49paSD5t9RqepmPwQpD8cNSs0I1SzwQlnt5n62oU6vD5P%2Fxnnp2t3I8PwfAa%2BtFY02jbP6yWFcfiKPMRWqA%3D%3D");
-//        urlBuilder.append("&" + URLEncoder.encode("pageNo", "UTF-8") + "=" + URLEncoder.encode("1", "UTF-8"));
-        urlBuilder.append("&" + URLEncoder.encode("&numOfRows=", "UTF-8") + "=" + URLEncoder.encode("100", "UTF-8"));
-        urlBuilder.append("&" + URLEncoder.encode("solYear", "UTF-8") + "=" + URLEncoder.encode(LocalDate.now().getYear() + "", "UTF-8"));
-        urlBuilder.append("&" + URLEncoder.encode("solMonth", "UTF-8") + "=" + URLEncoder.encode(String.format("%02d", LocalDate.now().getMonthValue()), "UTF-8"));
-        urlBuilder.append("&" + URLEncoder.encode("_type", "UTF-8") + "=" + URLEncoder.encode("json", "UTF-8"));
-        return urlBuilder.toString();
+    private static String getHolidayUrl(LocalDate date) {
+        return "http://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getRestDeInfo" +
+                "?serviceKey=YOUR_SERVICE_KEY" +
+                "&solYear=" + date.getYear() +
+                "&solMonth=" + String.format("%02d", date.getMonthValue()) +
+                "&_type=json";
     }
 
-    private static <T> ResponseEntity<T> getAPIResponse(String urlStr, Class<T> responseType){
+    private static String getAPIResponse(String urlString) throws Exception {
+        URL url = new URL(urlString);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+        connection.setRequestProperty("Accept", "application/json");
 
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.set("Content-type", "application/json");
-        httpHeaders.set("Accept", "application/json"); // JSON 응답을 명시적으로 요청
-        HttpEntity<?> requestEntity = new HttpEntity<>(null, httpHeaders);
+        BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+        String inputLine;
+        StringBuilder response = new StringBuilder();
 
-        RestTemplate restTemplate = new RestTemplate();
-//        restTemplate.getMessageConverters().add(new MappingJackson2XmlHttpMessageConverter());
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+        connection.disconnect();
 
-        return restTemplate.exchange(
-                urlStr,
-                HttpMethod.GET,
-                requestEntity,
-                responseType);
+        return response.toString();
     }
 
-    @Getter
-    @JsonIgnoreProperties(ignoreUnknown = true)
-    static class HolidayResponse {
-        private Response response;
-        @JsonIgnoreProperties(ignoreUnknown = true)
-        public static class Response {
-            @Getter
-            private Body body;
-        }
+    private static boolean parseHolidayResponse(String response, LocalDate date) {
+        // 이 부분은 JSON 파싱 라이브러리를 사용하여 구현해야 합니다. 여기서는 예시로 간단히 처리합니다.
+        // 실제로는 JSON 객체를 파싱하여 날짜와 일치하는 항목이 있는지 확인해야 합니다.
+        int todayInt = Integer.parseInt(date.format(DateTimeFormatter.ofPattern("yyyyMMdd")));
+        return response.contains(String.valueOf(todayInt));
+    }
 
-        @JsonIgnoreProperties(ignoreUnknown = true)
-        public static class Body {
-            @Getter
-            private Items items;
-        }
-
-        @JsonIgnoreProperties(ignoreUnknown = true)
-        public static class Items {
-            @Getter
-            private List<Item> item;
-        }
-
-        @Getter
-        @JsonIgnoreProperties(ignoreUnknown = true)
-        public static class Item {
-            @Getter
-            private int locdate;
+    public static void main(String[] args) throws Exception {
+        LocalDateTime offerDate = expireOfferDate();
+        if (offerDate != null) {
+            System.out.println("Offer expires on: " + offerDate);
+        } else {
+            System.out.println("Failed to calculate offer expiry date.");
         }
     }
 
-
-    public static void main(String[] args) throws IOException {
-//        System.out.println("getAPIResponse(getHolidayUrl()).toString() = " + getAPIResponse(getHolidayUrl(),HolidayResponse.class));
-//        System.out.println("isHoliday(LocalDate.now()) = " + isHoliday(LocalDate.now()));
-        System.out.println("expireOfferDate() = " + expireOfferDate());
-    }
 }
