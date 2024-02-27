@@ -15,9 +15,9 @@ public class RentItem {
     @Id @GeneratedValue @Column(name = "rent_item_id")
     Long id;
 
-    @ManyToOne @Column(name="renter_id")
+    @ManyToOne @JoinColumn(name="renter_id")
     Member renter;
-    @ManyToOne @Column(name = "item_id")
+    @ManyToOne @JoinColumn(name = "item_id")
     Item item;
 
     @Column(name = "rent_offer_date")
