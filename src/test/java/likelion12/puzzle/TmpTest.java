@@ -16,6 +16,6 @@ public class TmpTest {
     @Transactional
     @Rollback(false) // 롤백 비활성화
     public void test(){
-        System.out.println("dateCheckService.expireOfferDate() = " + dateCheckService.expireOfferDate());
+        System.out.println("dateCheckService.expireOfferDate() = " + dateCheckService.expireBookDate());
     }
 }

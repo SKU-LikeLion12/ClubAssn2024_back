@@ -26,9 +26,24 @@ public class DateCheckService {
 
     private final DateCheckRepository dateCheckRepository;
 
-    public LocalDateTime expireOfferDate() {
+    public LocalDateTime expireBookDate() {
         LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
         now = now.plusDays(1);
+        while (isBreak(now.toLocalDate())) {
+            now = now.plusDays(1);
+        }
+        if (now.getDayOfWeek().getValue() == 5) { // 금요일인 경우
+            now = now.with(LocalTime.of(15, 0));
+        } else {
+            now = now.with(LocalTime.of(17, 30));
+        }
+
+        return now;
+    }
+
+    private LocalDateTime returnDate(){
+        LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+        now = now.plusDays(7);
         while (isBreak(now.toLocalDate())) {
             now = now.plusDays(1);
         }
