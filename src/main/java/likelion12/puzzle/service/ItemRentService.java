@@ -36,6 +36,10 @@ public class ItemRentService {
         Member renter = memberService.findByStudentId(studentId);
         Item item = itemService.findById(itemId);
 
+        if(isPenalty(studentId)){
+            //패널티로 인해 못빌림
+        }
+
         MemberRentingSize memberRentingSize = checkMemberRenting(studentId);
         memberRentingSize.variety.add(itemId);
         if(memberRentingSize.variety.size() > 3){
@@ -52,6 +56,22 @@ public class ItemRentService {
 
         ItemRent itemRent = new ItemRent(renter, item, count);
         return itemRentRepository.save(itemRent);
+    }
+
+    public boolean isPenalty(int studentId){
+        Member member = memberService.findByStudentId(studentId);
+        int delay = 0;
+        int longDelay = 0;
+        for (ItemRent itemRent : itemRentRepository.findByMember(member)) {
+            checkStatus(itemRent);
+            if(itemRent.getStatus().isDelayGroup()){
+                delay++;
+            }
+            if(itemRent.getStatus().isLongDelayGroup()){
+                longDelay++;
+            }
+        }
+        return delay >= 3 || longDelay >= 1;
     }
 
     public MemberRentingSize checkMemberRenting(int studentId) {
