@@ -1,5 +1,6 @@
 package likelion12.puzzle.service;
 
+import jdk.jshell.Snippet;
 import likelion12.puzzle.domain.Item;
 import likelion12.puzzle.domain.ItemRent;
 import likelion12.puzzle.domain.Member;
@@ -10,7 +11,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -45,8 +50,7 @@ public class ItemRentService {
             //물품개수가 부족해서 못빌림
         }
 
-        ItemRent itemRent = new ItemRent(renter, item, count, dateCheckService.expireBookDate());
-//        itemRentRepository.findByItem()
+        ItemRent itemRent = new ItemRent(renter, item, count);
         return itemRentRepository.save(itemRent);
     }
 
@@ -54,13 +58,12 @@ public class ItemRentService {
         Member member = memberService.findByStudentId(studentId);
         Set<Long> set = new HashSet<>();
         int count = 0;
-        for (ItemRent itemRent : itemRentRepository.findByMemberStatus(member, RentStatus.BOOK)) {
-            set.add(itemRent.getId());
-            count += itemRent.getCount();
-        }
-        for (ItemRent itemRent : itemRentRepository.findByMemberStatus(member, RentStatus.RENT)) {
-            set.add(itemRent.getId());
-            count += itemRent.getCount();
+        for (ItemRent itemRent : itemRentRepository.findByMemberStatus(member, RentStatus.usingGroup)) {
+            checkStatus(itemRent);
+            if(itemRent.getStatus().isUsingGroup()) {
+                set.add(itemRent.getId());
+                count += itemRent.getCount();
+            }
         }
         return new MemberRentingSize(set, count);
     }
@@ -68,22 +71,34 @@ public class ItemRentService {
     public ItemRentingSize checkItemRenting(Long itemId){
         Item item = itemService.findById(itemId);
         ItemRentingSize irs = new ItemRentingSize();
-        for (ItemRent itemRent : itemRentRepository.findByItemStatus(item, RentStatus.BOOK)) {
-            irs.booking += itemRent.getCount();
+        for (ItemRent itemRent : itemRentRepository.findByItemStatus(item, Collections.singleton(RentStatus.BOOK))) {
+            checkStatus(itemRent);
+            if(itemRent.getStatus()==RentStatus.BOOK) {
+                irs.booking += itemRent.getCount();
+            }
         }
-        for (ItemRent itemRent : itemRentRepository.findByItemStatus(item, RentStatus.RENT)) {
+        for (ItemRent itemRent : itemRentRepository.findByItemStatus(item, Collections.singleton(RentStatus.RENT))) {
             irs.renting += itemRent.getCount();
         }
         return irs;
     }
 
+    @Transactional
+    void checkStatus(ItemRent itemRent){
+        if(itemRent.getStatus() == RentStatus.BOOK){
+            itemRent.checkAutoCancel(dateCheckService.needReceiveDate(itemRent.getRentOfferDate()));
+        }if(itemRent.getStatus().isRentGroup()){
+            itemRent.checkDelay(dateCheckService.needReturnDate(itemRent.getRentStartDate()));
+        }
+    }
+
     @AllArgsConstructor
-    public class MemberRentingSize {
+    public static class MemberRentingSize {
         Set<Long> variety;
         int count;
     }
 
-    public class ItemRentingSize{
+    public static class ItemRentingSize{
         int booking = 0;
         int renting = 0;
     }

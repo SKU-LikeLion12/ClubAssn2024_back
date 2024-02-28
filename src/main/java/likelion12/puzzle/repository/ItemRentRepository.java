@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Set;
 
 @Repository
 @RequiredArgsConstructor
@@ -40,15 +41,30 @@ public class ItemRentRepository {
                 .setParameter("status",status).getResultList();
     }
 
-    public List<ItemRent> findByMemberStatus(Member member, RentStatus status){
-        return em.createQuery("select ir from ItemRent ir where ir.renter = :member and ir.status = :status", ItemRent.class)
-                .setParameter("status",status).setParameter("member", member).getResultList();
+//    public List<ItemRent> findByMemberStatus(Member member, RentStatus status){
+//        return em.createQuery("select ir from ItemRent ir where ir.renter = :member and ir.status = :status", ItemRent.class)
+//                .setParameter("status",status).setParameter("member", member).getResultList();
+//    }
+
+    public List<ItemRent> findByMemberStatus(Member member, Set<RentStatus> statusGroup) {
+        return em.createQuery("SELECT ir FROM ItemRent ir WHERE ir.renter = :member AND ir.status IN :statusGroup", ItemRent.class)
+                .setParameter("member", member)
+                .setParameter("statusGroup", statusGroup)
+                .getResultList();
     }
 
-    public List<ItemRent> findByItemStatus(Item item, RentStatus status){
-        return em.createQuery("select ir from ItemRent ir where ir.item = :item and ir.status = :status", ItemRent.class)
-                .setParameter("status",status).setParameter("item", item).getResultList();
+//    public List<ItemRent> findByItemStatus(Item item, RentStatus status){
+//        return em.createQuery("select ir from ItemRent ir where ir.item = :item and ir.status = :status", ItemRent.class)
+//                .setParameter("status",status).setParameter("item", item).getResultList();
+//    }
+
+    public List<ItemRent> findByItemStatus(Item item, Set<RentStatus> statusGroup) {
+        return em.createQuery("SELECT ir FROM ItemRent ir WHERE ir.item = :item AND ir.status IN :statusGroup", ItemRent.class)
+                .setParameter("item", item)
+                .setParameter("statusGroup", statusGroup)
+                .getResultList();
     }
+
 
     public List<ItemRent> findAll(){
         return em.createQuery("select ir from ItemRent ir", ItemRent.class).getResultList();

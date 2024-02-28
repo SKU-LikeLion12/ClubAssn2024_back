@@ -5,7 +5,6 @@ import likelion12.puzzle.repository.DateCheckRepository;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,8 +25,10 @@ public class DateCheckService {
 
     private final DateCheckRepository dateCheckRepository;
 
-    public LocalDateTime expireBookDate() {
-        LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+
+
+    @Transactional(readOnly = true)
+    public LocalDateTime needReceiveDate(LocalDateTime now) {
         now = now.plusDays(1);
         while (isBreak(now.toLocalDate())) {
             now = now.plusDays(1);
@@ -41,18 +42,12 @@ public class DateCheckService {
         return now;
     }
 
-    private LocalDateTime returnDate(){
-        LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+    @Transactional(readOnly = true)
+    public LocalDateTime needReturnDate(LocalDateTime now){
         now = now.plusDays(7);
         while (isBreak(now.toLocalDate())) {
             now = now.plusDays(1);
         }
-        if (now.getDayOfWeek().getValue() == 5) { // 금요일인 경우
-            now = now.with(LocalTime.of(15, 0));
-        } else {
-            now = now.with(LocalTime.of(17, 30));
-        }
-
         return now;
     }
 
