@@ -1,12 +1,9 @@
 package likelion12.puzzle;
 
 import jakarta.persistence.EntityManager;
-import jdk.jfr.Name;
+import likelion12.puzzle.domain.Item;
 import likelion12.puzzle.domain.Member;
-import likelion12.puzzle.service.DateCheckService;
 import likelion12.puzzle.service.ItemRentService;
-import likelion12.puzzle.service.ItemService;
-import likelion12.puzzle.service.MemberService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,17 +11,27 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-
 @SpringBootTest
-public class TmpTest {
+public class ItemRentTest {
+
     @Autowired
-    private DateCheckService dateCheckService;
+    private EntityManager em;
+    @Autowired
+    private ItemRentService itemRentService;
 
     @Test
+    @DisplayName("물품종류초과 체크")
     @Transactional
-    @Rollback(false) // 롤백 비활성화
-    public void test(){
-        System.out.println("dateCheckService.expireOfferDate() = " + dateCheckService.needReceiveDate(LocalDateTime.now()));
+    @Rollback(false)
+    public void test2(){
+        Member member = new Member(20240000,"test",null);
+        em.persist(member);
+
+        for(int i=0; i<4; i++){
+            Item item = new Item("물건",3);
+            em.persist(item);
+            itemRentService.rentBook(member.getStudentId(), item.getId(),1);
+        }
+
     }
 }
