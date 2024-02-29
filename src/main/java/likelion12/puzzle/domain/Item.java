@@ -17,6 +17,10 @@ public class Item {
 
     String name;
     Integer count;
-    String discription;
+
+    public Item(String name, int count){
+        this.name = name;
+        this.count = count;
+    }
 
 }
