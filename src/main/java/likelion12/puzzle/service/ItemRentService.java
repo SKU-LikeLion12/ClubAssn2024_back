@@ -57,7 +57,7 @@ public class ItemRentService {
             //물품개수가 부족해서 못빌림
         }
 
-        ItemRent itemRent = itemRentRepository.save(new ItemRent(renter, item, count);)
+        ItemRent itemRent = itemRentRepository.save(new ItemRent(renter, item, count));
         return new BookDTO(itemRent, dateCheckService.needReceiveDate(itemRent.getOfferDate()));
     }
 
