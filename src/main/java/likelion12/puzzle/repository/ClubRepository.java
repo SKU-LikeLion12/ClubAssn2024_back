@@ -11,8 +11,7 @@ public class ClubRepository {
     private final EntityManager em;
 
     // 새로운 동아리 추가
-    public Club addNewClub(String clubName, String description, String logo) {
-        Club club = new Club(clubName, description, logo);
+    public Club addNewClub(Club club) {
         em.persist(club);
 
         return club;
