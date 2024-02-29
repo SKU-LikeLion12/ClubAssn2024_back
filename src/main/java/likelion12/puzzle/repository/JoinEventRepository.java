@@ -21,10 +21,9 @@ public class JoinEventRepository {
 
 
     // (관리자용) 멤버에게 참여한 이벤트(퍼즐) 추가
-    public JoinEvent addJoinEvent(Member member, Event event) {
-        JoinEvent addEvent = new JoinEvent(member, event);
-        em.persist(addEvent);
-        return addEvent;
+    public JoinEvent addJoinEvent(JoinEvent joinEvent) {
+        em.persist(joinEvent);
+        return joinEvent;
     }
 
 

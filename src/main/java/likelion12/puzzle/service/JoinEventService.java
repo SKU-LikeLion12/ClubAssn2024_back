@@ -16,14 +16,14 @@ import org.springframework.stereotype.Service;
 public class JoinEventService {
 
     private final JoinEventRepository joinEventRepository;
-    private final MemberRepository memberRepository;
-    private final EventRepository eventRepository;
+    private final EventService eventService;
+    private final MemberService memberService;
 
 
     // 내가 참여한 이벤트 하나 이벤트 id와 studentId 로 조회
     public JoinEvent findJoinEvent(int studentId, Long eventId) {
-        Member member = memberRepository.findByStudentId(studentId);
-        Event event = eventRepository.findByEventId(eventId);
+        Member member = memberService.findByStudentId(studentId);
+        Event event = eventService.findByEventId(eventId);
         JoinEvent joinEvent = joinEventRepository.findJoinEvent(member, event);
         if (joinEvent != null) {
             return joinEvent;
@@ -36,10 +36,12 @@ public class JoinEventService {
     // 관리자 인증 로직 추가해야함
     @Transactional
     public JoinEvent saveJoinEvent(int studentId, Long eventId) {
-        Member member = memberRepository.findByStudentId(studentId);
-        Event event = eventRepository.findByEventId(eventId);
-        JoinEvent joinEvent = joinEventRepository.addJoinEvent(member, event);
-        return joinEvent;
+        Member member = memberService.findByStudentId(studentId);
+        Event event = eventService.findByEventId(eventId);
+        JoinEvent joinEvent = new JoinEvent(member, event);
+
+        JoinEvent joinedEvent = joinEventRepository.addJoinEvent(joinEvent);
+        return joinedEvent;
 
     }
 
