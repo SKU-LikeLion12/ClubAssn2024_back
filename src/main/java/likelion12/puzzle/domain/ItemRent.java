@@ -24,11 +24,11 @@ public class ItemRent {
     Integer count;
 
     @Column(name = "rent_offer_date")
-    LocalDateTime OfferDate;
+    LocalDateTime offerDate;
     @Column(name = "rent_start_date")
-    LocalDateTime rentStartDate;
+    LocalDateTime receiveDate;
     @Column(name = "rent_return_date")
-    LocalDateTime rentReturnDate;
+    LocalDateTime returnDate;
 
     @Enumerated(EnumType.STRING)
     private RentStatus status;
@@ -43,7 +43,7 @@ public class ItemRent {
         this.renter = member;
         this.item = item;
         this.count = count;
-        this.OfferDate = getNow();
+        this.offerDate = getNow();
         this.status = RentStatus.BOOK;
     }
 
@@ -52,7 +52,7 @@ public class ItemRent {
     }
 
     public void itemReceive(LocalDateTime receiveTime){
-        this.rentStartDate = receiveTime;
+        this.receiveDate = receiveTime;
         this.status = RentStatus.RENT;
     }
 
@@ -64,7 +64,7 @@ public class ItemRent {
     }
 
     public void itemReturn(LocalDateTime returnTime){
-        this.rentReturnDate = returnTime;
+        this.returnDate = returnTime;
         this.status = RentStatus.RETURN;
     }
 

@@ -22,15 +22,29 @@ public class ItemRentTest {
     @Test
     @DisplayName("물품종류초과 체크")
     @Transactional
-    @Rollback(false)
-    public void test2(){
+    public void checkVariety(){
         Member member = new Member(20240000,"test",null);
         em.persist(member);
 
         for(int i=0; i<4; i++){
             Item item = new Item("물건",3);
             em.persist(item);
-            itemRentService.rentBook(member.getStudentId(), item.getId(),1);
+            itemRentService.bookItem(member.getStudentId(), item.getId(),1);
+        }
+
+    }
+
+    @Test
+    @DisplayName("물품종류초과 체크")
+    @Transactional
+    public void checkReceive(){
+        Member member = new Member(20240000,"test",null);
+        em.persist(member);
+
+        for(int i=0; i<4; i++){
+            Item item = new Item("물건",3);
+            em.persist(item);
+            itemRentService.bookItem(member.getStudentId(), item.getId(),1);
         }
 
     }

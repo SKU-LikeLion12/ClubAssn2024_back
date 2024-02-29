@@ -1,11 +1,11 @@
 package likelion12.puzzle.service;
 
+import static likelion12.puzzle.DTO.ItemRentDTO.*;
 import likelion12.puzzle.domain.Item;
 import likelion12.puzzle.domain.ItemRent;
 import likelion12.puzzle.domain.Member;
 import likelion12.puzzle.domain.RentStatus;
 import likelion12.puzzle.repository.ItemRentRepository;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,9 +27,10 @@ public class ItemRentService {
     private final DateCheckService dateCheckService;
 
     //물품은 프론트에서도 그냥 물품번호로 관리해주세요... 이름으로 쿼리할 필요 없을듯..
+
+    //대여예약
     @Transactional
-    public ItemRent rentBook(int studentId, long itemId, int count){
-        //빌리는 개수가 유효한지 체크하는 로직이 필요함ㅋㅋ
+    public BookDTO bookItem(int studentId, long itemId, int count){
 
         Member renter = memberService.findByStudentId(studentId);
         Item item = itemService.findById(itemId);
@@ -56,8 +57,22 @@ public class ItemRentService {
             //물품개수가 부족해서 못빌림
         }
 
-        ItemRent itemRent = new ItemRent(renter, item, count);
-        return itemRentRepository.save(itemRent);
+        ItemRent itemRent = itemRentRepository.save(new ItemRent(renter, item, count);)
+        return new BookDTO(itemRent, dateCheckService.needReceiveDate(itemRent.getOfferDate()));
+    }
+
+    @Transactional
+    public ReceiveDTO receiveItem(long itemRentId){
+        ItemRent itemRent = findById(itemRentId);
+        itemRent.itemReceive(ItemRent.getNow());
+        return new ReceiveDTO(itemRent,dateCheckService.needReturnDate(itemRent.getReceiveDate()));
+    }
+
+    @Transactional
+    public ItemRent returnItem(long itemRentId){
+        ItemRent itemRent = findById(itemRentId);
+        itemRent.itemReturn(ItemRent.getNow());
+        return itemRent;
     }
 
     public boolean isPenalty(int studentId){
@@ -111,7 +126,7 @@ public class ItemRentService {
             LocalDateTime needReturnTime = dateCheckService.needReturnDate(ItemRent.getNow());
             LocalDateTime now = ItemRent.getNow();
             if(itemRent.getStatus() == RentStatus.RETURN){
-                now = itemRent.getRentReturnDate();//만약 이미 반납했으면 반납시간으로 변경
+                now = itemRent.getReturnDate();//만약 이미 반납했으면 반납시간으로 변경
             }
 
             if (needReturnTime.isAfter(now)) {
@@ -129,18 +144,9 @@ public class ItemRentService {
         return DelayState.NO_DELAY;
     }
 
-    @AllArgsConstructor
-    public static class MemberRentingSize {
-        Set<Long> variety;
-        int count;
+    public ItemRent findById(long itemRentId){
+        return itemRentRepository.findById(itemRentId);
     }
 
-    public static class ItemRentingSize{
-        int booking = 0;
-        int renting = 0;
-    }
 
-    public static enum DelayState {
-        NO_DELAY, DELAY, LONG_DELAY
-    }
 }
