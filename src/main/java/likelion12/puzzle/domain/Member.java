@@ -32,4 +32,10 @@ public class Member {
         this.name = name;
         this.iconClub = iconClub;
     }
+
+    public void updateIconClub(Club newIconClub) {
+        this.iconClub = newIconClub;
+
+//        return member;
+    }
 }

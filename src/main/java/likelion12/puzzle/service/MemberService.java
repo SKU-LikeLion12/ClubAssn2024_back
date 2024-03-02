@@ -1,5 +1,6 @@
 package likelion12.puzzle.service;
 
+import likelion12.puzzle.domain.Club;
 import likelion12.puzzle.domain.Member;
 import likelion12.puzzle.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,11 +18,28 @@ public class MemberService {
     // 첫 화면 로그인
     public Member login(int studentId, String name) {
         Member member = findByStudentId(studentId);
+
         if (member.getName().equals(name)) {
             return member;
         } else {
             return null;
         }
+    }
+
+    // 새로운 학생 추가
+    @Transactional
+    public Member addNewMember(int studentId, String name, Club iconClub) {
+        Member member = new Member(studentId, name, iconClub);
+        memberRepository.addNewMember(member);
+
+        return member;
+    }
+
+    // 대표 동아리 변경
+    public Member updateIconClub(Member member, Club newIconClub) {
+        member.updateIconClub(newIconClub);
+
+        return member;
     }
 
     // 학번으로 조회

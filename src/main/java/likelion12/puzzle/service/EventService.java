@@ -29,7 +29,7 @@ public class EventService {
 
     // 이벤트 삭제
     @Transactional
-    public boolean remoteEvent(Long eventId) {
+    public boolean removeEvent(Long eventId) {
         Event event = eventRepository.findByEventId(eventId);
         boolean result = eventRepository.removeEvent(event);
         if (!result) {
