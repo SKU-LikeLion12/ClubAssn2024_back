@@ -46,14 +46,14 @@ public class ItemService {
     public Item changeItem(Long itemId, String name, int count, MultipartFile image) throws IOException {
 
         byte[] imageBytes = null;
+        Item item = findById(itemId);
         // 사진 넣으면 바꾼 사진으로
         if (image != null) {
             imageBytes = image.getBytes();
         } else {
             // 사진 안넣으면 원래 있는 사진으로
-            imageBytes = findById(itemId).getImage();
+            imageBytes = item.getImage();
         }
-        Item item = findById(itemId);
         item.setCount(count);
         item.setName(name);
         item.setImage(imageBytes);
