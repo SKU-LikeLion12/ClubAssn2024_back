@@ -10,14 +10,16 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class JoinEventService {
-
     private final JoinEventRepository joinEventRepository;
     private final MemberRepository memberRepository;
     private final EventRepository eventRepository;
+    private final MemberService memberService;
 
 
     // 내가 참여한 이벤트 하나 이벤트 id와 studentId 로 조회
@@ -38,9 +40,7 @@ public class JoinEventService {
     public JoinEvent saveJoinEvent(int studentId, Long eventId) {
         Member member = memberRepository.findByStudentId(studentId);
         Event event = eventRepository.findByEventId(eventId);
-        JoinEvent joinEvent = joinEventRepository.addJoinEvent(member, event);
-        return joinEvent;
-
+        return joinEventRepository.addJoinEvent(member, event);
     }
 
     // (관리자용) 멤버의 이벤트(퍼즐) 삭제 => 잘못 넣었을 경우
@@ -52,5 +52,14 @@ public class JoinEventService {
         return true;
     }
 
+    public List<JoinEvent> findAllJoinEvents(int studentId) {
+        Member member = memberService.findByStudentId(studentId);
+        List<JoinEvent> eventList = joinEventRepository.findAllJoinEvents(member);
 
+        if (eventList.isEmpty()) {
+            return null;
+        } else {
+            return eventList;
+        }
+    }
 }

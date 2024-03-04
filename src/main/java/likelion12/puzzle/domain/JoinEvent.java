@@ -27,8 +27,11 @@ public class JoinEvent {
     @JoinColumn(name = "memberId")
     private Member member;
 
+    private LocalDateTime checkDate;
+
     public JoinEvent(Member member, Event event) {
         this.event = event;
         this.member = member;
+        this.checkDate = LocalDateTime.now();
     }
 }
