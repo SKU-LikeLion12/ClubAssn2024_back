@@ -33,12 +33,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             try {
                 Claims claims = jwtUtility.validateToken(token);
                 if (claims != null) {
-                    String username = claims.getSubject(); // 혹은 사용자를 식별할 수 있는 다른 클레임
-                    // JWT 클레임에서 권한 정보를 추출하는 로직 (예시)
-                    // 실제로는 클레임에 맞게 권한을 설정해야 할 수 있습니다.
-                    List<SimpleGrantedAuthority> authorities = Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"));
+                    //유효한지 검사부터
+                    String username = claims.getSubject();
 
-                    // 인증 객체 생성
+                    // 권한 부여
+                    List<SimpleGrantedAuthority> authorities = Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN"));
+
+                    // 인증 객체 생성(매번 생성하는거 맞음)
                     UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                             username, null, authorities);
 
@@ -46,8 +47,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
             } catch (Exception e) {
-                // 인증 실패 시 필요한 예외 처리 로직
-                // 예를 들어, SecurityContext를 클리어 하거나, 적절한 HTTP 응답을 설정
                 System.out.println("e = " + e);
                 SecurityContextHolder.clearContext(); // 인증 실패 시, 컨텍스트 클리어
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

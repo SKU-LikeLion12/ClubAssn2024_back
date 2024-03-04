@@ -17,17 +17,18 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        // @formatter:off
         http
                 .authorizeHttpRequests((authorize) -> authorize
 //                        .requestMatchers("/swagger-ui/**").authenticated()
+//                        .requestMatchers("/admin/**").hasRole("ADMIN")
+//                        .requestMatchers("/item-rent/**").hasRole("MEMBER")
                         .anyRequest().permitAll()
                 )
                 .httpBasic(Customizer.withDefaults())
+                //간단한 테스트를 위해 csrf토큰 비활성화
                 .csrf((csrf) -> csrf.ignoringRequestMatchers("/**"))
                 .addFilterBefore(new JwtAuthenticationFilter(jwtUtility), UsernamePasswordAuthenticationFilter.class);
         ;
-        // @formatter:on
         return http.build();
     }
 
