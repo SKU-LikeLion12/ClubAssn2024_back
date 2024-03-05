@@ -21,7 +21,7 @@ public class JoinEventService {
 
 
     // 내가 참여한 이벤트 하나 이벤트 id와 studentId 로 조회
-    public JoinEvent findJoinEvent(int studentId, Long eventId) {
+    public JoinEvent findJoinEvent(String studentId, Long eventId) {
         Member member = memberService.findByStudentId(studentId);
         Event event = eventService.findByEventId(eventId);
         JoinEvent joinEvent = joinEventRepository.findJoinEvent(member, event);
@@ -35,7 +35,7 @@ public class JoinEventService {
     // (관리자용) 멤버에게 참여한 이벤트(퍼즐) 추가
     // 관리자 인증 로직 추가해야함
     @Transactional
-    public JoinEvent saveJoinEvent(int studentId, Long eventId) {
+    public JoinEvent saveJoinEvent(String studentId, Long eventId) {
         Member member = memberService.findByStudentId(studentId);
         Event event = eventService.findByEventId(eventId);
         JoinEvent joinEvent = new JoinEvent(member, event);
@@ -48,7 +48,7 @@ public class JoinEventService {
     // (관리자용) 멤버의 이벤트(퍼즐) 삭제 => 잘못 넣었을 경우
     // 관리자 인증 로직 추가해야함
     @Transactional
-    public boolean removeJoinEvent(int studentId, Long eventId) {
+    public boolean removeJoinEvent(String studentId, Long eventId) {
         JoinEvent joinEvent = findJoinEvent(studentId, eventId);
         joinEventRepository.removeJoinEvent(joinEvent);
         return true;

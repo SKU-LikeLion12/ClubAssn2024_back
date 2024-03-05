@@ -25,7 +25,6 @@ public class Event {
 //    @Column(nullable = false) // 아직 어떻게 넣을지 몰라서
     private String image; // 행사 포스터, 자료형은 미정
 
-//    @Column(nullable = false) // 날짜 어떻게 넣을지 몰라서
     private LocalDateTime date; // 행사 날짜
 
     public Event(String name, String image, LocalDateTime date) {
@@ -34,3 +33,4 @@ public class Event {
         this.date = date;
     }
 }
+

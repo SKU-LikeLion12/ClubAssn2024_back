@@ -15,6 +15,7 @@ public class JoinClub {
     @Id @GeneratedValue
     private Long id;
 
+    // Member 엔티티와 Club 엔티티에 대한 참조를 각각 하나씩만 가지므로 단일 참조
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "member_id")
     @OnDelete(action = OnDeleteAction.CASCADE)

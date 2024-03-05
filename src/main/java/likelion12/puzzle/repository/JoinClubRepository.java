@@ -14,14 +14,14 @@ import java.util.List;
 public class JoinClubRepository {
     private final EntityManager em;
 
-    // 새로운 동아리원 추가
+    // 기존에 없던 새로운 동아리원 추가
     public JoinClub saveNewMember(JoinClub joinClub) {
         em.persist(joinClub);
         return joinClub;
     }
 
     // 학번으로 가입된 동아리 찾기
-    public List<JoinClub> findByMemberId(int studentId) {
+    public List<JoinClub> findByMemberId(String studentId) {
         return em.createQuery("select jc.club from JoinClub jc where jc.member.studentId =:id", JoinClub.class)
                 .setParameter("id", studentId).getResultList();
     }
