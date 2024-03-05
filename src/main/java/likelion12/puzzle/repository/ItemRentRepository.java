@@ -1,11 +1,7 @@
 package likelion12.puzzle.repository;
 
 import jakarta.persistence.EntityManager;
-import static likelion12.puzzle.DTO.ItemRentDTO.*;
-import likelion12.puzzle.domain.Item;
-import likelion12.puzzle.domain.ItemRent;
-import likelion12.puzzle.domain.Member;
-import likelion12.puzzle.domain.RentStatus;
+import likelion12.puzzle.domain.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -40,7 +36,7 @@ public class ItemRentRepository {
         return em.createQuery("select ir from ItemRent ir where ir.status = :status", ItemRent.class)
                 .setParameter("status",status).getResultList();
     }
-
+//
 //    public List<ItemRent> findByMemberStatus(Member member, RentStatus status){
 //        return em.createQuery("select ir from ItemRent ir where ir.renter = :member and ir.status = :status", ItemRent.class)
 //                .setParameter("status",status).setParameter("member", member).getResultList();

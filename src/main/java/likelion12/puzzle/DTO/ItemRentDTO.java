@@ -1,17 +1,40 @@
 package likelion12.puzzle.DTO;
 
+import likelion12.puzzle.domain.ItemRent;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+
+import java.time.LocalDateTime;
+import java.util.Set;
 
 public class ItemRentDTO {
 
-    @Getter
-    public static class ItemRentSummary {
-        private Long totalCount;
-        private Long uniqueItemCount;
+    @AllArgsConstructor
+    public static class MemberRentingSize {
+        public Set<Long> variety;
+        public int count;
+    }
 
-        public ItemRentSummary(Long totalCount, Long uniqueItemCount) {
-            this.totalCount = totalCount;
-            this.uniqueItemCount = uniqueItemCount;
-        }
+    public static class ItemRentingSize{
+        public int booking = 0;
+        public int renting = 0;
+    }
+
+    public enum DelayState {
+        NO_DELAY, DELAY, LONG_DELAY
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public static class BookDTO {
+        ItemRent itemRent;
+        LocalDateTime needReceiveTime;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public static class ReceiveDTO {
+        ItemRent itemRent;
+        LocalDateTime needReturnTime;
     }
 }

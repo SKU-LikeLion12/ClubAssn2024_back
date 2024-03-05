@@ -1,6 +1,13 @@
 package likelion12.puzzle;
 
+import jakarta.persistence.EntityManager;
+import jdk.jfr.Name;
+import likelion12.puzzle.domain.Member;
 import likelion12.puzzle.service.DateCheckService;
+import likelion12.puzzle.service.ItemRentService;
+import likelion12.puzzle.service.ItemService;
+import likelion12.puzzle.service.MemberService;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
