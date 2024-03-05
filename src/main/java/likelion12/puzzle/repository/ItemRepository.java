@@ -18,6 +18,10 @@ public class ItemRepository {
         return item;
     }
 
+    public void delete(Item item) {
+        em.remove(item);
+    }
+
     public Item findById(Long id){
         return em.find(Item.class, id);
     }
