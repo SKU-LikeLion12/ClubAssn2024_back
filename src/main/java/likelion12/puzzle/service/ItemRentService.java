@@ -30,7 +30,7 @@ public class ItemRentService {
 
     //대여예약
     @Transactional
-    public BookDTO bookItem(int studentId, long itemId, int count){
+    public BookDTO bookItem(String studentId, long itemId, int count){
 
         Member renter = memberService.findByStudentId(studentId);
         Item item = itemService.findById(itemId);
@@ -75,7 +75,7 @@ public class ItemRentService {
         return itemRent;
     }
 
-    public boolean isPenalty(int studentId){
+    public boolean isPenalty(String studentId){
         Member member = memberService.findByStudentId(studentId);
         int delay = 0;
         int longDelay = 0;
@@ -91,7 +91,7 @@ public class ItemRentService {
         return delay >= 3 || longDelay >= 1;
     }
 
-    public MemberRentingSize checkMemberRenting(int studentId) {
+    public MemberRentingSize checkMemberRenting(String studentId) {
         Member member = memberService.findByStudentId(studentId);
         Set<Long> set = new HashSet<>();
         int count = 0;

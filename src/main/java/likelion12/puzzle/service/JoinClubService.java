@@ -21,13 +21,13 @@ public class JoinClubService {
     private final MemberService memberService;
 
     // 동아리에 새로운 학생 추가
-    @Transactional
-    public JoinClub saveNewMember(int studentId, String studentName, Club club) {
-        Member member = new Member(studentId, studentName, club);
-        JoinClub joinClub = new JoinClub(club, member);
-
-        return joinClubRepository.saveNewMember(joinClub);
-    }
+//    @Transactional
+//    public JoinClub saveNewMember(int studentId, String studentName, Club club) {
+//        Member member = new Member(studentId, studentName, club);
+//        JoinClub joinClub = new JoinClub(club, member);
+//
+//        return joinClubRepository.saveNewMember(joinClub);
+//    }
 
     // 동아리에 가입된 학생들 찾기
     public List<JoinClub> findAllByClubName(Club club) {
@@ -35,7 +35,7 @@ public class JoinClubService {
     }
 
     // 학번으로 어느 동아리 가입되어있는지 조회
-    public List<JoinClub> findByStudentId(int studentId) {
+    public List<JoinClub> findByStudentId(String studentId) {
         return joinClubRepository.findByMemberId(studentId);
     }
 
