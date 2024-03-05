@@ -3,7 +3,6 @@ package likelion12.puzzle.service;
 import likelion12.puzzle.domain.Event;
 import likelion12.puzzle.domain.Member;
 import likelion12.puzzle.repository.EventRepository;
-import likelion12.puzzle.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,6 +38,11 @@ public class EventService {
         }
     }
 
+    // 모든 이벤트 조회
+    public List<Event> findAllEvents() {
+        return eventRepository.findAllEvents();
+    }
+
     // 이벤트 이름으로 이벤트 찾기
     public Event findByEventName(String eventName) {
         Event event = eventRepository.findByEventName(eventName);
@@ -61,8 +65,10 @@ public class EventService {
 
     // 내가 참여한 행사 리스트 반환 (id로)
     public List<Event> findAllEvents(String studentId) {
+
         Member member = memberService.findByStudentId(studentId);
-        List<Event> eventList = eventRepository.findAllEvents(member);
+        List<Event> eventList = eventRepository.findAllPartEvents(member);
+
         if (eventList.isEmpty()) {
             return null;
         } else {

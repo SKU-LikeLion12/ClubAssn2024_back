@@ -2,6 +2,7 @@ package likelion12.puzzle.repository;
 
 import jakarta.persistence.EntityManager;
 import likelion12.puzzle.domain.Event;
+import likelion12.puzzle.domain.JoinEvent;
 import likelion12.puzzle.domain.Member;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,12 @@ public class EventRepository {
         return true;
     }
 
+    // 모든 이벤트 조회
+    public List<Event> findAllEvents() {
+        return em.createQuery("SELECT e FROM Event e", Event.class)
+                .getResultList();
+    }
+
     // 이벤트 이름으로 이벤트 찾기
     public Event findByEventName(String eventName) {
         return em.createQuery("SELECT e FROM Event e WHERE e.name = :EventName", Event.class)
@@ -42,10 +49,8 @@ public class EventRepository {
     }
 
     // 내가 참여한 행사 리스트 반환(하나씩 반환하는 디자인이 없어서 한번에 반환하는 코드만 필요할듯)
-    public List<Event> findAllEvents(Member member) {
+    public List<Event> findAllPartEvents(Member member) {
         return em.createQuery("SELECT je.event FROM JoinEvent je WHERE je.member = :member", Event.class)
                 .setParameter("member", member).getResultList();
-
     }
-
 }
