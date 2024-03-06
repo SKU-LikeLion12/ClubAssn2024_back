@@ -3,6 +3,8 @@ package likelion12.puzzle.DTO;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 
 public class ItemDTO {
@@ -17,13 +19,13 @@ public class ItemDTO {
         private String image;
     }
 
-    @Data
-    @AllArgsConstructor
-    public static class ItemAllRequest {
-        private Long id;
-        private String name;
-        private int count;
-    }
+//    @Data
+//    @AllArgsConstructor
+//    public static class ItemAllRequest {
+//        private Long id;
+//        private String name;
+//        private int count;
+//    }
 
 }
 

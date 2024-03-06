@@ -1,22 +1,24 @@
 package likelion12.puzzle.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import likelion12.puzzle.service.ImageUtility;
+import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@Setter
 public class Item {
 
     @Id @GeneratedValue @Column(name="item_id")
     Long id;
 
+    @Setter
     String name;
+    @Setter
     Integer count;
 
     // 이미지를 담는 byte 배열을 BLOB(Binary Large Object) 형식으로 저장
@@ -28,6 +30,27 @@ public class Item {
         this.name = name;
         this.count = count;
         this.image = image;
+    }
+
+    public String arrayToImage() {
+        return ImageUtility.encodeImage(this.image);
+    }
+
+    public void setImage(MultipartFile image) throws IOException {
+        this.image = image.getBytes();
+    }
+
+    @Getter
+    public static class ItemAllRequest {
+        private Long id;
+        private String name;
+        private int count;
+
+        public ItemAllRequest(Long id, String name, int count) {
+            this.id = id;
+            this.name = name;
+            this.count = count;
+        }
     }
 
 }

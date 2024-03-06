@@ -1,5 +1,6 @@
 package likelion12.puzzle.service;
 
+import likelion12.puzzle.DTO.ItemDTO;
 import likelion12.puzzle.domain.Item;
 import likelion12.puzzle.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +36,9 @@ public class ItemService {
         return itemRepository.findAll();
     }
 
+    public List<Item.ItemAllRequest> findAllExceptImage() {
+        return itemRepository.findAllExceptImage();
+    }
 
     @Transactional
     public void delete(Long id) {
@@ -45,18 +49,13 @@ public class ItemService {
     @Transactional
     public Item changeItem(Long itemId, String name, int count, MultipartFile image) throws IOException {
 
-        byte[] imageBytes = null;
         Item item = findById(itemId);
         // 사진 넣으면 바꾼 사진으로
         if (image != null) {
-            imageBytes = image.getBytes();
-        } else {
-            // 사진 안넣으면 원래 있는 사진으로
-            imageBytes = item.getImage();
+            item.setImage(image);
         }
         item.setCount(count);
         item.setName(name);
-        item.setImage(imageBytes);
         return item;
     }
 
