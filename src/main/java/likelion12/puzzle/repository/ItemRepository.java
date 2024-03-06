@@ -31,8 +31,8 @@ public class ItemRepository {
         return em.createQuery("select i from Item i", Item.class).getResultList();
     }
 
-    public List<ItemAllRequest> findAllExceptImage() {
-        return em.createQuery("SELECT new ItemAllRequest(i.id, i.name, i.count) FROM Item i", ItemAllRequest.class)
+    public List<ItemAllRequestExceptImage> findAllExceptImage() {
+        return em.createQuery("SELECT new ItemAllRequestExceptImage(i.id, i.name, i.count) FROM Item i", ItemAllRequestExceptImage.class)
                 .getResultList();
     }
 

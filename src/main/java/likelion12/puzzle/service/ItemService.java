@@ -22,8 +22,9 @@ public class ItemService {
     }
 
     @Transactional
-    public Item save(String name, int count, byte[] image){
-        Item item = new Item(name, count, image);
+    public Item save(String name, int count, MultipartFile image) throws IOException{
+        byte[] imageBytes = image.getBytes();
+        Item item = new Item(name, count, imageBytes);
         return itemRepository.save(item);
     }
 
@@ -36,7 +37,7 @@ public class ItemService {
         return itemRepository.findAll();
     }
 
-    public List<ItemAllRequest> findAllExceptImage() {
+    public List<ItemAllRequestExceptImage> findAllExceptImage() {
         return itemRepository.findAllExceptImage();
     }
 

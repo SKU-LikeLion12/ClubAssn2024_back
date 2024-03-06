@@ -2,6 +2,7 @@ package likelion12.puzzle.DTO;
 
 import likelion12.puzzle.domain.Event;
 import likelion12.puzzle.domain.JoinEvent;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -37,5 +38,13 @@ public class EventDTO {
         private Long id;
         private String name;
         private LocalDateTime addDate;
+    }
+
+    @Data
+    @AllArgsConstructor
+    public static class EventAllRequestExceptImage {
+        private Long id;
+        private String name;
+        private LocalDateTime date;
     }
 }

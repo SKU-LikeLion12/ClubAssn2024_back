@@ -32,9 +32,7 @@ public class ItemController {
                                              @RequestParam int count,
                                              @RequestParam MultipartFile image)  throws IOException {
 
-        // 프론트에서 받은 이미지(이미지 그 자체) => getByte()함수로 byte배열로 변환
-        byte[] imageBytes = image.getBytes();
-        Item item = itemService.save(name, count, imageBytes);
+        Item item = itemService.save(name, count, image);
         return ResponseEntity.status(HttpStatus.CREATED).body(item);
     }
 
@@ -64,7 +62,7 @@ public class ItemController {
 
     @ResponseBody
     @GetMapping("/items")
-    public List<ItemAllRequest> findAllItems() {
+    public List<ItemAllRequestExceptImage> findAllItemsExceptImage() {
         return itemService.findAllExceptImage(); // DTO로 쿼리 생성하기. hellospring => findUserAll() 참고
     }
 }

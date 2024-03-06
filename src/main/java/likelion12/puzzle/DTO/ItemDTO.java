@@ -21,7 +21,7 @@ public class ItemDTO {
 
     @Data
     @AllArgsConstructor
-    public static class ItemAllRequest {
+    public static class ItemAllRequestExceptImage {
         private Long id;
         private String name;
         private int count;
