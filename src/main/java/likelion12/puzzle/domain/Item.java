@@ -16,9 +16,7 @@ public class Item {
     @Id @GeneratedValue @Column(name="item_id")
     Long id;
 
-    @Setter
     String name;
-    @Setter
     Integer count;
 
     // 이미지를 담는 byte 배열을 BLOB(Binary Large Object) 형식으로 저장
@@ -32,6 +30,11 @@ public class Item {
         this.image = image;
     }
 
+    public void changeItem(String name, int count) {
+        this.name = name;
+        this.count = count;
+    }
+
     public String arrayToImage() {
         return ImageUtility.encodeImage(this.image);
     }
@@ -39,18 +42,4 @@ public class Item {
     public void setImage(MultipartFile image) throws IOException {
         this.image = image.getBytes();
     }
-
-    @Getter
-    public static class ItemAllRequest {
-        private Long id;
-        private String name;
-        private int count;
-
-        public ItemAllRequest(Long id, String name, int count) {
-            this.id = id;
-            this.name = name;
-            this.count = count;
-        }
-    }
-
 }

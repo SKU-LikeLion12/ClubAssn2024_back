@@ -64,7 +64,7 @@ public class ItemController {
 
     @ResponseBody
     @GetMapping("/items")
-    public List<Item.ItemAllRequest> findAllItems() {
+    public List<ItemAllRequest> findAllItems() {
         return itemService.findAllExceptImage(); // DTO로 쿼리 생성하기. hellospring => findUserAll() 참고
     }
 }

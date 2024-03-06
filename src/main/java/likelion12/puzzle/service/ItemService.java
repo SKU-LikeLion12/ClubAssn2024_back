@@ -1,6 +1,6 @@
 package likelion12.puzzle.service;
 
-import likelion12.puzzle.DTO.ItemDTO;
+import likelion12.puzzle.DTO.ItemDTO.*;
 import likelion12.puzzle.domain.Item;
 import likelion12.puzzle.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +36,7 @@ public class ItemService {
         return itemRepository.findAll();
     }
 
-    public List<Item.ItemAllRequest> findAllExceptImage() {
+    public List<ItemAllRequest> findAllExceptImage() {
         return itemRepository.findAllExceptImage();
     }
 
@@ -54,8 +54,7 @@ public class ItemService {
         if (image != null) {
             item.setImage(image);
         }
-        item.setCount(count);
-        item.setName(name);
+        item.changeItem(name, count);
         return item;
     }
 
