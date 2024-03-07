@@ -56,13 +56,6 @@ public class ItemRent {
         this.status = RentStatus.RENT;
     }
 
-    public void checkAutoCancel(LocalDateTime needReceiveTime){
-        LocalDateTime now = getNow();
-        if(needReceiveTime.isBefore(now)){
-            this.status = RentStatus.CANCEL;
-        }
-    }
-
     public void itemReturn(LocalDateTime returnTime, RentStatus status){
         this.returnDate = returnTime;
         this.status = status;

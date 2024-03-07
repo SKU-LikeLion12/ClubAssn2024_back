@@ -13,4 +13,11 @@ public enum RentStatus {
     public static final Set<RentStatus> usingGroup = Collections.unmodifiableSet(EnumSet.of(RentStatus.RENT, RentStatus.BOOK));
 
 
+    public boolean isCanPenaltyGroup() {
+        return canPenaltyGroup.contains(this);
+    }
+    public static final Set<RentStatus> canPenaltyGroup = Collections.unmodifiableSet(EnumSet.of(RentStatus.RENT, RentStatus.DELAY_RETURN, RentStatus.LONG_DELAY_RETURN));
+
+
+
 }

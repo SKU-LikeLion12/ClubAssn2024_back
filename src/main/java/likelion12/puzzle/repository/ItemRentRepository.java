@@ -76,6 +76,10 @@ public class ItemRentRepository {
 //                .setParameter("item",item).setParameter("book",RentStatus.BOOK).setParameter("rent",RentStatus.RENT).getResultList();
 //    }
 
+    public List<ItemRent> findByItemStatusTime(Item item, Set<RentStatus> statusGroup){
+
+    }
+
     public void delete(ItemRent itemRent){
         em.remove(itemRent);
     }

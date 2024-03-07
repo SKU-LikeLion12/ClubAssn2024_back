@@ -62,8 +62,7 @@ public class DateCheckService {
         return now;
     }
 
-    @Transactional
-    public LocalDate nextBuzDay(LocalDate date){
+    private LocalDate nextBuzDay(LocalDate date){
         try {
             while((isWeekend(date) || isHoliday(date))){
                 date.plusDays(1);
