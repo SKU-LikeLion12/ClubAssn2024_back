@@ -52,8 +52,7 @@ public class ItemRentService {
             //5개 초과라 못빌림
         }
 
-        ItemRentingSize itemRentingSize = checkItemRenting(itemId);
-        if(count+itemRentingSize.renting+itemRentingSize.booking > item.getCount()){
+        if(count + checkItemBooking(itemId) + item.getRentingCount() > item.getCount()){
             System.out.println("개수부족");
             //물품개수가 부족해서 못빌림
         }
@@ -114,17 +113,15 @@ public class ItemRentService {
         return new MemberRentingSize(set, count);
     }
 
-    public ItemRentingSize checkItemRenting(Long itemId){
+    public int checkItemBooking(Long itemId){
         Item item = itemService.findById(itemId);
-        ItemRentingSize irs = new ItemRentingSize();
-        for (ItemRent itemRent : itemRentRepository.findByItemStatus(item, RentStatus.usingGroup)) {
-            if(itemRent.getStatus() == RentStatus.BOOK && !isAutoCancel(itemRent)) {
-                irs.booking += itemRent.getCount();
-            }else if(itemRent.getStatus() == RentStatus.RENT){
-                irs.renting += itemRent.getCount();
+        int size = 0;
+        for (ItemRent itemRent : itemRentRepository.findByItemStatus(item, Collections.singleton(RentStatus.BOOK))) {
+            if(!isAutoCancel(itemRent)) {
+                size += itemRent.getCount();
             }
         }
-        return irs;
+        return size;
     }
 
     public Boolean isAutoCancel(ItemRent itemRent){

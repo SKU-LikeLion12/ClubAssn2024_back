@@ -54,11 +54,13 @@ public class ItemRent {
     public void itemReceive(LocalDateTime receiveTime){
         this.receiveDate = receiveTime;
         this.status = RentStatus.RENT;
+        this.item.rentItem(this.count);
     }
 
     public void itemReturn(LocalDateTime returnTime, RentStatus status){
         this.returnDate = returnTime;
         this.status = status;
+        this.item.returnItem(this.count);
     }
 
     public static LocalDateTime getNow(){

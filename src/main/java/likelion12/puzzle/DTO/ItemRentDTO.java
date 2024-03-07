@@ -15,11 +15,6 @@ public class ItemRentDTO {
         public int count;
     }
 
-    public static class ItemRentingSize{
-        public int booking = 0;
-        public int renting = 0;
-    }
-
     public enum DelayState {
         NO_DELAY, DELAY, LONG_DELAY
     }

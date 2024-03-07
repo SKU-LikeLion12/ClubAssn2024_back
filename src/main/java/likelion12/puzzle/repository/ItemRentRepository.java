@@ -5,6 +5,7 @@ import likelion12.puzzle.domain.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -76,9 +77,7 @@ public class ItemRentRepository {
 //                .setParameter("item",item).setParameter("book",RentStatus.BOOK).setParameter("rent",RentStatus.RENT).getResultList();
 //    }
 
-    public List<ItemRent> findByItemStatusTime(Item item, Set<RentStatus> statusGroup){
-
-    }
+//    public List<ItemRent> findByItemStatusTime(Item item, Set<RentStatus> statusGroup, LocalDateTime localDateTime){}
 
     public void delete(ItemRent itemRent){
         em.remove(itemRent);
