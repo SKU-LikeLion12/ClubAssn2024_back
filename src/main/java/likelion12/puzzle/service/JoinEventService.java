@@ -3,12 +3,11 @@ package likelion12.puzzle.service;
 import likelion12.puzzle.domain.Event;
 import likelion12.puzzle.domain.JoinEvent;
 import likelion12.puzzle.domain.Member;
-import likelion12.puzzle.repository.EventRepository;
 import likelion12.puzzle.repository.JoinEventRepository;
-import likelion12.puzzle.repository.MemberRepository;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import likelion12.puzzle.DTO.EventDTO.*;
 
 import java.util.List;
 
@@ -53,9 +52,22 @@ public class JoinEventService {
         return true;
     }
 
-    public List<JoinEvent> findAllJoinEvents(String studentId) {
+    // 참여한 행사
+    public List<ResponseJoinEvent> findAllJoinEvents(String studentId) {
         Member member = memberService.findByStudentId(studentId);
-        List<JoinEvent> eventList = joinEventRepository.findAllJoinEvents(member);
+        List<ResponseJoinEvent> eventList = joinEventRepository.findAllPartEventsExceptImage(member);
+
+        if (eventList.isEmpty()) {
+            return null;
+        } else {
+            return eventList;
+        }
+    }
+
+    // 참여하지 않은 행사(추가할 때)
+    public List<ResponseJoinEvent> findNotPartEventsExceptImage(String studentId) {
+        Member member = memberService.findByStudentId(studentId);
+        List<ResponseJoinEvent> eventList = joinEventRepository.findNotPartEventsExceptImage(member);
 
         if (eventList.isEmpty()) {
             return null;

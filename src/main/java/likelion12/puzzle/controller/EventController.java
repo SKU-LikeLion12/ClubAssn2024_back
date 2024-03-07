@@ -1,6 +1,5 @@
 package likelion12.puzzle.controller;
 
-import likelion12.puzzle.domain.Event;
 import likelion12.puzzle.domain.JoinEvent;
 import likelion12.puzzle.service.EventService;
 import likelion12.puzzle.service.JoinEventService;
@@ -9,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static likelion12.puzzle.DTO.EventDTO.*;
 
@@ -27,40 +25,52 @@ public class EventController {
         // joinevent 보고 member id 있는거에서 event id로 행사 id, name, image, date 뿌려주기
     }
 
-    // 퍼즐 조각 관리 페이지
-    @PostMapping("/events/manage/{studentId}")
-    public ResponseEntity<List<ResponsePuzzle>> manageEvents(@PathVariable("studentId") String studentId) {
-        List<JoinEvent> joinEvents = joinEventService.findAllJoinEvents(studentId);
+    // 퍼즐 조각 관리
+//    @GetMapping("/events/manage")
+//    public ResponseEntity<List<ResponseEvent>> eventsManage() {
+//
+//    }
+//
+//    // 퍼즐 조각 수정 페이지
+//    @GetMapping("/events/manage/update")
+//    public ResponseEntity<ResponseEvent> eventUpdatePage(@RequestBody RequestEvent request) {
+//
+//    }
+//
+//    // 퍼즐 조각 수정 기능
+//    @PostMapping("/events/manage/update")
+//    public ResponseEntity<ResponseEvent> eventUpdatePage(@RequestBody RequestEvent request) {
+//
+//    }
 
-        List<ResponsePuzzle> responsePuzzles = joinEvents.stream()
-                .map(ResponsePuzzle::new)
-                .collect(Collectors.toList());
+
+    // 회원 퍼즐 조각 관리 페이지
+    @PostMapping("/events/manage/{studentId}")
+    public ResponseEntity<List<ResponseJoinEvent>> manageEvents(@PathVariable("studentId") String studentId) {
+        List<ResponseJoinEvent> responsePuzzles = joinEventService.findAllJoinEvents(studentId);
 
         return ResponseEntity.ok(responsePuzzles);
     }
 
-    // 퍼즐 조각 삭제 페이지
+    // 회원 퍼즐 조각 삭제 페이지
     @DeleteMapping("/events/manage/{studentId}")
-    public void deleteEvents(@PathVariable("studentId") String studentId, @RequestBody RequestEvent request) {
+    public void deleteEvents(@PathVariable("studentId") String studentId, @RequestBody RequestJoinEvent request) {
         joinEventService.removeJoinEvent(studentId, request.getId());
     }
 
-    // 퍼즐 조각 추가 페이지
-    @PutMapping("/events/manage/add")
-    public ResponseEntity<List<ResponseEvent>> pageForEventAdd(@PathVariable("studentId") String studentId) {
-        List<Event> events = eventService.findAllEvents();
-
-        List<ResponseEvent> responseEvents = events.stream()
-                .map(ResponseEvent::new)
-                .collect(Collectors.toList());
+    // 회원 퍼즐 조각 추가 페이지(참여 안한거만 나오게)
+    @GetMapping("/events/manage/{studentId}/add")
+    public ResponseEntity<List<ResponseJoinEvent>> pageForAddEvent(@PathVariable("studentId") String studentId) {
+        List<ResponseJoinEvent> responseEvents = joinEventService.findNotPartEventsExceptImage(studentId);
 
         return ResponseEntity.ok(responseEvents);
     }
 
-    // 퍼즐 조각 추가(예외 처리 필요)
-    @PostMapping("/events/manage/add/{studentId}")
-    public ResponseEntity<ResponsePuzzle> addEvents(@PathVariable("studentId") String studentId, @RequestBody RequestEvent request) {
+    // 회원 퍼즐 조각 추가(예외 처리 필요)
+    @PutMapping("/events/manage/{studentId}/add")
+    public ResponseEntity<ResponseJoinEvent> addEvents(@PathVariable("studentId") String studentId, @RequestBody RequestJoinEvent request) {
         JoinEvent joinEvent = joinEventService.saveJoinEvent(studentId, request.getId());
-        return ResponseEntity.ok(new ResponsePuzzle(joinEvent));
+
+        return ResponseEntity.ok(new ResponseJoinEvent(joinEvent));
     }
 }
