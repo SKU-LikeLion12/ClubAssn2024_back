@@ -5,7 +5,7 @@ import java.util.EnumSet;
 import java.util.Set;
 
 public enum RentStatus {
-    BOOK, RENT, RETURN, CANCEL;
+    BOOK, RENT, RETURN, CANCEL, DELAY_RETURN, LONG_DELAY_RETURN;
 
     public boolean isUsingGroup() {
         return usingGroup.contains(this);

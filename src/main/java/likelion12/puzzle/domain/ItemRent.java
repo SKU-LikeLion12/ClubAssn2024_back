@@ -63,9 +63,9 @@ public class ItemRent {
         }
     }
 
-    public void itemReturn(LocalDateTime returnTime){
+    public void itemReturn(LocalDateTime returnTime, RentStatus status){
         this.returnDate = returnTime;
-        this.status = RentStatus.RETURN;
+        this.status = status;
     }
 
     public static LocalDateTime getNow(){

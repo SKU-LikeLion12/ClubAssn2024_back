@@ -16,10 +16,12 @@ public class DateCheck {
     Long id;
 
     LocalDate date;
-    Boolean isBreak;
 
-    public DateCheck(LocalDate date, Boolean isBreak){
+    LocalDate nextBizDay;
+    LocalDate nextWeekBizDay;
+    public DateCheck(LocalDate date, LocalDate nextBizDay, LocalDate nextWeekBizDay){
         this.date = date;
-        this.isBreak = isBreak;
+        this.nextBizDay = nextBizDay;
+        this.nextWeekBizDay = nextWeekBizDay;
     }
 }

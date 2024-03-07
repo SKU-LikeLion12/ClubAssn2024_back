@@ -5,6 +5,7 @@ import likelion12.puzzle.repository.DateCheckRepository;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,18 +26,31 @@ public class DateCheckService {
 
     private final DateCheckRepository dateCheckRepository;
 
+    @Value("${api-key.date-checker}")
+    private String dateCheckerKey;
 
+    @Transactional
+    public DateCheck getDayCheck(LocalDate date){
+        DateCheck buzDay = dateCheckRepository.findByDate(date);
+        if(buzDay != null){
+            return buzDay;
+        }
+        try{
+            buzDay = new DateCheck(date, nextBuzDay(date.plusDays(1)), nextBuzDay(date.plusDays(7)));
+            dateCheckRepository.save(buzDay);
+        }catch (Exception e){
+            System.out.println("e = " + e);
+        }
+        return buzDay;
 
+    }
     @Transactional(readOnly = true)
     public LocalDateTime needReceiveDate(LocalDateTime now) {
-        now = now.plusDays(1);
-        while (isBreak(now.toLocalDate())) {
-            now = now.plusDays(1);
-        }
+        now.with(getDayCheck(now.toLocalDate()).getNextBizDay());
         if (now.getDayOfWeek().getValue() == 5) { // 금요일인 경우
-            now = now.with(LocalTime.of(15, 0));
+            now = now.with(LocalTime.of(15, 0,0));
         } else {
-            now = now.with(LocalTime.of(17, 30));
+            now = now.with(LocalTime.of(17, 30,0));
         }
 
         return now;
@@ -44,28 +58,20 @@ public class DateCheckService {
 
     @Transactional(readOnly = true)
     public LocalDateTime needReturnDate(LocalDateTime now){
-        now = now.plusDays(7);
-        while (isBreak(now.toLocalDate())) {
-            now = now.plusDays(1);
-        }
+        now.with(getDayCheck(now.toLocalDate()).getNextWeekBizDay());
         return now;
     }
 
     @Transactional
-    public Boolean isBreak(LocalDate date){
-
-        DateCheck byDate = dateCheckRepository.findByDate(date);
-        if(byDate!=null){
-            return byDate.getIsBreak();
-        }
+    public LocalDate nextBuzDay(LocalDate date){
         try {
-            byDate = new DateCheck(date, (isWeekend(date) || isHoliday(date)));
-            dateCheckRepository.save(byDate);
-            return byDate.getIsBreak();
+            while((isWeekend(date) || isHoliday(date))){
+                date.plusDays(1);
+            }
         }catch (Exception e){
             System.out.println("e = " + e);
         }
-        return null;
+        return date;
     }
 
     private boolean isWeekend(LocalDate date){
@@ -79,7 +85,7 @@ public class DateCheckService {
 
     private String getHolidayUrl(LocalDate date) {
         return "http://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getRestDeInfo" +
-                "?serviceKey=1Kw49paSD5t9RqepmPwQpD8cNSs0I1SzwQlnt5n62oU6vD5P%2Fxnnp2t3I8PwfAa%2BtFY02jbP6yWFcfiKPMRWqA%3D%3D" +
+                "?serviceKey=" + dateCheckerKey +
                 "&solYear=" + date.getYear() +
                 "&solMonth=" + String.format("%02d", date.getMonthValue()) +
                 "&_type=json";
