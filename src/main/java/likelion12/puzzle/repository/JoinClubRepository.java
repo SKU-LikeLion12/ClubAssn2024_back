@@ -14,8 +14,8 @@ import java.util.List;
 public class JoinClubRepository {
     private final EntityManager em;
 
-    // 기존에 없던 새로운 동아리원 추가
-    public JoinClub saveNewMember(JoinClub joinClub) {
+    // 동아리원 추가
+    public JoinClub saveNewMemberForClub(JoinClub joinClub) {
         em.persist(joinClub);
         return joinClub;
     }

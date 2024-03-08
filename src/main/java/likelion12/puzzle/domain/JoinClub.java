@@ -13,6 +13,7 @@ import static jakarta.persistence.FetchType.*;
 @NoArgsConstructor
 public class JoinClub {
     @Id @GeneratedValue
+    @Column(name = "joinclub_id")
     private Long id;
 
     // Member 엔티티와 Club 엔티티에 대한 참조를 각각 하나씩만 가지므로 단일 참조

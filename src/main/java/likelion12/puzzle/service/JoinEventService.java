@@ -32,7 +32,7 @@ public class JoinEventService {
         }
     }
 
-    // (관리자용) 멤버에게 참여한 이벤트(퍼즐) 추가
+    // (관리자용) 멤버에게 참여한 이벤트(퍼즐) 추가 + 이미 있는 이벤트인지 확인 필요
     // 관리자 인증 로직 추가해야함
     @Transactional
     public JoinEvent saveJoinEvent(String studentId, Long eventId) {
@@ -65,9 +65,9 @@ public class JoinEventService {
     }
 
     // 참여하지 않은 행사(추가할 때)
-    public List<ResponseJoinEvent> findNotPartEventsExceptImage(String studentId) {
+    public List<ResponsePuzzleForNotPart> findNotPartEventsExceptImage(String studentId) {
         Member member = memberService.findByStudentId(studentId);
-        List<ResponseJoinEvent> eventList = joinEventRepository.findNotPartEventsExceptImage(member);
+        List<ResponsePuzzleForNotPart> eventList = joinEventRepository.findNotPartEventsExceptImage(member);
 
         if (eventList.isEmpty()) {
             return null;
