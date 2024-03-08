@@ -124,12 +124,14 @@ public class ItemRentService {
         return size;
     }
 
+    @Transactional
     public Boolean isAutoCancel(ItemRent itemRent){
         if(itemRent.getStatus() != RentStatus.BOOK) return null;
 
         LocalDateTime now = ItemRent.getNow();
         LocalDateTime needReceiveDate = dateCheckService.needReceiveDate(itemRent.getOfferDate());
         if(now.isAfter(needReceiveDate)){
+            itemRent.cancel(); // DateChecker 문제 해결 후 로직 변경시 삭제
             return true;
         }
         return false;
