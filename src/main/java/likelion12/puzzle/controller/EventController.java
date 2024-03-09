@@ -37,7 +37,7 @@ public class EventController {
     public ResponseEntity<ResponseEvent> addEvent(@RequestBody RequestEvent request) {
         Event event = eventService.addEvent(request.getName(), request.getImage(), request.getDate());
 
-        ResponseEvent responseEvent = new ResponseEvent(event.getName(), event.getImage(), event.getDate());
+        ResponseEvent responseEvent = new ResponseEvent(event.getId(), event.getName(), event.getImage(), event.getDate());
         return ResponseEntity.ok(responseEvent);
     }
 
@@ -62,9 +62,9 @@ public class EventController {
         return ResponseEntity.ok(responsePuzzles);
     }
 
-    // 회원 퍼즐 조각 삭제 페이지
+    // 회원 퍼즐 조각 삭제 페이지(기본키를 받아오나? 이벤트 이름만 받나?)
     @DeleteMapping("/events/manage/{studentId}")
-    public void deleteEvents(@PathVariable("studentId") String studentId, @RequestBody RequestJoinEvent request) {
+    public void deleteEvents(@PathVariable("studentId") String studentId, @RequestBody RequestJoinEventForDelete request) {
         joinEventService.removeJoinEvent(studentId, request.getId());
     }
 
@@ -76,8 +76,8 @@ public class EventController {
         return ResponseEntity.ok(responseEvents);
     }
 
-    // 회원 퍼즐 조각 추가(예외 처리 필요)
-    @PutMapping("/events/manage/{studentId}/add")
+    // 회원 퍼즐 조각 추가 +
+    @PostMapping("/events/manage/{studentId}/add")
     public ResponseEntity<?> addJoinEvent(@PathVariable("studentId") String studentId, @RequestBody RequestJoinEvent request) {
         joinEventService.saveJoinEvent(studentId, request.getId());
 

@@ -28,13 +28,20 @@ public class EventDTO {
     }
 
     @Data
+    public static class RequestJoinEventForDelete {
+        private Long id;
+        private String name;
+    }
+
+    @Data
     public static class ResponseEvent {
         private Long id;
         private String name;
         private LocalDateTime date;
         private String image;
 
-        public ResponseEvent(String name, String image, LocalDateTime date) {
+        public ResponseEvent(Long id, String name, String image, LocalDateTime date) {
+            this.id = id;
             this.name = name;
             this.image = image;
             this.date = date;
