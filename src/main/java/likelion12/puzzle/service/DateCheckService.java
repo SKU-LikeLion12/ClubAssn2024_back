@@ -62,10 +62,18 @@ public class DateCheckService {
         return now;
     }
 
-    private LocalDate nextBuzDay(LocalDate date){
+    public LocalDate beforeBuzDay(LocalDate date){
+        LocalDate beforeDate = date.minusDays(1);
+        while(!date.isBefore(getDayCheck(beforeDate.minusDays(1)).getNextBizDay())){
+            beforeDate = beforeDate.minusDays(1);
+        }
+        return beforeDate;
+    }
+
+    public LocalDate nextBuzDay(LocalDate date){
         try {
             while((isWeekend(date) || isHoliday(date))){
-                date.plusDays(1);
+                date = date.plusDays(1);
             }
         }catch (Exception e){
             System.out.println("e = " + e);

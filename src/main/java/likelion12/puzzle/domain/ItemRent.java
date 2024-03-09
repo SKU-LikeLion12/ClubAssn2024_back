@@ -14,21 +14,21 @@ import java.time.ZoneId;
 public class ItemRent {
 
     @Id @GeneratedValue @Column(name = "rent_item_id")
-    Long id;
+    private Long id;
 
     @ManyToOne @JoinColumn(name="renter_id")
-    Member renter;
+    private Member renter;
     @ManyToOne @JoinColumn(name = "item_id")
-    Item item;
+    private Item item;
 
-    Integer count;
+    private Integer count;
 
     @Column(name = "rent_offer_date")
-    LocalDateTime offerDate;
+    private LocalDateTime offerDate;
     @Column(name = "rent_start_date")
-    LocalDateTime receiveDate;
+    private LocalDateTime receiveDate;
     @Column(name = "rent_return_date")
-    LocalDateTime returnDate;
+    private LocalDateTime returnDate;
 
     @Enumerated(EnumType.STRING)
     private RentStatus status;

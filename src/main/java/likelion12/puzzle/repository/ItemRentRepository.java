@@ -9,6 +9,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
+import static likelion12.puzzle.DTO.ItemRentDTO.*;
+
 @Repository
 @RequiredArgsConstructor
 public class ItemRentRepository {
@@ -77,7 +79,17 @@ public class ItemRentRepository {
 //                .setParameter("item",item).setParameter("book",RentStatus.BOOK).setParameter("rent",RentStatus.RENT).getResultList();
 //    }
 
-//    public List<ItemRent> findByItemStatusTime(Item item, Set<RentStatus> statusGroup, LocalDateTime localDateTime){}
+    public Long findBookStatus(Item item, LocalDateTime localDateTime){
+        return em.createQuery("select COALESCE(SUM(ir.count), 0) from ItemRent ir where ir.item = :item and ir.offerDate >= :localDateTime",Long.class)
+                .setParameter("item",item).setParameter("localDateTime",localDateTime)
+                .getSingleResult();
+    }
+
+    public List<RestItemListDTO> findRestItemList(LocalDateTime localDateTime){
+        return em.createQuery("SELECT new RestItemListDTO(i.id, i.name, i.count, i.image, i.rentingCount, COALESCE(SUM(ir.count), 0)) " +
+                                "FROM ItemRent ir RIGHT JOIN Item i ON i = ir.item and ir.offerDate >= :localDateTime GROUP BY i", RestItemListDTO.class)
+                .setParameter("localDateTime",localDateTime).getResultList();
+    }
 
     public void delete(ItemRent itemRent){
         em.remove(itemRent);

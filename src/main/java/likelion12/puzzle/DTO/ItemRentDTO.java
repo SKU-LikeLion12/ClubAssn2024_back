@@ -1,7 +1,9 @@
 package likelion12.puzzle.DTO;
 
+import likelion12.puzzle.domain.Item;
 import likelion12.puzzle.domain.ItemRent;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -32,4 +34,23 @@ public class ItemRentDTO {
         ItemRent itemRent;
         LocalDateTime needReturnTime;
     }
+
+    @Data
+    public static class BookRequestDTO{
+        String studentId;
+        long itemId;
+        int count;
+    }
+
+    @Data
+    @AllArgsConstructor
+    public static class RestItemListDTO{
+        Long id;
+        String name;
+        Integer count;
+        byte[] image;
+        Integer rentingCount;
+        Long bookingCount;
+    }
+
 }

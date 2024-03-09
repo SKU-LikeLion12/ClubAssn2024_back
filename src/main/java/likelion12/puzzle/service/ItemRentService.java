@@ -5,16 +5,17 @@ import likelion12.puzzle.domain.Item;
 import likelion12.puzzle.domain.ItemRent;
 import likelion12.puzzle.domain.Member;
 import likelion12.puzzle.domain.RentStatus;
+import likelion12.puzzle.exception.HavePenaltyException;
+import likelion12.puzzle.exception.LimitRentException;
+import likelion12.puzzle.exception.NotEnoughItemException;
 import likelion12.puzzle.repository.ItemRentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.temporal.Temporal;
-import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -37,24 +38,20 @@ public class ItemRentService {
         Item item = itemService.findById(itemId);
 
         if(isPenalty(studentId)){
-            System.out.println("패널티");
-            //패널티로 인해 못빌림
+            throw new HavePenaltyException();
         }
 
         MemberRentingSize memberRentingSize = checkMemberRenting(studentId);
         memberRentingSize.variety.add(itemId);
         if(memberRentingSize.variety.size() > 3){
-            System.out.println("종류초과");
-            //3종류 초과라 못빌림
+            throw new LimitRentException("물품은 세 종류까지만 대여가 가능합니다.");
         }
         if(memberRentingSize.count+count > 5){
-            System.out.println("개수초과");
-            //5개 초과라 못빌림
+            throw new LimitRentException("물픔은 최대 5개까지만 대여가 가능합니다.");
         }
 
         if(count + checkItemBooking(itemId) + item.getRentingCount() > item.getCount()){
-            System.out.println("개수부족");
-            //물품개수가 부족해서 못빌림
+            throw new NotEnoughItemException();
         }
 
         ItemRent itemRent = itemRentRepository.save(new ItemRent(renter, item, count));
@@ -85,6 +82,11 @@ public class ItemRentService {
         return itemRent;
     }
 
+//    public List<?> itemListWithBookingSize(){
+//        List<ItemWithBookingSizeDTO> all = itemService.findAll();
+//
+//    }
+
     public boolean isPenalty(String studentId){
         Member member = memberService.findByStudentId(studentId);
         int delay = 0;
@@ -113,15 +115,15 @@ public class ItemRentService {
         return new MemberRentingSize(set, count);
     }
 
-    public int checkItemBooking(Long itemId){
+    public long checkItemBooking(Long itemId){
         Item item = itemService.findById(itemId);
-        int size = 0;
-        for (ItemRent itemRent : itemRentRepository.findByItemStatus(item, Collections.singleton(RentStatus.BOOK))) {
-            if(!isAutoCancel(itemRent)) {
-                size += itemRent.getCount();
-            }
-        }
-        return size;
+        LocalDateTime beforeBuzTime = dateCheckService.beforeBuzDay(ItemRent.getNow().toLocalDate()).atStartOfDay();
+        return itemRentRepository.findBookStatus(item, beforeBuzTime);
+    }
+
+    public List<RestItemListDTO> getrestItemList(){
+        LocalDateTime beforeBuzTime = dateCheckService.beforeBuzDay(ItemRent.getNow().toLocalDate()).atStartOfDay();
+        return itemRentRepository.findRestItemList(beforeBuzTime);
     }
 
     @Transactional
