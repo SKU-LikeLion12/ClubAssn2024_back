@@ -85,6 +85,12 @@ public class ItemRentRepository {
                 .getSingleResult();
     }
 
+    public List<ItemRent> findMemberBooking(Member member, LocalDateTime localDateTime){
+        return em.createQuery("select ir from ItemRent ir where ir.renter = :member and ir.status = :status and ir.offerDate >= :time", ItemRent.class)
+                .setParameter("member",member).setParameter("status", RentStatus.BOOK).setParameter("time",localDateTime)
+                .getResultList();
+    }
+
     public List<RestItemListDTO> findRestItemList(LocalDateTime localDateTime){
         return em.createQuery("SELECT new RestItemListDTO(i.id, i.name, i.count, i.image, i.rentingCount, COALESCE(SUM(ir.count), 0)) " +
                                 "FROM ItemRent ir RIGHT JOIN Item i ON i = ir.item and ir.offerDate >= :localDateTime GROUP BY i", RestItemListDTO.class)

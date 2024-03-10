@@ -46,7 +46,7 @@ public class DateCheckService {
     }
     @Transactional(readOnly = true)
     public LocalDateTime needReceiveDate(LocalDateTime now) {
-        now.with(getDayCheck(now.toLocalDate()).getNextBizDay());
+        now = now.with(getDayCheck(now.toLocalDate()).getNextBizDay());
         if (now.getDayOfWeek().getValue() == 5) { // 금요일인 경우
             now = now.with(LocalTime.of(15, 0,0));
         } else {
@@ -62,11 +62,13 @@ public class DateCheckService {
         return now;
     }
 
+    @Transactional
     public LocalDate beforeBuzDay(LocalDate date){
         LocalDate beforeDate = date.minusDays(1);
-        while(!date.isBefore(getDayCheck(beforeDate.minusDays(1)).getNextBizDay())){
+        while(!getDayCheck(beforeDate.minusDays(1)).getNextBizDay().isBefore(date)){
             beforeDate = beforeDate.minusDays(1);
         }
+        System.out.println("beforeDate = " + beforeDate);
         return beforeDate;
     }
 

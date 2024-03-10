@@ -1,5 +1,6 @@
 package likelion12.puzzle.DTO;
 
+import likelion12.puzzle.domain.Club;
 import likelion12.puzzle.domain.Item;
 import likelion12.puzzle.domain.ItemRent;
 import lombok.AllArgsConstructor;
@@ -24,8 +25,20 @@ public class ItemRentDTO {
     @Getter
     @AllArgsConstructor
     public static class BookDTO {
-        ItemRent itemRent;
+        String studentId;
+        String itemName;
+        byte[] image;
+        Integer count;
+        LocalDateTime bookTime;
         LocalDateTime needReceiveTime;
+        public BookDTO(ItemRent itemRent, LocalDateTime needReceiveTime){
+            this.studentId = itemRent.getRenter().getStudentId();
+            this.itemName = itemRent.getItem().getName();
+            this.image = itemRent.getItem().getImage();
+            this.count = itemRent.getCount();
+            this.bookTime = itemRent.getOfferDate();
+            this.needReceiveTime = needReceiveTime;
+        }
     }
 
     @Getter
@@ -37,7 +50,7 @@ public class ItemRentDTO {
 
     @Data
     public static class BookRequestDTO{
-        String studentId;
+        MemberDTO.MemberToken token;
         long itemId;
         int count;
     }

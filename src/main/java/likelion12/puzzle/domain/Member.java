@@ -25,8 +25,8 @@ public class Member {
     private Club iconClub;
 
     // 하나의 Member 엔티티가 여러 개의 JoinClub 엔티티와 연관될 수 있으니..
-    @OneToMany(mappedBy = "member")
-    private List<JoinClub> joinClubs = new ArrayList<>();
+//    @OneToMany(mappedBy = "member")
+//    private List<JoinClub> joinClubs = new ArrayList<>();
 
     @Column(nullable = false)
     private String studentId;

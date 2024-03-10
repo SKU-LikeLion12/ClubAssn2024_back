@@ -29,7 +29,6 @@ public class ItemRentService {
     private final DateCheckService dateCheckService;
 
     //물품은 프론트에서도 그냥 물품번호로 관리해주세요... 이름으로 쿼리할 필요 없을듯..
-
     //대여예약
     @Transactional
     public BookDTO bookItem(String studentId, long itemId, int count){
@@ -82,6 +81,15 @@ public class ItemRentService {
         return itemRent;
     }
 
+    public List<BookDTO> memberBookList(String studentId){
+        Member member = memberService.findByStudentId(studentId);
+        LocalDateTime beforeBuzTime = dateCheckService.beforeBuzDay(ItemRent.getNow().toLocalDate()).atStartOfDay();
+        List<ItemRent> bookList = itemRentRepository.findMemberBooking(member, beforeBuzTime);
+        return bookList.stream()
+                .map(itemRent -> new BookDTO(itemRent, dateCheckService.needReceiveDate(itemRent.getOfferDate())))
+                .toList();
+    }
+
 //    public List<?> itemListWithBookingSize(){
 //        List<ItemWithBookingSizeDTO> all = itemService.findAll();
 //
@@ -125,6 +133,8 @@ public class ItemRentService {
         LocalDateTime beforeBuzTime = dateCheckService.beforeBuzDay(ItemRent.getNow().toLocalDate()).atStartOfDay();
         return itemRentRepository.findRestItemList(beforeBuzTime);
     }
+
+//    public
 
     @Transactional
     public Boolean isAutoCancel(ItemRent itemRent){

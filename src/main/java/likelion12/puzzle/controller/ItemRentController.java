@@ -1,5 +1,6 @@
 package likelion12.puzzle.controller;
 
+import likelion12.puzzle.security.JwtUtility;
 import likelion12.puzzle.service.ItemRentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import static likelion12.puzzle.DTO.ItemRentDTO.*;
 public class ItemRentController {
 
     private final ItemRentService itemRentService;
+    private final JwtUtility jwtUtility;
 
     @GetMapping("/item-rent/list")
     public ResponseEntity<List<RestItemListDTO>> restItemList(){
@@ -24,8 +26,10 @@ public class ItemRentController {
 
     @PostMapping("/item-rent")
     public ResponseEntity<BookDTO> bookRequest(@RequestBody BookRequestDTO request){
-        BookDTO bookDTO = itemRentService.bookItem(request.getStudentId(), request.getItemId(), request.getCount());
+        BookDTO bookDTO = itemRentService.bookItem(jwtUtility.getStudentId(request.getToken()), request.getItemId(), request.getCount());
         return ResponseEntity.status(HttpStatus.OK).body(bookDTO);
     }
+
+
 
 }
