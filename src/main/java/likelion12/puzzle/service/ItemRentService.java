@@ -14,9 +14,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -84,10 +86,24 @@ public class ItemRentService {
     public List<BookDTO> memberBookList(String studentId){
         Member member = memberService.findByStudentId(studentId);
         LocalDateTime beforeBuzTime = dateCheckService.beforeBuzDay(ItemRent.getNow().toLocalDate()).atStartOfDay();
-        List<ItemRent> bookList = itemRentRepository.findMemberBooking(member, beforeBuzTime);
+        List<ItemRent> bookList = itemRentRepository.findBookStatusWithMember(member, beforeBuzTime);
         return bookList.stream()
                 .map(itemRent -> new BookDTO(itemRent, dateCheckService.needReceiveDate(itemRent.getOfferDate())))
                 .toList();
+    }
+
+    public List<RentDTO> memberRentList(String studentId){
+        Member member = memberService.findByStudentId(studentId);
+        List<ItemRent> rentList = itemRentRepository.findByMemberStatus(member, Collections.singleton(RentStatus.RENT));
+        LocalDateTime now = ItemRent.getNow();
+        return rentList.stream()
+                .map(itemRent -> new RentDTO(itemRent, dateCheckService.needReturnDate(itemRent.getReceiveDate()), checkDelay(itemRent)))
+                .toList();
+    }
+
+    public List<AdminBookListDTO> allBookList(){
+        LocalDateTime beforeBuzTime = dateCheckService.beforeBuzDay(ItemRent.getNow().toLocalDate()).atStartOfDay();
+        return itemRentRepository.findBookStatusWithoutImage(beforeBuzTime);
     }
 
 //    public List<?> itemListWithBookingSize(){
@@ -126,7 +142,7 @@ public class ItemRentService {
     public long checkItemBooking(Long itemId){
         Item item = itemService.findById(itemId);
         LocalDateTime beforeBuzTime = dateCheckService.beforeBuzDay(ItemRent.getNow().toLocalDate()).atStartOfDay();
-        return itemRentRepository.findBookStatus(item, beforeBuzTime);
+        return itemRentRepository.findBookStatusWithItem(item, beforeBuzTime);
     }
 
     public List<RestItemListDTO> getrestItemList(){

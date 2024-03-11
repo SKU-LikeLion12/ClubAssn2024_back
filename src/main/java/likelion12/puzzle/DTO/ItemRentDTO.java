@@ -22,9 +22,9 @@ public class ItemRentDTO {
         NO_DELAY, DELAY, LONG_DELAY
     }
 
-    @Getter
-    @AllArgsConstructor
+    @Data
     public static class BookDTO {
+        Long itemRentId;
         String studentId;
         String itemName;
         byte[] image;
@@ -32,6 +32,7 @@ public class ItemRentDTO {
         LocalDateTime bookTime;
         LocalDateTime needReceiveTime;
         public BookDTO(ItemRent itemRent, LocalDateTime needReceiveTime){
+            this.itemRentId = itemRent.getId();
             this.studentId = itemRent.getRenter().getStudentId();
             this.itemName = itemRent.getItem().getName();
             this.image = itemRent.getItem().getImage();
@@ -39,6 +40,48 @@ public class ItemRentDTO {
             this.bookTime = itemRent.getOfferDate();
             this.needReceiveTime = needReceiveTime;
         }
+    }
+
+    @Data
+    public static class RentDTO {
+        Long itemRentId;
+        String studentId;
+        String itemName;
+        byte[] image;
+        Integer count;
+        LocalDateTime rentTime;
+        LocalDateTime needReturnTime;
+        DelayState state;
+        public RentDTO(ItemRent itemRent, LocalDateTime needReturnTime, DelayState state){
+            this.itemRentId = itemRent.getId();
+            this.studentId = itemRent.getRenter().getStudentId();
+            this.itemName = itemRent.getItem().getName();
+            this.image = itemRent.getItem().getImage();
+            this.count = itemRent.getCount();
+            this.rentTime = itemRent.getReceiveDate();
+            this.needReturnTime = needReturnTime;
+            this.state = state;
+        }
+    }
+
+    @Data
+    @AllArgsConstructor
+    public static class AdminBookListDTO{
+        Long itemRentId;
+        String studentId;
+        String itemName;
+        String iconClub;
+        Integer count;
+        LocalDateTime bookTime;
+
+//        public AdminBookListDTO(Long itemRentId, String studentId, String itemName, String iconClub, Integer count, LocalDateTime bookTime) {
+//            this.itemRentId = itemRentId;
+//            this.studentId = studentId;
+//            this.itemName = itemName;
+//            this.iconClub = iconClub;
+//            this.count = count;
+//            this.bookTime = bookTime;
+//        }
     }
 
     @Getter

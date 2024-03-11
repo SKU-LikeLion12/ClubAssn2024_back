@@ -33,6 +33,8 @@ public class ItemRent {
     @Enumerated(EnumType.STRING)
     private RentStatus status;
 
+    private String renterClub;
+
 //    private TimeStatus tStatus;//해당없읍, 지연, 장기지연
 
 
@@ -45,6 +47,11 @@ public class ItemRent {
         this.count = count;
         this.offerDate = getNow();
         this.status = RentStatus.BOOK;
+        if(member.getIconClub()!=null) {
+            this.renterClub = member.getIconClub().getName();
+        }else{
+            this.renterClub = "소속없음";
+        }
     }
 
     public void cancel(){

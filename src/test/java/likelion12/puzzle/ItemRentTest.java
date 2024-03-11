@@ -1,8 +1,8 @@
 package likelion12.puzzle;
 
 import jakarta.persistence.EntityManager;
-import likelion12.puzzle.domain.Item;
-import likelion12.puzzle.domain.Member;
+import likelion12.puzzle.DTO.ItemRentDTO;
+import likelion12.puzzle.domain.*;
 import likelion12.puzzle.service.DateCheckService;
 import likelion12.puzzle.service.ItemRentService;
 import org.junit.jupiter.api.DisplayName;
@@ -13,6 +13,8 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @SpringBootTest
 public class ItemRentTest {
@@ -66,6 +68,39 @@ public class ItemRentTest {
             day--;
             dateCheckService.getDayCheck(localDate);
             localDate = localDate.plusDays(1);
+        }
+
+    }
+
+    @Test
+    @Transactional
+//    @Rollback(value = false)
+    public void datpasfddate(){
+        Club club = new Club("클럽2",null,null);
+        em.persist(club);
+
+        Member member1 = new Member("1", "학생1", null);
+        Member member2 = new Member("2", "학생2", club);
+
+        Item item = new Item("책", 10,null);
+
+        em.persist(member1);
+        em.persist(member2);
+        em.persist(item);
+
+        itemRentService.bookItem(member1.getStudentId(), item.getId(), 1);
+        itemRentService.bookItem(member2.getStudentId(), item.getId(),1);
+
+
+
+        List<ItemRentDTO.AdminBookListDTO> results = em.createQuery("select new AdminBookListDTO(ir.id, ir.renter.studentId, ir.item.name, ir.renterClub, ir.count, ir.offerDate) " +
+                        "from ItemRent ir where ir.status = :status or ir.offerDate >= :time", ItemRentDTO.AdminBookListDTO.class)
+                .setParameter("status", RentStatus.BOOK).setParameter("time",LocalDateTime.now())
+                .getResultList();
+
+        System.out.println("LocalDateTime.now() = " + LocalDateTime.now());
+        for (ItemRentDTO.AdminBookListDTO result : results) {
+            System.out.println(result);
         }
 
     }

@@ -79,17 +79,25 @@ public class ItemRentRepository {
 //                .setParameter("item",item).setParameter("book",RentStatus.BOOK).setParameter("rent",RentStatus.RENT).getResultList();
 //    }
 
-    public Long findBookStatus(Item item, LocalDateTime localDateTime){
+    public Long findBookStatusWithItem(Item item, LocalDateTime localDateTime){
         return em.createQuery("select COALESCE(SUM(ir.count), 0) from ItemRent ir where ir.item = :item and ir.offerDate >= :localDateTime",Long.class)
                 .setParameter("item",item).setParameter("localDateTime",localDateTime)
                 .getSingleResult();
     }
 
-    public List<ItemRent> findMemberBooking(Member member, LocalDateTime localDateTime){
+    public List<ItemRent> findBookStatusWithMember(Member member, LocalDateTime localDateTime){
         return em.createQuery("select ir from ItemRent ir where ir.renter = :member and ir.status = :status and ir.offerDate >= :time", ItemRent.class)
                 .setParameter("member",member).setParameter("status", RentStatus.BOOK).setParameter("time",localDateTime)
                 .getResultList();
     }
+
+    public List<AdminBookListDTO> findBookStatusWithoutImage(LocalDateTime localDateTime){
+        return em.createQuery("select new AdminBookListDTO(ir.id, ir.renter.studentId, ir.item.name, ir.renterClub, ir.count, ir.offerDate) " +
+                        "from ItemRent ir where ir.status = :status or ir.offerDate >= :time", AdminBookListDTO.class)
+                .setParameter("status", RentStatus.BOOK).setParameter("time",localDateTime)
+                .getResultList();
+    }
+    //        public AdminBookListDTO(Long itemRentId, String studentId, String itemName, String iconClub, Integer count, LocalDateTime bookTime) {
 
     public List<RestItemListDTO> findRestItemList(LocalDateTime localDateTime){
         return em.createQuery("SELECT new RestItemListDTO(i.id, i.name, i.count, i.image, i.rentingCount, COALESCE(SUM(ir.count), 0)) " +

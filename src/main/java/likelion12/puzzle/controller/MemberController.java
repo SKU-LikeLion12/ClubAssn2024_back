@@ -24,9 +24,15 @@ public class MemberController {
     private final JwtUtility jwtUtility;
     private final ItemRentService itemRentService;
 
-    @GetMapping("/member/booklist")
-    public ResponseEntity<List<BookDTO>> MemberBookList(MemberToken token){
+    @GetMapping("/member/book-list")
+    public ResponseEntity<List<BookDTO>> memberBookList(MemberToken token){
         List<BookDTO> list = itemRentService.memberBookList(jwtUtility.getStudentId(token));
+        return ResponseEntity.ok().body(list);
+    }
+
+    @GetMapping("/member/rent-list")
+    public ResponseEntity<List<RentDTO>> memberRentList(MemberToken token){
+        List<RentDTO> list = itemRentService.memberRentList(jwtUtility.getStudentId(token));
         return ResponseEntity.ok().body(list);
     }
 
