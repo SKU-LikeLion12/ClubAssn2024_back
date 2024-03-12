@@ -93,7 +93,7 @@ public class ItemRentRepository {
 
     public List<AdminBookListDTO> findBookStatusWithoutImage(LocalDateTime localDateTime){
         return em.createQuery("select new AdminBookListDTO(ir.id, ir.renter.studentId, ir.item.name, ir.renterClub, ir.count, ir.offerDate) " +
-                        "from ItemRent ir where ir.status = :status or ir.offerDate >= :time", AdminBookListDTO.class)
+                        "from ItemRent ir where ir.status = :status and ir.offerDate >= :time", AdminBookListDTO.class)
                 .setParameter("status", RentStatus.BOOK).setParameter("time",localDateTime)
                 .getResultList();
     }

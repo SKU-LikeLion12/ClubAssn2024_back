@@ -3,6 +3,7 @@ package likelion12.puzzle.DTO;
 import likelion12.puzzle.domain.Club;
 import likelion12.puzzle.domain.Item;
 import likelion12.puzzle.domain.ItemRent;
+import likelion12.puzzle.domain.RentStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -85,10 +86,14 @@ public class ItemRentDTO {
     }
 
     @Getter
-    @AllArgsConstructor
     public static class ReceiveDTO {
         ItemRent itemRent;
         LocalDateTime needReturnTime;
+
+        public ReceiveDTO(ItemRent itemRent, LocalDateTime needReturnTime) {
+            this.itemRent = itemRent;
+            this.needReturnTime = needReturnTime;
+        }
     }
 
     @Data
@@ -107,6 +112,11 @@ public class ItemRentDTO {
         byte[] image;
         Integer rentingCount;
         Long bookingCount;
+    }
+
+    @Data
+    public static class RequestItemRent{
+        Long itemRentId;
     }
 
 }
