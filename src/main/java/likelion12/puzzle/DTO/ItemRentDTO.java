@@ -112,6 +112,12 @@ public class ItemRentDTO {
     }
 
     @Data
+    public static class CancelRequestDTO {
+        MemberDTO.MemberToken token;
+        long itemRentId;
+    }
+
+    @Data
     @AllArgsConstructor
     public static class RestItemListDTO{
         Long id;

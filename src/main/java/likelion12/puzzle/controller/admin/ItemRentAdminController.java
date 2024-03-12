@@ -7,9 +7,7 @@ import likelion12.puzzle.DTO.ItemRentDTO.RequestItemRent;
 import likelion12.puzzle.service.ItemRentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,15 +29,21 @@ public class ItemRentAdminController {
         return ResponseEntity.ok().body(adminRentList);
     }
 
-    @PostMapping("/admin/item-rent/receive")
+    @PostMapping("/admin/item-rent")
     public ResponseEntity<?> itemReceive(RequestItemRent request){
         itemRentService.receiveItem(request.getItemRentId());
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/admin/item-rent/return")
+    @PutMapping("/admin/item-rent")
     public ResponseEntity<?> itemReturn(RequestItemRent request){
         itemRentService.returnItem(request.getItemRentId());
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/admin/item-rent")
+    public ResponseEntity<?> cancelRent(RequestItemRent request){
+        itemRentService.adminCancelRent(request.getItemRentId());
         return ResponseEntity.ok().build();
     }
 

@@ -82,6 +82,25 @@ public class ItemRentService {
         return itemRent;
     }
 
+    @Transactional
+    public Boolean cancelRent(String studentId, long itemRentId){
+        ItemRent itemRent = findById(itemRentId);
+        Member member = memberService.findByStudentId(studentId);
+        if(itemRent.getRenter() != member){
+            //권한없음 오류
+            return false;
+        }
+        itemRent.cancel();
+        return true;
+    }
+
+    @Transactional
+    public Boolean adminCancelRent(long itemRentId){
+        ItemRent itemRent = findById(itemRentId);
+        itemRent.cancel();
+        return true;
+    }
+
     public List<BookDTO> memberBookList(String studentId){
         Member member = memberService.findByStudentId(studentId);
         LocalDateTime beforeBuzTime = dateCheckService.beforeBuzDay(ItemRent.getNow().toLocalDate()).atStartOfDay();

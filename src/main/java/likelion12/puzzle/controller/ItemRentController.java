@@ -30,6 +30,11 @@ public class ItemRentController {
         return ResponseEntity.status(HttpStatus.OK).body(bookDTO);
     }
 
+    @DeleteMapping("/item-rent")
+    public ResponseEntity<?> cancelItem(@RequestBody CancelRequestDTO request){
+        itemRentService.cancelRent(jwtUtility.getStudentId(request.getToken()),request.getItemRentId());
+        return ResponseEntity.ok().build();
+    }
 
 
 
