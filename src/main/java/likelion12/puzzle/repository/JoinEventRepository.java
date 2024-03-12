@@ -1,7 +1,6 @@
 package likelion12.puzzle.repository;
 
 import jakarta.persistence.EntityManager;
-import likelion12.puzzle.DTO.JoinClubDTO;
 import likelion12.puzzle.domain.Event;
 import likelion12.puzzle.domain.JoinEvent;
 import likelion12.puzzle.domain.Member;
