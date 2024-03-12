@@ -1,11 +1,10 @@
 package likelion12.puzzle.service;
 
+import likelion12.puzzle.DTO.JoinClubDTO;
 import likelion12.puzzle.domain.Event;
 import likelion12.puzzle.domain.JoinEvent;
 import likelion12.puzzle.domain.Member;
-import likelion12.puzzle.repository.EventRepository;
 import likelion12.puzzle.repository.JoinEventRepository;
-import likelion12.puzzle.repository.MemberRepository;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

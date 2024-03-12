@@ -1,11 +1,11 @@
 package likelion12.puzzle.repository;
 
 import jakarta.persistence.EntityManager;
+import likelion12.puzzle.DTO.JoinClubDTO;
 import likelion12.puzzle.domain.Event;
 import likelion12.puzzle.domain.JoinEvent;
 import likelion12.puzzle.domain.Member;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.mapping.Join;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
