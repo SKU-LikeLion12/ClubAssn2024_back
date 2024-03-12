@@ -23,6 +23,29 @@ public class ClubController {
     private final ClubService clubService;
     private final JoinClubService joinClubService;
 
+    // 동아리 추가
+    @ResponseBody
+    @PostMapping("/club") //, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Club> addClub(@RequestParam String clubName,
+                                        @RequestParam String description,
+                                        @RequestParam MultipartFile logo)  throws IOException {
+
+        // 프론트에서 받은 이미지(이미지 그 자체) => getByte()함수로 byte배열로 변환
+        byte[] imageBytes = logo.getBytes();
+        Club club = clubService.addNewClub(clubName, description, imageBytes);
+        return ResponseEntity.status(HttpStatus.CREATED).body(club);
+    }
+
+    @PutMapping("/club/{clubId}")
+    public ResponseEntity<ClubCreateRequest> changeClub(@PathVariable Long clubId,
+                                                        @RequestParam String clubName,
+                                                        @RequestParam String description,
+                                                        @RequestParam(required = false) MultipartFile logo) throws IOException {
+        Club club = clubService.changeClub(clubId, clubName, description, logo);
+        String base64Image = ImageUtility.encodeImage(club.getLogo());
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ClubCreateRequest(club.getName(), club.getDescription(), base64Image));
+    }
+
     // 동아리원 검색
     @GetMapping("/member/manage")
     public ResponseEntity<List<JoinClubDTO>> CMManageSearch(@RequestParam String keyword) {

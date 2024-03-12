@@ -2,6 +2,7 @@ package likelion12.puzzle.repository;
 
 import jakarta.persistence.EntityManager;
 import likelion12.puzzle.domain.Club;
+import likelion12.puzzle.domain.Item;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -15,6 +16,10 @@ public class ClubRepository {
         em.persist(club);
 
         return club;
+    }
+
+    public Club findById(Long id){
+        return em.find(Club.class, id);
     }
 
     // 동아리 조회
