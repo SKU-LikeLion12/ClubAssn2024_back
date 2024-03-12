@@ -37,8 +37,6 @@ public class ItemRent {
 
 //    private TimeStatus tStatus;//해당없읍, 지연, 장기지연
 
-
-
     public static final long longDelayTime = (7 * 24 * 60 * 60 * 1000);
 
     public ItemRent(Member member, Item item, int count){

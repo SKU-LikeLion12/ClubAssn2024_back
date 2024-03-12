@@ -18,7 +18,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -86,7 +85,7 @@ public class ItemRentService {
     public List<BookDTO> memberBookList(String studentId){
         Member member = memberService.findByStudentId(studentId);
         LocalDateTime beforeBuzTime = dateCheckService.beforeBuzDay(ItemRent.getNow().toLocalDate()).atStartOfDay();
-        List<ItemRent> bookList = itemRentRepository.findBookStatusWithMember(member, beforeBuzTime);
+        List<ItemRent> bookList = itemRentRepository.findBookWithMember(member, beforeBuzTime);
         return bookList.stream()
                 .map(itemRent -> new BookDTO(itemRent, dateCheckService.needReceiveDate(itemRent.getOfferDate())))
                 .toList();
@@ -103,7 +102,16 @@ public class ItemRentService {
 
     public List<AdminBookListDTO> allBookList(){
         LocalDateTime beforeBuzTime = dateCheckService.beforeBuzDay(ItemRent.getNow().toLocalDate()).atStartOfDay();
-        return itemRentRepository.findBookStatusWithoutImage(beforeBuzTime);
+        return itemRentRepository.findBookWithoutImage(beforeBuzTime);
+    }
+
+    public List<AdminRentListDTO> allRentList(){
+        List<AdminRentListDTO> rentList = itemRentRepository.findRentWithoutImage();
+        LocalDateTime now = ItemRent.getNow();
+        for (AdminRentListDTO rent:rentList) {
+            rent.setStatus(checkDelay(rent.getRentTime(), now));
+        }
+        return rentList;
     }
 
 //    public List<?> itemListWithBookingSize(){
@@ -116,10 +124,10 @@ public class ItemRentService {
         int delay = 0;
         int longDelay = 0;
         for (ItemRent itemRent : itemRentRepository.findByMemberStatus(member,RentStatus.canPenaltyGroup)) {
-            DelayState delayState = checkDelay(itemRent);
-            if(delayState == DelayState.DELAY){
+            DelayStatus delayState = checkDelay(itemRent);
+            if(delayState == DelayStatus.DELAY){
                 delay++;
-            }else if(delayState == DelayState.LONG_DELAY) {
+            }else if(delayState == DelayStatus.LONG_DELAY) {
                 longDelay++;
             }
         }
@@ -142,7 +150,7 @@ public class ItemRentService {
     public long checkItemBooking(Long itemId){
         Item item = itemService.findById(itemId);
         LocalDateTime beforeBuzTime = dateCheckService.beforeBuzDay(ItemRent.getNow().toLocalDate()).atStartOfDay();
-        return itemRentRepository.findBookStatusWithItem(item, beforeBuzTime);
+        return itemRentRepository.findBookWithItem(item, beforeBuzTime);
     }
 
     public List<RestItemListDTO> getrestItemList(){
@@ -165,26 +173,33 @@ public class ItemRentService {
         return false;
     }
 
-    public DelayState checkDelay(ItemRent itemRent){
-        if(itemRent.getStatus() == RentStatus.LONG_DELAY_RETURN) return DelayState.LONG_DELAY;
-        if(itemRent.getStatus() == RentStatus.DELAY_RETURN) return DelayState.DELAY;
+    public DelayStatus checkDelay(ItemRent itemRent){
+        if(itemRent.getStatus() == RentStatus.LONG_DELAY_RETURN) return DelayStatus.LONG_DELAY;
+        if(itemRent.getStatus() == RentStatus.DELAY_RETURN) return DelayStatus.DELAY;
 
-        LocalDateTime now = ItemRent.getNow();
+        LocalDateTime returnTime = ItemRent.getNow();
 
         if(itemRent.getStatus() == RentStatus.RETURN){
-            now = itemRent.getReturnDate();//만약 이미 반납했으면 반납시간으로 변경
+            returnTime = itemRent.getReturnDate();//만약 이미 반납했으면 반납시간으로 변경
         }
 
-        LocalDateTime needReturnDate = now.with(dateCheckService.needReturnDate(now));
-        LocalDateTime longReturnDate = now.with(dateCheckService.needReturnDate(needReturnDate));
-        if (now.isAfter(needReturnDate)) {
-            if (now.isAfter(longReturnDate)) {
-                return DelayState.LONG_DELAY;
+        return checkDelay(itemRent.getOfferDate(), returnTime);
+    }
+
+    public DelayStatus checkDelay(LocalDateTime rentTime, LocalDateTime returnTime){
+
+        LocalDateTime needReturnDate = rentTime.with(dateCheckService.needReturnDate(rentTime));
+        LocalDateTime longReturnDate = rentTime.with(dateCheckService.needReturnDate(needReturnDate));
+        System.out.println("needReturnDate = " + needReturnDate);
+        System.out.println("longReturnDate = " + longReturnDate);
+        if (returnTime.isAfter(needReturnDate)) {
+            if (returnTime.isAfter(longReturnDate)) {
+                return DelayStatus.LONG_DELAY;
             } else {
-                return DelayState.DELAY;
+                return DelayStatus.DELAY;
             }
         }
-        return DelayState.NO_DELAY;
+        return DelayStatus.NO_DELAY;
     }
 
     public ItemRent findById(long itemRentId){

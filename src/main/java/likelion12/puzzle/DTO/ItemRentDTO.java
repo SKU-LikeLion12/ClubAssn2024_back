@@ -1,9 +1,6 @@
 package likelion12.puzzle.DTO;
 
-import likelion12.puzzle.domain.Club;
-import likelion12.puzzle.domain.Item;
 import likelion12.puzzle.domain.ItemRent;
-import likelion12.puzzle.domain.RentStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -19,7 +16,7 @@ public class ItemRentDTO {
         public int count;
     }
 
-    public enum DelayState {
+    public enum DelayStatus {
         NO_DELAY, DELAY, LONG_DELAY
     }
 
@@ -52,8 +49,8 @@ public class ItemRentDTO {
         Integer count;
         LocalDateTime rentTime;
         LocalDateTime needReturnTime;
-        DelayState state;
-        public RentDTO(ItemRent itemRent, LocalDateTime needReturnTime, DelayState state){
+        DelayStatus state;
+        public RentDTO(ItemRent itemRent, LocalDateTime needReturnTime, DelayStatus state){
             this.itemRentId = itemRent.getId();
             this.studentId = itemRent.getRenter().getStudentId();
             this.itemName = itemRent.getItem().getName();
@@ -74,15 +71,26 @@ public class ItemRentDTO {
         String iconClub;
         Integer count;
         LocalDateTime bookTime;
+    }
 
-//        public AdminBookListDTO(Long itemRentId, String studentId, String itemName, String iconClub, Integer count, LocalDateTime bookTime) {
-//            this.itemRentId = itemRentId;
-//            this.studentId = studentId;
-//            this.itemName = itemName;
-//            this.iconClub = iconClub;
-//            this.count = count;
-//            this.bookTime = bookTime;
-//        }
+    @Data
+    public static class AdminRentListDTO{
+        Long itemRentId;
+        String studentId;
+        String itemName;
+        String iconClub;
+        Integer count;
+        LocalDateTime rentTime;
+        DelayStatus status;
+
+        public AdminRentListDTO(Long itemRentId, String studentId, String itemName, String iconClub, Integer count, LocalDateTime rentTime) {
+            this.itemRentId = itemRentId;
+            this.studentId = studentId;
+            this.itemName = itemName;
+            this.iconClub = iconClub;
+            this.count = count;
+            this.rentTime = rentTime;
+        }
     }
 
     @Getter
