@@ -41,6 +41,11 @@ public class Member {
         this.iconClub = iconClub;
     }
 
+    public Member(String studentId, String name) {
+        this.studentId = studentId;
+        this.name = name;
+    }
+
     public void updateIconClub(Club newIconClub) {
         this.iconClub = newIconClub;
 

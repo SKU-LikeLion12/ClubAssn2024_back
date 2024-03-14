@@ -48,8 +48,8 @@ public class EventRepository {
                 .setParameter("EventId", eventId).getSingleResult();
     }
 
-    // 내가 참여한 행사 리스트 반환(하나씩 반환하는 디자인이 없어서 한번에 반환하는 코드만 필요할듯)
-    public List<Event> findAllPartEvents(Member member) {
+    // 내가 참여한 행사 리스트 반환(하나씩 반환하는 디자인이 없어서 한번에 반환하는 코드만 필요할듯) + 참여 안한 이벤트들만 나오게(이미지 빼고)
+    public List<Event> findAllPartEventsExceptImage(Member member) {
         return em.createQuery("SELECT je.event FROM JoinEvent je WHERE je.member = :member", Event.class)
                 .setParameter("member", member).getResultList();
     }
