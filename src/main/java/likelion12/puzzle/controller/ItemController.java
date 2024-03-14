@@ -20,7 +20,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://127.0.0.1:3000")
+@CrossOrigin(origins = "http://127.0.0.1:5500")
 public class ItemController {
 
     private final ItemService itemService;
@@ -46,8 +46,7 @@ public class ItemController {
                                            @RequestParam(required = false) MultipartFile image)  throws IOException  {
 
         Item item = itemService.changeItem(itemId, name, count, image);
-        String base64Image = ImageUtility.encodeImage(item.getImage());
-        return ResponseEntity.status(HttpStatus.CREATED).body(new ItemCreateRequest(item.getName(), item.getCount(), base64Image));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ItemCreateRequest(item.getName(), item.getCount(), item.arrayToImage()));
     }
 
 
@@ -55,9 +54,7 @@ public class ItemController {
     @GetMapping("/item/{itemId}")
     public ItemCreateRequest findOneItem(@PathVariable("itemId") Long itemId) {
         Item item = itemService.findById(itemId);
-        // 데이터베이스에 저장된 이미지(byte 배열) => encoder로 다시 프론트에 뿌려주기(이미지 그 자체)
-        String base64Image = ImageUtility.encodeImage(item.getImage());
-        return new ItemCreateRequest(item.getName(), item.getCount(), base64Image);
+        return new ItemCreateRequest(item.getName(), item.getCount(), item.arrayToImage());
     }
 
     @DeleteMapping("/item/{itemId}")
@@ -67,15 +64,7 @@ public class ItemController {
 
     @ResponseBody
     @GetMapping("/items")
-    public List<ItemAllRequest> findAllItems() {
-        List<Item> items = itemService.findAll();
-        List<ItemAllRequest> itemDTOS = new ArrayList<>();
-
-        for (Item item : items) {
-            ItemAllRequest dto = new ItemAllRequest(item.getId(), item.getName(), item.getCount());
-            itemDTOS.add(dto);
-        }
-
-        return itemDTOS;
+    public List<Item.ItemAllRequest> findAllItems() {
+        return itemService.findAllExceptImage(); // DTO로 쿼리 생성하기. hellospring => findUserAll() 참고
     }
 }
