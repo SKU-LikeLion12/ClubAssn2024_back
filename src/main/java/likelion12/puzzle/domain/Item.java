@@ -18,6 +18,7 @@ public class Item {
 
     String name;
     Integer count;
+    Integer rentingCount;
 
     // 이미지를 담는 byte 배열을 BLOB(Binary Large Object) 형식으로 저장
     @Lob
@@ -28,13 +29,20 @@ public class Item {
         this.name = name;
         this.count = count;
         this.image = image;
+        this.rentingCount = 0;
     }
 
     public void changeItem(String name, int count) {
         this.name = name;
         this.count = count;
     }
+    public void rentItem(int num){
+        rentingCount += num;
+    }
 
+    public void returnItem(int num){
+        rentingCount -= num;
+    }
     public String arrayToImage() {
         return ImageUtility.encodeImage(this.image);
     }

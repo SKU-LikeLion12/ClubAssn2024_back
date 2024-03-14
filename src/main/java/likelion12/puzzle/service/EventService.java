@@ -91,7 +91,7 @@ public class EventService {
     public List<Event> findAllEvents(String studentId) {
 
         Member member = memberService.findByStudentId(studentId);
-        List<Event> eventList = eventRepository.findAllPartEvents(member);
+        List<Event> eventList = eventRepository.findAllPartEventsExceptImage(member);
 
         if (eventList.isEmpty()) {
             return null;

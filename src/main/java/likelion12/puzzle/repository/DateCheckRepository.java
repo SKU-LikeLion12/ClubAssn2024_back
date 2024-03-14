@@ -31,6 +31,15 @@ public class DateCheckRepository {
         }
     }
 
+    public DateCheck findBookDay(LocalDate date){
+        try{
+            return em.createQuery("select d from DateCheck d where d.nextBizDay = :today order by d.date asc", DateCheck.class)
+                    .setParameter("today",date).getSingleResult();
+        }catch (NoResultException e){
+            return null;
+        }
+    }
+
     public void remove(DateCheck date){
         em.remove(date);
     }

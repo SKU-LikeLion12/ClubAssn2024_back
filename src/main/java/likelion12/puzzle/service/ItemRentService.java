@@ -5,15 +5,18 @@ import likelion12.puzzle.domain.Item;
 import likelion12.puzzle.domain.ItemRent;
 import likelion12.puzzle.domain.Member;
 import likelion12.puzzle.domain.RentStatus;
+import likelion12.puzzle.exception.HavePenaltyException;
+import likelion12.puzzle.exception.LimitRentException;
+import likelion12.puzzle.exception.NotEnoughItemException;
 import likelion12.puzzle.repository.ItemRentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -27,7 +30,6 @@ public class ItemRentService {
     private final DateCheckService dateCheckService;
 
     //물품은 프론트에서도 그냥 물품번호로 관리해주세요... 이름으로 쿼리할 필요 없을듯..
-
     //대여예약
     @Transactional
     public BookDTO bookItem(String studentId, long itemId, int count){
@@ -36,25 +38,20 @@ public class ItemRentService {
         Item item = itemService.findById(itemId);
 
         if(isPenalty(studentId)){
-            System.out.println("패널티");
-            //패널티로 인해 못빌림
+            throw new HavePenaltyException();
         }
 
         MemberRentingSize memberRentingSize = checkMemberRenting(studentId);
         memberRentingSize.variety.add(itemId);
         if(memberRentingSize.variety.size() > 3){
-            System.out.println("종류초과");
-            //3종류 초과라 못빌림
+            throw new LimitRentException("물품은 세 종류까지만 대여가 가능합니다.");
         }
         if(memberRentingSize.count+count > 5){
-            System.out.println("개수초과");
-            //5개 초과라 못빌림
+            throw new LimitRentException("물픔은 최대 5개까지만 대여가 가능합니다.");
         }
 
-        ItemRentingSize itemRentingSize = checkItemRenting(itemId);
-        if(count+itemRentingSize.renting+itemRentingSize.booking > item.getCount()){
-            System.out.println("개수부족");
-            //물품개수가 부족해서 못빌림
+        if(count + checkItemBooking(itemId) + item.getRentingCount() > item.getCount()){
+            throw new NotEnoughItemException();
         }
 
         ItemRent itemRent = itemRentRepository.save(new ItemRent(renter, item, count));
@@ -71,20 +68,85 @@ public class ItemRentService {
     @Transactional
     public ItemRent returnItem(long itemRentId){
         ItemRent itemRent = findById(itemRentId);
-        itemRent.itemReturn(ItemRent.getNow());
+        LocalDateTime now = ItemRent.getNow();
+        LocalDateTime needReturnDate = dateCheckService.needReturnDate(now);
+        RentStatus status = RentStatus.RETURN;
+        if(now.isAfter(needReturnDate)){
+            if(now.isAfter(dateCheckService.needReturnDate(needReturnDate))){
+                status = RentStatus.LONG_DELAY_RETURN;
+            }else {
+                status = RentStatus.DELAY_RETURN;
+            }
+        }
+        itemRent.itemReturn(now, status);
         return itemRent;
     }
+
+    @Transactional
+    public Boolean cancelRent(String studentId, long itemRentId){
+        ItemRent itemRent = findById(itemRentId);
+        Member member = memberService.findByStudentId(studentId);
+        if(itemRent.getRenter() != member){
+            //권한없음 오류
+            return false;
+        }
+        itemRent.cancel();
+        return true;
+    }
+
+    @Transactional
+    public Boolean adminCancelRent(long itemRentId){
+        ItemRent itemRent = findById(itemRentId);
+        itemRent.cancel();
+        return true;
+    }
+
+    public List<BookDTO> memberBookList(String studentId){
+        Member member = memberService.findByStudentId(studentId);
+        LocalDateTime beforeBuzTime = dateCheckService.beforeBuzDay(ItemRent.getNow().toLocalDate()).atStartOfDay();
+        List<ItemRent> bookList = itemRentRepository.findBookWithMember(member, beforeBuzTime);
+        return bookList.stream()
+                .map(itemRent -> new BookDTO(itemRent, dateCheckService.needReceiveDate(itemRent.getOfferDate())))
+                .toList();
+    }
+
+    public List<RentDTO> memberRentList(String studentId){
+        Member member = memberService.findByStudentId(studentId);
+        List<ItemRent> rentList = itemRentRepository.findByMemberStatus(member, Collections.singleton(RentStatus.RENT));
+        LocalDateTime now = ItemRent.getNow();
+        return rentList.stream()
+                .map(itemRent -> new RentDTO(itemRent, dateCheckService.needReturnDate(itemRent.getReceiveDate()), checkDelay(itemRent)))
+                .toList();
+    }
+
+    public List<AdminBookListDTO> allBookList(){
+        LocalDateTime beforeBuzTime = dateCheckService.beforeBuzDay(ItemRent.getNow().toLocalDate()).atStartOfDay();
+        return itemRentRepository.findBookWithoutImage(beforeBuzTime);
+    }
+
+    public List<AdminRentListDTO> allRentList(){
+        List<AdminRentListDTO> rentList = itemRentRepository.findRentWithoutImage();
+        LocalDateTime now = ItemRent.getNow();
+        for (AdminRentListDTO rent:rentList) {
+            rent.setStatus(checkDelay(rent.getRentTime(), now));
+        }
+        return rentList;
+    }
+
+//    public List<?> itemListWithBookingSize(){
+//        List<ItemWithBookingSizeDTO> all = itemService.findAll();
+//
+//    }
 
     public boolean isPenalty(String studentId){
         Member member = memberService.findByStudentId(studentId);
         int delay = 0;
         int longDelay = 0;
-        for (ItemRent itemRent : itemRentRepository.findByMember(member)) {
-            checkStatus(itemRent);
-            if(checkStatus(itemRent) == DelayState.DELAY){
+        for (ItemRent itemRent : itemRentRepository.findByMemberStatus(member,RentStatus.canPenaltyGroup)) {
+            DelayStatus delayState = checkDelay(itemRent);
+            if(delayState == DelayStatus.DELAY){
                 delay++;
-            }
-            if(checkStatus(itemRent) == DelayState.LONG_DELAY){
+            }else if(delayState == DelayStatus.LONG_DELAY) {
                 longDelay++;
             }
         }
@@ -96,7 +158,6 @@ public class ItemRentService {
         Set<Long> set = new HashSet<>();
         int count = 0;
         for (ItemRent itemRent : itemRentRepository.findByMemberStatus(member, RentStatus.usingGroup)) {
-            checkStatus(itemRent);
             if(itemRent.getStatus().isUsingGroup()) {
                 set.add(itemRent.getId());
                 count += itemRent.getCount();
@@ -105,43 +166,59 @@ public class ItemRentService {
         return new MemberRentingSize(set, count);
     }
 
-    public ItemRentingSize checkItemRenting(Long itemId){
+    public long checkItemBooking(Long itemId){
         Item item = itemService.findById(itemId);
-        ItemRentingSize irs = new ItemRentingSize();
-        for (ItemRent itemRent : itemRentRepository.findByItemStatus(item, Collections.singleton(RentStatus.BOOK))) {
-            checkStatus(itemRent);
-            if(itemRent.getStatus()== RentStatus.BOOK) {
-                irs.booking += itemRent.getCount();
-            }
-        }
-        for (ItemRent itemRent : itemRentRepository.findByItemStatus(item, Collections.singleton(RentStatus.RENT))) {
-            irs.renting += itemRent.getCount();
-        }
-        return irs;
+        LocalDateTime beforeBuzTime = dateCheckService.beforeBuzDay(ItemRent.getNow().toLocalDate()).atStartOfDay();
+        return itemRentRepository.findBookWithItem(item, beforeBuzTime);
     }
 
-    @Transactional
-    public DelayState checkStatus(ItemRent itemRent){
-        if(itemRent.getStatus() == RentStatus.RENT || itemRent.getStatus() == RentStatus.RETURN){
-            LocalDateTime needReturnTime = dateCheckService.needReturnDate(ItemRent.getNow());
-            LocalDateTime now = ItemRent.getNow();
-            if(itemRent.getStatus() == RentStatus.RETURN){
-                now = itemRent.getReturnDate();//만약 이미 반납했으면 반납시간으로 변경
-            }
+    public List<RestItemListDTO> getrestItemList(){
+        LocalDateTime beforeBuzTime = dateCheckService.beforeBuzDay(ItemRent.getNow().toLocalDate()).atStartOfDay();
+        return itemRentRepository.findRestItemList(beforeBuzTime);
+    }
 
-            if (needReturnTime.isAfter(now)) {
-                long daysDiff = Duration.between(now, needReturnTime).toMillis();
-                if (daysDiff >= ItemRent.longDelayTime) {
-                    return DelayState.LONG_DELAY;
-                } else {
-                    return DelayState.DELAY;
-                }
+//    public
+
+    @Transactional
+    public Boolean isAutoCancel(ItemRent itemRent){
+        if(itemRent.getStatus() != RentStatus.BOOK) return null;
+
+        LocalDateTime now = ItemRent.getNow();
+        LocalDateTime needReceiveDate = dateCheckService.needReceiveDate(itemRent.getOfferDate());
+        if(now.isAfter(needReceiveDate)){
+            itemRent.cancel(); // DateChecker 문제 해결 후 로직 변경시 삭제
+            return true;
+        }
+        return false;
+    }
+
+    public DelayStatus checkDelay(ItemRent itemRent){
+        if(itemRent.getStatus() == RentStatus.LONG_DELAY_RETURN) return DelayStatus.LONG_DELAY;
+        if(itemRent.getStatus() == RentStatus.DELAY_RETURN) return DelayStatus.DELAY;
+
+        LocalDateTime returnTime = ItemRent.getNow();
+
+        if(itemRent.getStatus() == RentStatus.RETURN){
+            returnTime = itemRent.getReturnDate();//만약 이미 반납했으면 반납시간으로 변경
+        }
+
+        return checkDelay(itemRent.getOfferDate(), returnTime);
+    }
+
+    public DelayStatus checkDelay(LocalDateTime rentTime, LocalDateTime returnTime){
+
+        LocalDateTime needReturnDate = rentTime.with(dateCheckService.needReturnDate(rentTime));
+        LocalDateTime longReturnDate = rentTime.with(dateCheckService.needReturnDate(needReturnDate));
+        System.out.println("needReturnDate = " + needReturnDate);
+        System.out.println("longReturnDate = " + longReturnDate);
+        if (returnTime.isAfter(needReturnDate)) {
+            if (returnTime.isAfter(longReturnDate)) {
+                return DelayStatus.LONG_DELAY;
+            } else {
+                return DelayStatus.DELAY;
             }
         }
-        if(itemRent.getStatus() == RentStatus.BOOK){
-            itemRent.checkAutoCancel(dateCheckService.needReceiveDate(itemRent.getOfferDate()));
-        }
-        return DelayState.NO_DELAY;
+        return DelayStatus.NO_DELAY;
     }
 
     public ItemRent findById(long itemRentId){

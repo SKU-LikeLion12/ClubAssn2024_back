@@ -5,7 +5,8 @@ import likelion12.puzzle.domain.Event;
 import likelion12.puzzle.domain.JoinEvent;
 import likelion12.puzzle.domain.Member;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.mapping.Join;
+import likelion12.puzzle.DTO.EventDTO.*;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -34,9 +35,19 @@ public class JoinEventRepository {
         return true;
     }
 
-    // 학번으로 참여한이벤트 찾기(이벤트 추가할 때 추가된 시간 넣어야하니까)
-    public List<JoinEvent> findAllJoinEvents(Member member) {
-        return em.createQuery("SELECT je.event FROM JoinEvent je WHERE je.member = :member", JoinEvent.class)
+    // 내가 참여한 행사 리스트 반환(이미지 빼고)
+    public List<ResponseJoinEvent> findAllPartEventsExceptImage(Member member) {
+        return em.createQuery("SELECT new ResponseJoinEvent(je.event.id, je.event.name, je.checkDate) FROM JoinEvent je WHERE je.member = :member", ResponseJoinEvent.class)
+                .setParameter("member", member).getResultList();
+    }
+
+    // 내가 참여하지 않은 행사 리스트 반환(이미지 빼고)
+    public List<ResponsePuzzleForNotPart> findNotPartEventsExceptImage(Member member) {
+        return em.createQuery(
+                        "SELECT new ResponsePuzzleForNotPart(e.id, e.name) " +
+                                "FROM Event e " +
+                                "WHERE e NOT IN (SELECT distinct je.event FROM JoinEvent je WHERE je.member = :member)",
+                        ResponsePuzzleForNotPart.class)
                 .setParameter("member", member).getResultList();
     }
 }

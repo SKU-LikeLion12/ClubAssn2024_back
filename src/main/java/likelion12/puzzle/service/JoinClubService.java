@@ -3,9 +3,7 @@ package likelion12.puzzle.service;
 import likelion12.puzzle.domain.Club;
 import likelion12.puzzle.domain.JoinClub;
 import likelion12.puzzle.domain.Member;
-import likelion12.puzzle.repository.ClubRepository;
 import likelion12.puzzle.repository.JoinClubRepository;
-import likelion12.puzzle.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,13 +19,22 @@ public class JoinClubService {
     private final MemberService memberService;
 
     // 동아리에 새로운 학생 추가
-//    @Transactional
-//    public JoinClub saveNewMember(String studentId, String studentName, Club club) {
-//        Member member = new Member(studentId, studentName, club);
-//        JoinClub joinClub = new JoinClub(club, member);
-//
-//        return joinClubRepository.saveNewMember(joinClub);
-//    }
+    @Transactional
+    public JoinClub saveNewMember(String studentId, String studentName, Club iconClub) {
+        Member member = new Member(studentId, studentName, iconClub);
+        JoinClub joinClub = new JoinClub(iconClub, member);
+
+        return joinClubRepository.saveNewMemberForClub(joinClub);
+    }
+
+    // 기존 학생, 기존 동아리
+    @Transactional
+    public JoinClub saveNewMember(String studentId, Club club) {
+        Member member = memberService.findByStudentId(studentId);
+        JoinClub joinClub = new JoinClub(club, member);
+
+        return joinClubRepository.saveNewMemberForClub(joinClub);
+    }
 
     // 동아리에 가입된 학생들 찾기
     public List<JoinClub> findAllByClubName(Club club) {

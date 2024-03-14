@@ -1,6 +1,7 @@
 package likelion12.puzzle.security;
 
 import io.jsonwebtoken.*;
+import likelion12.puzzle.DTO.MemberDTO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -10,8 +11,7 @@ import java.util.Date;
 @Service
 public class JwtUtility {
 
-    @Value("${jwt.key}")
-    private String secret;
+    private String secret = "askqwhrkjweagfjasdfasfdahsjkfhqlwkjfhbasdjkfhlqwkjefhbadskjfbalsdhfvbasdfasdfasdfasdfasdqmjhfvgjasd";
 
     private static final long expirationTime = 1000 * 60 * 60; // 1시간
 
@@ -27,7 +27,6 @@ public class JwtUtility {
 
     // JWT 유효성 검사
     public Claims validateToken(String token) {
-        System.out.println("token = " + token);
         if(token==null || !token.startsWith("Bearer ")) throw new SignatureException("");
         token = token.substring(7);
         try {
@@ -43,10 +42,17 @@ public class JwtUtility {
         }
     }
 
+    public String getStudentId(MemberDTO.MemberToken token){
+        Claims claims = validateToken(token.getToken());
+        return claims.getSubject();
+    }
+
     public static void main(String[] args) {
         JwtUtility jwtUtility = new JwtUtility();
-        String token = jwtUtility.generateToken("test");
+        String token = jwtUtility.generateToken("20240000");
         System.out.println("token = " + token);
-        System.out.println("jwtUtility.validateToken(token) = " + jwtUtility.validateToken(token));
+        MemberDTO.MemberToken mt = new MemberDTO.MemberToken();
+        mt.setToken(token);
+        System.out.println("getStudentId(token) = " + jwtUtility.getStudentId(mt));
     }
 }

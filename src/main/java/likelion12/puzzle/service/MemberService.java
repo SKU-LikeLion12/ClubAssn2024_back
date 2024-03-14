@@ -35,6 +35,15 @@ public class MemberService {
         return member;
     }
 
+    // 테스트용
+    @Transactional
+    public Member addNewMember(String studentId, String name) {
+        Member member = new Member(studentId, name);
+        memberRepository.addNewMember(member);
+
+        return member;
+    }
+
     // 대표 동아리 변경
     public Member updateIconClub(Member member, Club newIconClub) {
         member.updateIconClub(newIconClub);

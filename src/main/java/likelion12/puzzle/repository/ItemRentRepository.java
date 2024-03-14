@@ -5,8 +5,11 @@ import likelion12.puzzle.domain.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
+
+import static likelion12.puzzle.DTO.ItemRentDTO.*;
 
 @Repository
 @RequiredArgsConstructor
@@ -75,6 +78,38 @@ public class ItemRentRepository {
 //        return em.createQuery("select ir from ItemRent ir where ir.item = :item and (ir.status = :book or ir.status = :rent)", ItemRent.class)
 //                .setParameter("item",item).setParameter("book",RentStatus.BOOK).setParameter("rent",RentStatus.RENT).getResultList();
 //    }
+
+    public Long findBookWithItem(Item item, LocalDateTime localDateTime){
+        return em.createQuery("select COALESCE(SUM(ir.count), 0) from ItemRent ir where ir.item = :item and ir.offerDate >= :localDateTime",Long.class)
+                .setParameter("item",item).setParameter("localDateTime",localDateTime)
+                .getSingleResult();
+    }
+
+    public List<ItemRent> findBookWithMember(Member member, LocalDateTime localDateTime){
+        return em.createQuery("select ir from ItemRent ir where ir.renter = :member and ir.status = :status and ir.offerDate >= :time", ItemRent.class)
+                .setParameter("member",member).setParameter("status", RentStatus.BOOK).setParameter("time",localDateTime)
+                .getResultList();
+    }
+
+    public List<AdminBookListDTO> findBookWithoutImage(LocalDateTime localDateTime){
+        return em.createQuery("select new AdminBookListDTO(ir.id, ir.renter.studentId, ir.item.name, ir.renterClub, ir.count, ir.offerDate) " +
+                        "from ItemRent ir where ir.status = :status and ir.offerDate >= :time", AdminBookListDTO.class)
+                .setParameter("status", RentStatus.BOOK).setParameter("time",localDateTime)
+                .getResultList();
+    }
+
+    public List<AdminRentListDTO> findRentWithoutImage(){
+        return em.createQuery("select new AdminRentListDTO(ir.id, ir.renter.studentId, ir.item.name, ir.renterClub, ir.count, ir.receiveDate) " +
+                        "from ItemRent ir where ir.status = :status", AdminRentListDTO.class)
+                .setParameter("status", RentStatus.RENT)
+                .getResultList();
+    }
+
+    public List<RestItemListDTO> findRestItemList(LocalDateTime localDateTime){
+        return em.createQuery("SELECT new RestItemListDTO(i.id, i.name, i.count, i.image, i.rentingCount, COALESCE(SUM(ir.count), 0)) " +
+                                "FROM ItemRent ir RIGHT JOIN Item i ON i = ir.item and ir.offerDate >= :localDateTime GROUP BY i", RestItemListDTO.class)
+                .setParameter("localDateTime",localDateTime).getResultList();
+    }
 
     public void delete(ItemRent itemRent){
         em.remove(itemRent);
