@@ -19,7 +19,6 @@ public class JwtUtility {
 
     // JWT 생성
     public String generateToken(String memberId) {
-        System.out.println("secret = " + secret);
         return "Bearer " + Jwts.builder()
                 .setSubject(memberId)
                 .setIssuedAt(new Date())
@@ -30,8 +29,6 @@ public class JwtUtility {
 
     // JWT 유효성 검사
     public Claims validateToken(String token) {
-        System.out.println("secret = " + secret);
-
         if(token==null || !token.startsWith("Bearer ")) throw new SignatureException("");
         token = token.substring(7);
         try {
