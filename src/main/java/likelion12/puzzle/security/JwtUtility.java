@@ -2,6 +2,7 @@ package likelion12.puzzle.security;
 
 import io.jsonwebtoken.*;
 import likelion12.puzzle.DTO.MemberDTO;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -11,12 +12,14 @@ import java.util.Date;
 @Service
 public class JwtUtility {
 
+    @Value("${jwt.key}")
     private String secret = "askqwhrkjweagfjasdfasfdahsjkfhqlwkjfhbasdjkfhlqwkjefhbadskjfbalsdhfvbasdfasdfasdfasdfasdqmjhfvgjasd";
 
     private static final long expirationTime = 1000 * 60 * 60; // 1시간
 
     // JWT 생성
     public String generateToken(String memberId) {
+        System.out.println("secret = " + secret);
         return "Bearer " + Jwts.builder()
                 .setSubject(memberId)
                 .setIssuedAt(new Date())
@@ -27,6 +30,8 @@ public class JwtUtility {
 
     // JWT 유효성 검사
     public Claims validateToken(String token) {
+        System.out.println("secret = " + secret);
+
         if(token==null || !token.startsWith("Bearer ")) throw new SignatureException("");
         token = token.substring(7);
         try {

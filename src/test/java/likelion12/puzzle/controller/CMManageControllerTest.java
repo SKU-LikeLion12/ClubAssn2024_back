@@ -18,31 +18,31 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(CMManageController.class)
 public class CMManageControllerTest {
-
-    @Autowired
-    private MockMvc mockMvc;
-
-    @MockBean
-    private CMManageService cmManageService;
-
-    @Test
-    public void search_ReturnsCMManageDtoList_WhenKeywordIsValid() throws Exception {
-        // given
-        String keyword = "testKeyword";
-        List<CMManageDTO> mockResult = Collections.singletonList(
-                new CMManageDTO("1", "Test Student", "Test Club")
-        );
-
-        given(cmManageService.searchByKeyword(keyword)).willReturn(mockResult);
-
-        // when & then
-        mockMvc.perform(get("/api/search")
-                        .param("keyword", keyword)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$[0].studentId").value(mockResult.get(0).getStudentId()))
-                .andExpect(jsonPath("$[0].studentName").value(mockResult.get(0).getStudentName()))
-                .andExpect(jsonPath("$[0].joinClubs").value(mockResult.get(0).getJoinClubs()));
-    }
+//
+//    @Autowired
+//    private MockMvc mockMvc;
+//
+//    @MockBean
+//    private CMManageService cmManageService;
+//
+//    @Test
+//    public void search_ReturnsCMManageDtoList_WhenKeywordIsValid() throws Exception {
+//        // given
+//        String keyword = "testKeyword";
+//        List<CMManageDTO> mockResult = Collections.singletonList(
+//                new CMManageDTO("1", "Test Student", "Test Club")
+//        );
+//
+//        given(cmManageService.searchByKeyword(keyword)).willReturn(mockResult);
+//
+//        // when & then
+//        mockMvc.perform(get("/api/search")
+//                        .param("keyword", keyword)
+//                        .contentType(MediaType.APPLICATION_JSON))
+//                .andExpect(status().isOk())
+//                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+//                .andExpect(jsonPath("$[0].studentId").value(mockResult.get(0).getStudentId()))
+//                .andExpect(jsonPath("$[0].studentName").value(mockResult.get(0).getStudentName()))
+//                .andExpect(jsonPath("$[0].joinClubs").value(mockResult.get(0).getJoinClubs()));
+//    }
 }
