@@ -44,17 +44,15 @@ public class JwtUtility {
         }
     }
 
-    public String getStudentId(MemberDTO.MemberToken token){
-        Claims claims = validateToken(token.getToken());
+    public String getStudentId(String token){
+        Claims claims = validateToken(token);
         return claims.getSubject();
     }
 
     public static void main(String[] args) {
         JwtUtility jwtUtility = new JwtUtility();
-        String token = jwtUtility.generateToken("20240000");
+        String token = jwtUtility.generateToken("00000000");
         System.out.println("token = " + token);
-        MemberDTO.MemberToken mt = new MemberDTO.MemberToken();
-        mt.setToken(token);
-        System.out.println("getStudentId(token) = " + jwtUtility.getStudentId(mt));
+        System.out.println("getStudentId(token) = " + jwtUtility.getStudentId(token));
     }
 }
