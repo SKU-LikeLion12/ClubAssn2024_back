@@ -6,7 +6,7 @@ import likelion12.puzzle.domain.JoinEvent;
 import likelion12.puzzle.domain.Member;
 import lombok.RequiredArgsConstructor;
 import likelion12.puzzle.DTO.EventDTO.*;
-import org.springframework.data.jpa.repository.JpaRepository;
+
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

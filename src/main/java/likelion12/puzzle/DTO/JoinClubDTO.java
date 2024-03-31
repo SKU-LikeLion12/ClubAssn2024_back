@@ -4,12 +4,12 @@ import lombok.Data;
 
 
 @Data
-public class CMManageDTO {
+public class JoinClubDTO {
         private String studentId;
         private String studentName;
         private String joinClubs;
 
-        public CMManageDTO(String studentId, String studentName, String joinClubs) {
+        public JoinClubDTO(String studentId, String studentName, String joinClubs) {
             this.studentId = studentId;
             this.studentName = studentName;
             this.joinClubs = joinClubs;
