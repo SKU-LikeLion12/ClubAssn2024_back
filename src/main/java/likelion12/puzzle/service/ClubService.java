@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +28,9 @@ public class ClubService {
         return clubRepository.findById(id);
     }
 
+    public List<Club> findAll() {
+        return clubRepository.findAll();
+    }
 
     // 동아리 조회
     public Club findByName(String clubName) {

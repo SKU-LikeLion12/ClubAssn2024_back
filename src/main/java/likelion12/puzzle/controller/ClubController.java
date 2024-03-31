@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static likelion12.puzzle.DTO.ClubDTO.*;
@@ -36,6 +37,7 @@ public class ClubController {
         return ResponseEntity.status(HttpStatus.CREATED).body(club);
     }
 
+    // 동아리 수정
     @PutMapping("/club/{clubId}")
     public ResponseEntity<ClubCreateRequest> changeClub(@PathVariable Long clubId,
                                                         @RequestParam String clubName,
@@ -44,6 +46,27 @@ public class ClubController {
         Club club = clubService.changeClub(clubId, clubName, description, logo);
         String base64Image = ImageUtility.encodeImage(club.getLogo());
         return ResponseEntity.status(HttpStatus.CREATED).body(new ClubCreateRequest(club.getName(), club.getDescription(), base64Image));
+    }
+
+    @ResponseBody
+    @GetMapping("club/{clubId}")
+    public ClubCreateRequest findOneClub(@PathVariable("clubId") Long clubId) {
+        Club club = clubService.findById(clubId);
+        String base64Logo = ImageUtility.encodeImage(club.getLogo());
+        return new ClubCreateRequest(club.getName(), club.getDescription(), base64Logo);
+    }
+
+    @ResponseBody
+    @GetMapping("/clubs")
+    public List<ClubAllRequest> findAllClubs() {
+        List<Club> clubs = clubService.findAll();
+        List<ClubAllRequest> clubDTOS = new ArrayList<>();
+
+        for (Club club : clubs) {
+            ClubAllRequest dto = new ClubAllRequest(club.getId(), club.getName(), club.getDescription());
+            clubDTOS.add(dto);
+        }
+        return clubDTOS;
     }
 
     // 동아리원 검색

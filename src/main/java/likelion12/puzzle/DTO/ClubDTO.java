@@ -16,4 +16,12 @@ public class ClubDTO {
         @NotEmpty
         private String logo;
     }
+
+    @Data
+    @AllArgsConstructor
+    public static class ClubAllRequest {
+        private Long id;
+        private String name;
+        private String description;
+    }
 }
