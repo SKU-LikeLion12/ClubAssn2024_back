@@ -3,17 +3,16 @@ package likelion12.puzzle.controller;
 import likelion12.puzzle.DTO.MemberDTO.MemberToken;
 import likelion12.puzzle.security.JwtUtility;
 import likelion12.puzzle.service.ItemRentService;
+import likelion12.puzzle.service.JoinClubService;
 import likelion12.puzzle.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 import likelion12.puzzle.DTO.MemberDTO.*;
 import likelion12.puzzle.domain.Member;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 import static likelion12.puzzle.DTO.ItemRentDTO.*;
 
@@ -24,6 +23,7 @@ public class MemberController {
     private final MemberService memberService;
     private final JwtUtility jwtUtility;
     private final ItemRentService itemRentService;
+    private final JoinClubService joinClubService;
 
     @GetMapping("/member/book-list")
     public ResponseEntity<List<BookDTO>> memberBookList(MemberToken token){
@@ -42,5 +42,11 @@ public class MemberController {
         Member member1 = memberService.addNewMember(member.getStudentId(), member.getName());
 
         return new ResponseMember(member1.getStudentId(), member1.getName());
+    }
+
+    @PostMapping("/member/club")
+    public ResponseEntity<Map<String, Object>> findMyClub(MemberToken token){
+
+        return null;
     }
 }

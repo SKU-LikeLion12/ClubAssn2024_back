@@ -2,6 +2,7 @@ package likelion12.puzzle.service;
 
 import likelion12.puzzle.domain.Club;
 import likelion12.puzzle.domain.Member;
+import likelion12.puzzle.exception.duplicatedStudentIdException;
 import likelion12.puzzle.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -38,10 +39,18 @@ public class MemberService {
     // 테스트용
     @Transactional
     public Member addNewMember(String studentId, String name) {
+        if (isDuplicated(studentId)){
+            throw new duplicatedStudentIdException(studentId + "번은 이미 가입된 학번입니다.");
+        }
         Member member = new Member(studentId, name);
         memberRepository.addNewMember(member);
 
         return member;
+    }
+
+    public boolean isDuplicated(String studentId){
+        Member member = memberRepository.findByStudentId(studentId);
+        return member == null;
     }
 
     // 대표 동아리 변경

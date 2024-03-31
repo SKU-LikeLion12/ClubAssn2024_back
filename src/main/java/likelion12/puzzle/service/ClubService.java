@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -14,7 +16,7 @@ public class ClubService {
 
     // 동아리 추가
     @Transactional
-    public Club addNewClub(String clubName, String description, String logo) {
+    public Club addNewClub(String clubName, String description, byte[] logo) {
         Club club = new Club(clubName, description, logo);
         return clubRepository.addNewClub(club);
     }

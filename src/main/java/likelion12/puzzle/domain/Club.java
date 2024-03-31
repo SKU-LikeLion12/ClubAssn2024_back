@@ -17,9 +17,12 @@ public class Club {
     @Column(nullable = false)
     private String name;
     private String description;
-    private String logo;
 
-    public Club(String clubName, String description, String logo) {
+    @Lob
+    @Column(name = "icon", columnDefinition = "MEDIUMBLOB")
+    private byte[] logo;
+
+    public Club(String clubName, String description, byte[] logo) {
         this.name = clubName;
         this.description = description;
         this.logo = logo;
