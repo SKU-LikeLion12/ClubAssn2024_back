@@ -1,6 +1,6 @@
 package likelion12.puzzle.controller;
 
-import likelion12.puzzle.DTO.MemberDTO.MemberToken;
+import jakarta.servlet.http.HttpServletRequest;
 import likelion12.puzzle.security.JwtUtility;
 import likelion12.puzzle.service.ItemRentService;
 import likelion12.puzzle.service.MemberService;
@@ -26,14 +26,14 @@ public class MemberController {
     private final ItemRentService itemRentService;
 
     @GetMapping("/member/book-list")
-    public ResponseEntity<List<BookDTO>> memberBookList(String token){
-        List<BookDTO> list = itemRentService.memberBookList(jwtUtility.getStudentId(token));
+    public ResponseEntity<List<BookDTO>> memberBookList(HttpServletRequest header){
+        List<BookDTO> list = itemRentService.memberBookList(jwtUtility.getStudentId(header.getHeader("Authorization")));
         return ResponseEntity.ok().body(list);
     }
 
     @GetMapping("/member/rent-list")
-    public ResponseEntity<List<RentDTO>> memberRentList(String token){
-        List<RentDTO> list = itemRentService.memberRentList(jwtUtility.getStudentId(token));
+    public ResponseEntity<List<RentDTO>> memberRentList(HttpServletRequest header){
+        List<RentDTO> list = itemRentService.memberRentList(jwtUtility.getStudentId(header.getHeader("Authorization")));
         return ResponseEntity.ok().body(list);
     }
 

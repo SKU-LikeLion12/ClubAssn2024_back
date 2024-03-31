@@ -31,7 +31,7 @@ public class ItemRentTest {
     @Transactional
     @Rollback(value = false)
     public void checkVariety(){
-        Member member = new Member("20240000","test",null);
+        Member member = new Member("00000000","test",null);
         em.persist(member);
 
         for(int i=0; i<3; i++){

@@ -20,8 +20,5 @@ public class MemberDTO {
         private String name;
     }
 
-    @Data
-    public static class MemberToken{
-        String token;
-    }
+
 }
