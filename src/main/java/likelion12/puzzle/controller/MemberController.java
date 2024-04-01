@@ -1,21 +1,23 @@
 package likelion12.puzzle.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
+import likelion12.puzzle.DTO.MemberDTO.RequestMember;
+import likelion12.puzzle.DTO.MemberDTO.ResponseMember;
+import likelion12.puzzle.domain.Member;
 import likelion12.puzzle.security.JwtUtility;
 import likelion12.puzzle.service.ItemRentService;
 import likelion12.puzzle.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import likelion12.puzzle.DTO.MemberDTO.*;
-import likelion12.puzzle.domain.Member;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-import static likelion12.puzzle.DTO.ItemRentDTO.*;
+import static likelion12.puzzle.DTO.ItemRentDTO.BookDTO;
+import static likelion12.puzzle.DTO.ItemRentDTO.RentDTO;
 
 @RestController
 @RequiredArgsConstructor

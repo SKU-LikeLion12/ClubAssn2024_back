@@ -2,7 +2,10 @@ package likelion12.puzzle;
 
 import jakarta.persistence.EntityManager;
 import likelion12.puzzle.DTO.ItemRentDTO;
-import likelion12.puzzle.domain.*;
+import likelion12.puzzle.domain.Club;
+import likelion12.puzzle.domain.Item;
+import likelion12.puzzle.domain.Member;
+import likelion12.puzzle.domain.RentStatus;
 import likelion12.puzzle.service.DateCheckService;
 import likelion12.puzzle.service.ItemRentService;
 import org.junit.jupiter.api.DisplayName;

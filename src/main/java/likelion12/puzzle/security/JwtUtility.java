@@ -1,8 +1,9 @@
 package likelion12.puzzle.security;
 
-import io.jsonwebtoken.*;
-import likelion12.puzzle.DTO.MemberDTO;
-import lombok.Data;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.SignatureException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 

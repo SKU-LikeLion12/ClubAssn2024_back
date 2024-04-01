@@ -3,8 +3,6 @@ package likelion12.puzzle.DTO;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 
 public class ItemDTO {

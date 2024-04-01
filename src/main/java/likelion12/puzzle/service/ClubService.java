@@ -1,7 +1,6 @@
 package likelion12.puzzle.service;
 
 import likelion12.puzzle.domain.Club;
-import likelion12.puzzle.domain.Item;
 import likelion12.puzzle.repository.ClubRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

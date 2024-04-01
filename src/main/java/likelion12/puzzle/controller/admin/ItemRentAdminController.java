@@ -1,6 +1,5 @@
 package likelion12.puzzle.controller.admin;
 
-import likelion12.puzzle.DTO.ItemRentDTO;
 import likelion12.puzzle.DTO.ItemRentDTO.AdminBookListDTO;
 import likelion12.puzzle.DTO.ItemRentDTO.AdminRentListDTO;
 import likelion12.puzzle.DTO.ItemRentDTO.RequestItemRent;
