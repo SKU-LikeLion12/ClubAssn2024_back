@@ -1,7 +1,7 @@
 package likelion12.puzzle.DTO;
 
-import likelion12.puzzle.domain.Club;
-import likelion12.puzzle.domain.Member;
+import jakarta.validation.constraints.NotEmpty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 public class ClubDTO {
@@ -20,4 +20,24 @@ public class ClubDTO {
     public static class RequestJoinClub {
         private String clubName;
     }
+
+    @Data
+    @AllArgsConstructor
+    public static class ClubCreateRequest{
+        @NotEmpty
+        private String name;
+        @NotEmpty
+        private String description;
+        @NotEmpty
+        private String logo;
+    }
+
+    @Data
+    @AllArgsConstructor
+    public static class ClubAllRequest {
+        private Long id;
+        private String name;
+        private String description;
+    }
 }
+
