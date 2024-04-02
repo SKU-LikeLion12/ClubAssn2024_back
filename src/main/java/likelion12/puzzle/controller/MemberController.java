@@ -1,5 +1,6 @@
 package likelion12.puzzle.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
 import likelion12.puzzle.DTO.MemberDTO.RequestMember;
 import likelion12.puzzle.DTO.MemberDTO.ResponseMember;
@@ -27,12 +28,14 @@ public class MemberController {
     private final JwtUtility jwtUtility;
     private final ItemRentService itemRentService;
 
+    @Operation(summary = "특정 멤버가 예약중인 물품 리스트", description = "헤더에 토큰 필요", tags={"myPage"})
     @GetMapping("/member/book-list")
     public ResponseEntity<List<BookDTO>> memberBookList(HttpServletRequest header){
         List<BookDTO> list = itemRentService.memberBookList(jwtUtility.getStudentId(header.getHeader("Authorization")));
         return ResponseEntity.ok().body(list);
     }
 
+    @Operation(summary = "특정 멤버가 대여중인 물품 리스트", description = "헤더에 토큰 필요", tags={"myPage"})
     @GetMapping("/member/rent-list")
     public ResponseEntity<List<RentDTO>> memberRentList(HttpServletRequest header){
         List<RentDTO> list = itemRentService.memberRentList(jwtUtility.getStudentId(header.getHeader("Authorization")));
