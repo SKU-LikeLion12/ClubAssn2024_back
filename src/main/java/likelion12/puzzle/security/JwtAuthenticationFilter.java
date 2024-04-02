@@ -22,18 +22,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtUtility jwtUtility;
 
-
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        String token = request.getHeader("Authorization");
-        if (token != null && token.startsWith("Bearer ")) {
-//            token = token.substring(7);
+        String token = jwtUtility.resolveToken(request);
+
+        if (token != null) {
             try {
                 Claims claims = jwtUtility.validateToken(token);
+
                 if (claims != null) {
-                    //유효한지 검사부터
+                    // 유효한지 검사부터
                     String username = claims.getSubject();
 
                     // 권한 부여
@@ -43,7 +42,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                             username, null, authorities);
 
-                    // SecurityContext에 인증 객체 저장
+                    // SecurityContext 에 인증 객체 저장
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
             } catch (Exception e) {
@@ -56,5 +55,4 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(request, response); // 다음 필터로 요청과 응답을 전달
     }
-
 }
