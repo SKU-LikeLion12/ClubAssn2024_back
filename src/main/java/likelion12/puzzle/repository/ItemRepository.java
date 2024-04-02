@@ -2,7 +2,6 @@ package likelion12.puzzle.repository;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
-import likelion12.puzzle.DTO.ItemDTO;
 import likelion12.puzzle.domain.Item;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;

@@ -1,6 +1,5 @@
 package likelion12.puzzle.service;
 
-import likelion12.puzzle.DTO.ItemDTO;
 import likelion12.puzzle.domain.Item;
 import likelion12.puzzle.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;

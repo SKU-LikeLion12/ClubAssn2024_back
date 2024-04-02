@@ -1,7 +1,10 @@
 package likelion12.puzzle.repository;
 
 import jakarta.persistence.EntityManager;
-import likelion12.puzzle.domain.*;
+import likelion12.puzzle.domain.Item;
+import likelion12.puzzle.domain.ItemRent;
+import likelion12.puzzle.domain.Member;
+import likelion12.puzzle.domain.RentStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

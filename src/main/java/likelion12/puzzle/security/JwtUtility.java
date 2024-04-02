@@ -1,7 +1,9 @@
 package likelion12.puzzle.security;
 
-import io.jsonwebtoken.*;
-import likelion12.puzzle.DTO.MemberDTO;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.SignatureException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +13,7 @@ import java.util.Date;
 @Service
 public class JwtUtility {
 
+    @Value("${jwt.key}")
     private String secret = "askqwhrkjweagfjasdfasfdahsjkfhqlwkjfhbasdjkfhlqwkjefhbadskjfbalsdhfvbasdfasdfasdfasdfasdqmjhfvgjasd";
 
     private static final long expirationTime = 1000 * 60 * 60; // 1시간
@@ -42,17 +45,15 @@ public class JwtUtility {
         }
     }
 
-    public String getStudentId(MemberDTO.MemberToken token){
-        Claims claims = validateToken(token.getToken());
+    public String getStudentId(String token){
+        Claims claims = validateToken(token);
         return claims.getSubject();
     }
 
     public static void main(String[] args) {
         JwtUtility jwtUtility = new JwtUtility();
-        String token = jwtUtility.generateToken("20240000");
+        String token = jwtUtility.generateToken("00000000");
         System.out.println("token = " + token);
-        MemberDTO.MemberToken mt = new MemberDTO.MemberToken();
-        mt.setToken(token);
-        System.out.println("getStudentId(token) = " + jwtUtility.getStudentId(mt));
+        System.out.println("getStudentId(token) = " + jwtUtility.getStudentId(token));
     }
 }

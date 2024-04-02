@@ -1,8 +1,6 @@
 package likelion12.puzzle.DTO;
 
-import likelion12.puzzle.domain.JoinEvent;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
 

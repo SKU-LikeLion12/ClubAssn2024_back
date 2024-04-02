@@ -1,8 +1,6 @@
 package likelion12.puzzle.controller;
 
-import likelion12.puzzle.DTO.JoinClubDTO;
 import likelion12.puzzle.domain.Event;
-import likelion12.puzzle.domain.JoinEvent;
 import likelion12.puzzle.service.EventService;
 import likelion12.puzzle.service.JoinEventService;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,5 @@
 package likelion12.puzzle.service;
 
-import static likelion12.puzzle.DTO.ItemRentDTO.*;
 import likelion12.puzzle.domain.Item;
 import likelion12.puzzle.domain.ItemRent;
 import likelion12.puzzle.domain.Member;
@@ -18,6 +17,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import static likelion12.puzzle.DTO.ItemRentDTO.*;
 
 @Service
 @Transactional(readOnly = true)
