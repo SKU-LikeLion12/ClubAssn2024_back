@@ -11,6 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static likelion12.puzzle.DTO.JoinClubDTO.*;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -21,9 +23,10 @@ public class JoinClubService {
 
     // 동아리에 새로운 학생 추가
     @Transactional
-    public JoinClub saveNewMember(String studentId, String studentName, Club iconClub) {
-        Member member = new Member(studentId, studentName, iconClub);
-        JoinClub joinClub = new JoinClub(iconClub, member);
+    public JoinClub saveNewMember(String studentId, String studentName, String clubName) {
+        Club club = clubService.findByName(clubName);
+        Member member = new Member(studentId, studentName, club);
+        JoinClub joinClub = new JoinClub(club, member);
 
         return joinClubRepository.saveNewMemberForClub(joinClub);
     }
@@ -49,14 +52,16 @@ public class JoinClubService {
 
     // 동아리에서 학생 탈퇴
     @Transactional
-    public boolean deleteMember(Member student, Club club) {
-        JoinClub joinClub = joinClubRepository.findJoinClub(club, student);
+    public boolean deleteJoinClub(String student, String clubName) {
+        Member member = memberService.findByStudentId(student);
+        Club club = clubService.findByName(clubName);
+        JoinClub joinClub = joinClubRepository.findJoinClub(club, member);
 
         return joinClubRepository.deleteJoinClub(joinClub);
     }
 
     // 동아리원 검색
-    public List<JoinClubDTO> searchByKeyword(String keyword) {
+    public List<CreateJC> searchByKeyword(String keyword) {
         return joinClubRepository.findCMManageByKeyword(keyword);
     }
 }
