@@ -56,6 +56,6 @@ public class MemberController {
     // 모든 멤버의 가입된 클럽 리스트
     @PostMapping("/member/club-list")
     public ResponseEntity<List<MemberClubDTO>> findJoinedClubsForAllMember(){
-        return ResponseEntity.ok().body(memberService.findJoinedClubsForAllMember());
+        return ResponseEntity.ok().body(joinClubService.findJoinedClubsForAllMember());
     }
 }

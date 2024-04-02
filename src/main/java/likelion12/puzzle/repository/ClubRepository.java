@@ -31,7 +31,7 @@ public class ClubRepository {
                 .setParameter("clubName", clubName).getSingleResult();
     }
 
-    public List<Club> findAllClubs(){
+    public List<Club> findAll(){
         return em.createQuery("SELECT c FROM Club c", Club.class).getResultList();
     }
 

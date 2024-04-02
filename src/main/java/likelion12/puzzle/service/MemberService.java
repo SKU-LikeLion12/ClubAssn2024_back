@@ -3,7 +3,9 @@ package likelion12.puzzle.service;
 import likelion12.puzzle.DTO.MemberClubDTO;
 import likelion12.puzzle.domain.Club;
 import likelion12.puzzle.domain.Member;
-import likelion12.puzzle.exception.duplicatedStudentIdException;
+import likelion12.puzzle.exception.DuplicatedStudentIdException;
+import likelion12.puzzle.exception.NoJoinedClubException;
+import likelion12.puzzle.repository.JoinClubRepository;
 import likelion12.puzzle.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,8 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class MemberService {
     private final MemberRepository memberRepository;
+    private final JoinClubRepository joinClubRepository;
+    private final JoinClubService joinClubService;
 
     // 첫 화면 로그인
     public Member login(String studentId, String name) {
@@ -41,7 +45,7 @@ public class MemberService {
     @Transactional
     public Member addNewMember(String studentId, String name) {
         if (isDuplicated(studentId)){
-            throw new duplicatedStudentIdException(studentId + "번은 이미 가입된 학번입니다.");
+            throw new DuplicatedStudentIdException(studentId + "번은 이미 가입된 학번입니다.");
         }
         Member member = new Member(studentId, name);
         memberRepository.addNewMember(member);
@@ -84,9 +88,12 @@ public class MemberService {
         return memberRepository.deleteMember(member);
     }
 
-    // 모든 멤버 가입된 동아리 반환
+    // 로그인을 위해서 member조회할 때 iconClub이 null이면 이 함수 사용할 것.
     @Transactional
-    public List<MemberClubDTO> findJoinedClubsForAllMember(){
-        return memberRepository.findJoinedClubsForAllMember();
+    public void setRandomIconClub(String studentId){
+        List<Club> joinedClubs = joinClubService.findByStudentIdClub(studentId);
+        if (joinedClubs.isEmpty()){
+            throw new NoJoinedClubException("가입된 club 없음.");
+        }
     }
 }

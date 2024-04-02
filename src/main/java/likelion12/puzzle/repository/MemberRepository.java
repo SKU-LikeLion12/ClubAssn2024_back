@@ -3,6 +3,8 @@ package likelion12.puzzle.repository;
 import jakarta.persistence.EntityManager;
 import likelion12.puzzle.DTO.MemberClubDTO;
 
+import likelion12.puzzle.domain.Club;
+import likelion12.puzzle.domain.JoinClub;
 import likelion12.puzzle.domain.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -50,24 +52,5 @@ public class MemberRepository {
         em.remove(member);
 
         return true;
-    }
-
-    // 모든 학생의 가입된 동아리 정보
-    public List<MemberClubDTO> findJoinedClubsForAllMember(){
-        List<Object[]> members = em.createQuery("SELECT m.id, m.name, m.studentId FROM Member m", Object[].class)
-                .getResultList();
-        List<MemberClubDTO> memberClubDTOs = members.stream().map(member -> {
-            Long memberId = (Long) member[0];
-            String name = (String) member[1];
-            String studentId = (String) member[2];
-
-            List<String> clubs = em.createQuery(
-                            "SELECT c.name FROM JoinClub jc JOIN jc.club c WHERE jc.member.id = :memberId", String.class)
-                    .setParameter("memberId", memberId)
-                    .getResultList();
-            return new MemberClubDTO(memberId, name, studentId, clubs);
-        }).toList();
-
-        return memberClubDTOs;
     }
 }

@@ -1,6 +1,7 @@
 package likelion12.puzzle.service;
 
 import likelion12.puzzle.DTO.JoinClubDTO;
+import likelion12.puzzle.DTO.MemberClubDTO;
 import likelion12.puzzle.domain.Club;
 import likelion12.puzzle.domain.JoinClub;
 import likelion12.puzzle.domain.Member;
@@ -58,5 +59,15 @@ public class JoinClubService {
     // 동아리원 검색
     public List<JoinClubDTO> searchByKeyword(String keyword) {
         return joinClubRepository.findCMManageByKeyword(keyword);
+    }
+
+    public List<Club> findByStudentIdClub(String studentId){
+        return joinClubRepository.findByStudentIdClub(studentId);
+    }
+
+    // 모든 멤버 가입된 동아리 반환
+    @Transactional
+    public List<MemberClubDTO> findJoinedClubsForAllMember(){
+        return joinClubRepository.findJoinedClubsForAllMember();
     }
 }
