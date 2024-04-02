@@ -1,12 +1,11 @@
 package likelion12.puzzle.domain;
 
-import jakarta.annotation.Nullable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import likelion12.puzzle.service.ImageUtility;
-import lombok.Data;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;

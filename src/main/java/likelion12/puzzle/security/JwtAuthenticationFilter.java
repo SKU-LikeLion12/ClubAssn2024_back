@@ -29,7 +29,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         String token = request.getHeader("Authorization");
         if (token != null && token.startsWith("Bearer ")) {
-            token = token.substring(7);
+//            token = token.substring(7);
             try {
                 Claims claims = jwtUtility.validateToken(token);
                 if (claims != null) {

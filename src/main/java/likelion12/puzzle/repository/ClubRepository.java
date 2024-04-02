@@ -21,6 +21,10 @@ public class ClubRepository {
         return club;
     }
 
+    public Club findById(Long id){
+        return em.find(Club.class, id);
+    }
+
     // 동아리 조회
     public Club findByName(String clubName) {
         return em.createQuery("select c from Club c where c.name =:clubName", Club.class)

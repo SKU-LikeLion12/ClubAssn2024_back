@@ -3,12 +3,11 @@ package likelion12.puzzle.domain;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.ArrayList;
-import java.util.List;
+import lombok.Setter;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 public class Club {
     @Id @GeneratedValue
@@ -18,11 +17,12 @@ public class Club {
     private String name;
     private String description;
 
+    // 이미지를 담는 byte 배열을 BLOB(Binary Large Object) 형식으로 저장
     @Lob
-    @Column(name = "icon", columnDefinition = "MEDIUMBLOB")
+    @Column(name = "logo", columnDefinition = "MEDIUMBLOB") // TINYBLOB: ~255Byte BLOB: ~64KB  MEDIUMBLOB: ~16MB LONGBLOB: ~4GB
     private byte[] logo;
 
-    public Club(String clubName, String description, byte[] logo) {
+    public Club(String clubName, String description,  byte[] logo) {
         this.name = clubName;
         this.description = description;
         this.logo = logo;

@@ -4,9 +4,7 @@ import jakarta.persistence.EntityManager;
 import likelion12.puzzle.DTO.EventDTO;
 import likelion12.puzzle.DTO.ItemDTO;
 import likelion12.puzzle.domain.Event;
-import likelion12.puzzle.domain.JoinEvent;
 import likelion12.puzzle.domain.Member;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

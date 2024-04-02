@@ -1,13 +1,14 @@
 package likelion12.puzzle.service;
 
+import likelion12.puzzle.DTO.EventDTO.ResponseJoinEvent;
+import likelion12.puzzle.DTO.EventDTO.ResponsePuzzleForNotPart;
 import likelion12.puzzle.domain.Event;
 import likelion12.puzzle.domain.JoinEvent;
 import likelion12.puzzle.domain.Member;
 import likelion12.puzzle.repository.JoinEventRepository;
-import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import likelion12.puzzle.DTO.EventDTO.*;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 

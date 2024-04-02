@@ -1,5 +1,6 @@
 package likelion12.puzzle.service;
 
+import likelion12.puzzle.DTO.JoinClubDTO;
 import likelion12.puzzle.domain.Club;
 import likelion12.puzzle.domain.JoinClub;
 import likelion12.puzzle.domain.Member;
@@ -52,5 +53,10 @@ public class JoinClubService {
         JoinClub joinClub = joinClubRepository.findJoinClub(club, student);
 
         return joinClubRepository.deleteJoinClub(joinClub);
+    }
+
+    // 동아리원 검색
+    public List<JoinClubDTO> searchByKeyword(String keyword) {
+        return joinClubRepository.findCMManageByKeyword(keyword);
     }
 }

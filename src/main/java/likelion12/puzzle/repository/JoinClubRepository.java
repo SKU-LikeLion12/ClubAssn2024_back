@@ -1,6 +1,7 @@
 package likelion12.puzzle.repository;
 
 import jakarta.persistence.EntityManager;
+import likelion12.puzzle.DTO.JoinClubDTO;
 import likelion12.puzzle.domain.Club;
 import likelion12.puzzle.domain.JoinClub;
 import likelion12.puzzle.domain.Member;
@@ -48,4 +49,14 @@ public class JoinClubRepository {
         return true;
     }
 
+    // 동아리원 검색
+    public List<JoinClubDTO> findCMManageByKeyword(String keyword) {
+        return em.createQuery("SELECT new likelion12.puzzle.DTO.JoinClubDTO(m.studentId, m.name, c.name) " +
+                        "FROM JoinClub jc " +
+                        "INNER JOIN jc.member m " +
+                        "INNER JOIN jc.club c " +
+                        "WHERE m.name LIKE :keyword OR m.studentId LIKE :keyword OR c.name LIKE :keyword", JoinClubDTO.class)
+                .setParameter("keyword", "%" + keyword + "%")
+                .getResultList();
+    }
 }

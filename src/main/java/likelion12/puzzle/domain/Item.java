@@ -2,7 +2,10 @@ package likelion12.puzzle.domain;
 
 import jakarta.persistence.*;
 import likelion12.puzzle.service.ImageUtility;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
