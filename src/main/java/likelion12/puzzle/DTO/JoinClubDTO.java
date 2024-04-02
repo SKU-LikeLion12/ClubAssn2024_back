@@ -2,16 +2,26 @@ package likelion12.puzzle.DTO;
 
 import lombok.Data;
 
-
 @Data
 public class JoinClubDTO {
+
+    @Data
+    public static class CreateJC {
         private String studentId;
         private String studentName;
-        private String joinClubs;
+        private String clubName;
 
-        public JoinClubDTO(String studentId, String studentName, String joinClubs) {
+        public CreateJC(String studentId, String studentName, String clubName) {
             this.studentId = studentId;
             this.studentName = studentName;
-            this.joinClubs = joinClubs;
+            this.clubName = clubName;
         }
-}
+    }
+
+    @Data
+    public static class DeleteJC {
+        private String studentId;
+        private String clubName;
+    }
+
+    }

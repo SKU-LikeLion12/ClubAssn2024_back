@@ -20,7 +20,6 @@ public class ItemController {
     private final ItemService itemService;
 
     // 물품 추가
-    @ResponseBody
     @PostMapping("/item") //, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Item> addItem(@RequestParam String name,
                                              @RequestParam int count,
@@ -44,7 +43,7 @@ public class ItemController {
     }
 
 
-    @ResponseBody
+
     @GetMapping("/item/{itemId}")
     public ItemCreateRequest findOneItem(@PathVariable("itemId") Long itemId) {
         Item item = itemService.findById(itemId);
@@ -56,7 +55,7 @@ public class ItemController {
         itemService.delete(itemId);
     }
 
-    @ResponseBody
+
     @GetMapping("/items")
     public List<Item.ItemAllRequest> findAllItems() {
         return itemService.findAllExceptImage(); // DTO로 쿼리 생성하기. hellospring => findUserAll() 참고

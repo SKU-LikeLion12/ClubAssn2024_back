@@ -10,6 +10,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+import static likelion12.puzzle.DTO.JoinClubDTO.*;
+
 @Repository
 @RequiredArgsConstructor
 public class JoinClubRepository {
@@ -26,6 +28,8 @@ public class JoinClubRepository {
         return em.createQuery("select jc.club from JoinClub jc where jc.member.studentId =:id", JoinClub.class)
                 .setParameter("id", studentId).getResultList();
     }
+
+
 
     // 동아리에 있는 동아리원 조회
     public List<JoinClub> findAllByClubName(Club club) {
@@ -50,12 +54,12 @@ public class JoinClubRepository {
     }
 
     // 동아리원 검색
-    public List<JoinClubDTO> findCMManageByKeyword(String keyword) {
-        return em.createQuery("SELECT new likelion12.puzzle.DTO.JoinClubDTO(m.studentId, m.name, c.name) " +
+    public List<CreateJC> findCMManageByKeyword(String keyword) {
+        return em.createQuery("SELECT new likelion12.puzzle.DTO.JoinClubDTO.CreateJC(m.studentId, m.name, c.name) " +
                         "FROM JoinClub jc " +
                         "INNER JOIN jc.member m " +
                         "INNER JOIN jc.club c " +
-                        "WHERE m.name LIKE :keyword OR m.studentId LIKE :keyword OR c.name LIKE :keyword", JoinClubDTO.class)
+                        "WHERE m.name LIKE :keyword OR m.studentId LIKE :keyword OR c.name LIKE :keyword", CreateJC.class)
                 .setParameter("keyword", "%" + keyword + "%")
                 .getResultList();
     }

@@ -1,10 +1,8 @@
 package likelion12.puzzle.controller;
 
-import likelion12.puzzle.DTO.JoinClubDTO;
 import likelion12.puzzle.domain.Club;
 import likelion12.puzzle.service.ClubService;
 import likelion12.puzzle.service.ImageUtility;
-import likelion12.puzzle.service.JoinClubService;
 import likelion12.puzzle.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,7 +14,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static likelion12.puzzle.DTO.ClubDTO.*;
+import static likelion12.puzzle.DTO.ClubDTO.ClubAllRequest;
+import static likelion12.puzzle.DTO.ClubDTO.ClubCreateRequest;
 
 
 @RestController
@@ -24,23 +23,21 @@ import static likelion12.puzzle.DTO.ClubDTO.*;
 public class ClubController {
     private final ClubService clubService;
     private final MemberService memberService;
-    private final JoinClubService joinClubService;
 
     @PostMapping("/club/add")
     public Club testClub(@RequestBody Club club) {
         return clubService.addNewClub(club.getName(), club.getDescription(), club.getLogo());
     }
 
-    @PostMapping("/club/add/{studentId}")
-    public ResponseJoinClub addJoinClub(@RequestBody RequestJoinClub request, @PathVariable("studentId") String studentId) {
-        Club club = clubService.findByName(request.getClubName());
-        joinClubService.saveNewMember(studentId, club);
-
-        return new ResponseJoinClub(studentId, club.getName());
-    }
+//    @PostMapping("/club/add/{studentId}")
+//    public ResponseJoinClub addJoinClub(@RequestBody RequestJoinClub request, @PathVariable("studentId") String studentId) {
+//        Club club = clubService.findByName(request.getClubName());
+//        joinClubService.saveNewMember(studentId, club);
+//
+//        return new ResponseJoinClub(studentId, club.getName());
+//    }
 
     // 동아리 추가
-
     @PostMapping("/club") //, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Club> addClub(@RequestParam String clubName,
                                         @RequestParam String description,
@@ -82,20 +79,6 @@ public class ClubController {
             clubDTOS.add(dto);
         }
         return clubDTOS;
-    }
-
-    // 동아리원 검색
-    @GetMapping("/member/manage")
-    public ResponseEntity<List<JoinClubDTO>> CMManageSearch(@RequestParam String keyword) {
-//        if (keyword == null || keyword.trim().isEmpty()) {
-//            return ResponseEntity.noContent().build();
-//        }
-        List<JoinClubDTO> results = joinClubService.searchByKeyword(keyword);
-        if(results.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.ok(results);
-        }
     }
 }
 
