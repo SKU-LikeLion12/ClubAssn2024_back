@@ -1,5 +1,6 @@
 package likelion12.puzzle.service;
 
+import likelion12.puzzle.DTO.MemberClubDTO;
 import likelion12.puzzle.domain.Club;
 import likelion12.puzzle.domain.Member;
 import likelion12.puzzle.exception.duplicatedStudentIdException;
@@ -81,5 +82,11 @@ public class MemberService {
         Member member = findByStudentId(studentId);
 
         return memberRepository.deleteMember(member);
+    }
+
+    // 모든 멤버 가입된 동아리 반환
+    @Transactional
+    public List<MemberClubDTO> findJoinedClubsForAllMember(){
+        return memberRepository.findJoinedClubsForAllMember();
     }
 }

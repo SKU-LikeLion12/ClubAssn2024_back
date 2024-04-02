@@ -5,13 +5,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import likelion12.puzzle.DTO.MemberDTO.RequestMember;
 import likelion12.puzzle.DTO.MemberDTO.ResponseMember;
 import likelion12.puzzle.domain.Member;
+import likelion12.puzzle.DTO.MemberClubDTO;
 import likelion12.puzzle.security.JwtUtility;
 import likelion12.puzzle.service.ItemRentService;
 import likelion12.puzzle.service.JoinClubService;
 import likelion12.puzzle.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -53,9 +53,9 @@ public class MemberController {
         return new ResponseMember(member1.getStudentId(), member1.getName());
     }
 
-    @PostMapping("/member/club")
-    public ResponseEntity<Map<String, Object>> findMyClub(MemberToken token){
-
-        return null;
+    // 모든 멤버의 가입된 클럽 리스트
+    @PostMapping("/member/club-list")
+    public ResponseEntity<List<MemberClubDTO>> findJoinedClubsForAllMember(){
+        return ResponseEntity.ok().body(memberService.findJoinedClubsForAllMember());
     }
 }
