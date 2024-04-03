@@ -96,5 +96,4 @@ public class JoinClubController {
         return ResponseEntity.ok().body(joinClubService.findJoinedClubUnJoinedClub(request.getStudentId()));
 
     }
-
 }
