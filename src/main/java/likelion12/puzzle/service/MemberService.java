@@ -107,4 +107,11 @@ public class MemberService {
 
         return memberRepository.deleteMember(member);
     }
+
+    @Transactional
+    public void changeIconClub(String studentId, String clubName){
+        Club club = clubService.findByName(clubName);
+        Member member = memberRepository.findByStudentId(studentId);
+        member.setIconClub(club);
+    }
 }

@@ -36,6 +36,10 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private RoleType role = RoleType.ROLE_MEMBER;
 
+    public void setIconClub(Club iconClub) {
+        this.iconClub = iconClub;
+    }
+
     public Member(String studentId, String name, RoleType role, Club iconClub) {
         this.studentId = studentId;
         this.name = name;
