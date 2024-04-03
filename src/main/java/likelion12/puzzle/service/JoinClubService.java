@@ -44,6 +44,10 @@ public class JoinClubService {
         return joinClubRepository.findByMemberId(studentId);
     }
 
+    public List<Club> findJoinedClubByMemberId(String studentId){
+        return joinClubRepository.findJoinedClubByMemberId(studentId);
+    }
+
     // 동아리에서 학생 탈퇴
     @Transactional
     public boolean deleteJoinClub(String student, String clubName) {

@@ -37,17 +37,14 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private RoleType role = RoleType.ROLE_MEMBER;
 
+    public void setIconClub(Club iconClub) {
+        this.iconClub = iconClub;
+    }
+
     // 아예 처음 넣을 때
     public Member(String studentId, String name, RoleType role) {
         this.studentId = studentId;
         this.role = role;
-        this.name = name;
-    }
-
-    //
-    public Member(String studentId, String name, Club iconClub) {
-        this.studentId = studentId;
-        this.iconClub = iconClub;
         this.name = name;
     }
 

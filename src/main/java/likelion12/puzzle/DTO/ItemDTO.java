@@ -4,12 +4,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 
 public class ItemDTO {
     @Data
     @AllArgsConstructor
-    public static class ItemCreateRequest{
+    public static class ItemCreateResponse{
         @NotEmpty
         @Schema(description = "물품명", example = "방석")
         private String name;
@@ -21,6 +22,24 @@ public class ItemDTO {
         @NotEmpty
         @Schema(description = "물품 사진", example = "")
         private String image;
+    }
+
+    @Data
+    @AllArgsConstructor
+    public static class ItemCreateRequest{
+        @NotEmpty
+        private String name;
+        private int count;
+        @NotEmpty
+        private MultipartFile image;
+    }
+
+    @Data
+    @AllArgsConstructor
+    public static class ItemUpdateRequest{
+        private String name;
+        private int count;
+        private MultipartFile image;
     }
 
     @Data

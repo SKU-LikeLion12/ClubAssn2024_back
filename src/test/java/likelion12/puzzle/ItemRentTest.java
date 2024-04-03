@@ -83,7 +83,7 @@ public class ItemRentTest {
         em.persist(club);
 
         Member member1 = new Member("1", "학생1", null);
-        Member member2 = new Member("2", "학생2", club);
+        Member member2 = new Member("2", "학생2", null);
 
         Item item = new Item("책", 10,null);
 

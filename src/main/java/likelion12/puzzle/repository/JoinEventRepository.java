@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
+import java.util.stream.Collectors;
 
 
 @Repository
@@ -51,5 +51,23 @@ public class JoinEventRepository {
                                 "WHERE e NOT IN (SELECT distinct je.event FROM JoinEvent je WHERE je.member = :member)",
                         ResponsePuzzleForNotPart.class)
                 .setParameter("member", member).getResultList();
+    }
+
+    public List<AllEvents> findEventsInfo(String studentId){
+        List<Event> eventList = em.createQuery("SELECT e FROM Event e", Event.class).getResultList();
+
+        // 해당 학생이 참여한 이벤트의 ID 목록 조회
+        List<Long> joinedEventIds = em.createQuery(
+                        "SELECT je.event.id FROM JoinEvent je WHERE je.student.id = :studentId", Long.class)
+                .setParameter("studentId", studentId)
+                .getResultList();
+
+        // 이벤트 리스트를 AllEvents DTO로 변환
+        List<AllEvents> allEventsList = eventList.stream().map(event -> {
+            AllEvents allEvents = new AllEvents(event.getId(), event.getName(), event.arrayToImage(), event.getDate(), joinedEventIds.contains(event.getId()));
+            return allEvents;
+        }).collect(Collectors.toList());
+
+        return allEventsList;
     }
 }

@@ -3,15 +3,11 @@ package likelion12.puzzle.controller.admin;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import likelion12.puzzle.DTO.*;
-import likelion12.puzzle.domain.JoinClub;
+import likelion12.puzzle.DTO.MemberClubDTO;
 import likelion12.puzzle.service.JoinClubService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import likelion12.puzzle.domain.Club;
 import likelion12.puzzle.service.ClubService;
-import likelion12.puzzle.service.JoinClubService;
-import likelion12.puzzle.service.MemberService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +19,7 @@ import static likelion12.puzzle.DTO.JoinClubDTO.DeleteJC;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/admin/join-club")
-public class JoinClubController {
+public class JoinClubAdminController {
 
     private final JoinClubService joinClubService;
     private final ClubService clubService;

@@ -42,4 +42,10 @@ public class EventAdminController {
 //    public ResponseEntity<ResponseEvent> eventUpdatePage(@RequestBody RequestEvent request) {
 //
 //    }
+    // 퍼즐 조각 삭제
+    @Operation(summary = "관리자가 퍼즐 조각 삭제하는 API", description = "퍼즐 id 입력", tags={"admin-event"})
+    @DeleteMapping("/delete/{eventId}")
+    public boolean eventDeletePage(@PathVariable("eventId") Long eventId){
+        return eventService.removeEvent(eventId);
+    }
 }
