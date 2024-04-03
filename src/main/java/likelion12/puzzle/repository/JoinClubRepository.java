@@ -2,7 +2,7 @@ package likelion12.puzzle.repository;
 
 import jakarta.persistence.EntityManager;
 import likelion12.puzzle.DTO.JoinClubDTO;
-import likelion12.puzzle.DTO.MemberClubDTO;
+import likelion12.puzzle.DTO.MemberClubDTO.*;
 import likelion12.puzzle.domain.Club;
 import likelion12.puzzle.domain.JoinClub;
 import likelion12.puzzle.domain.Member;
@@ -69,10 +69,10 @@ public class JoinClubRepository {
     }
 
     // 모든 학생의 가입된 동아리 정보
-    public List<MemberClubDTO> findJoinedClubsForAllMember(){
+    public List<MemberJoinedClubDTO> findJoinedClubsForAllMember(){
         List<Object[]> members = em.createQuery("SELECT m.id, m.name, m.studentId FROM Member m", Object[].class)
                 .getResultList();
-        List<MemberClubDTO> memberClubDTOs = members.stream().map(member -> {
+        List<MemberJoinedClubDTO> memberClubDTOs = members.stream().map(member -> {
             Long memberId = (Long) member[0];
             String name = (String) member[1];
             String studentId = (String) member[2];
@@ -81,9 +81,32 @@ public class JoinClubRepository {
                             "SELECT c.name FROM JoinClub jc JOIN jc.club c WHERE jc.member.id = :memberId", String.class)
                     .setParameter("memberId", memberId)
                     .getResultList();
-            return new MemberClubDTO(memberId, name, studentId, clubs);
+            return new MemberJoinedClubDTO(memberId, name, studentId, clubs);
         }).toList();
 
         return memberClubDTOs;
+    }
+
+    // 학번으로 조회. 학생의 가입 클럽, 미가입 클럽 정보 반환
+    public MemberJoinedUnjoinedClubDTO findJoinedClubUnJoinedClub(String studentId){
+        Member member = em.createQuery("SELECT m FROM Member m WHERE m.studentId =:studentId", Member.class)
+                .setParameter("studentId", studentId)
+                .getSingleResult();
+
+        // 학생이 가입한 클럽 조회
+        List<String> joinedClubs = em.createQuery(
+                        "SELECT jc.club.name FROM JoinClub jc  WHERE jc.member.studentId = :studentId", String.class)
+                .setParameter("studentId", studentId)
+                .getResultList();
+
+        List<String> allClubs = em.createQuery("SELECT c.name FROM Club c", String.class).getResultList();
+        List<String> unjoinedClubs = allClubs.stream().filter(club -> !joinedClubs.contains(club)).toList();
+
+        return new MemberJoinedUnjoinedClubDTO(
+                member.getId(),
+                member.getName(),
+                studentId,
+                joinedClubs,
+                unjoinedClubs);
     }
 }
