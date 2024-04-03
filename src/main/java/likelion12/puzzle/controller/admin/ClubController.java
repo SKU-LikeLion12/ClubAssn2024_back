@@ -2,11 +2,9 @@ package likelion12.puzzle.controller.admin;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import likelion12.puzzle.DTO.ClubDTO.*;
-import likelion12.puzzle.DTO.EventDTO;
-import likelion12.puzzle.DTO.JoinClubDTO;
+import likelion12.puzzle.DTO.ClubDTO.ClubUpdateRequest;
+import likelion12.puzzle.DTO.ClubDTO.RequestJoinClub;
 import likelion12.puzzle.domain.Club;
-import likelion12.puzzle.domain.Event;
 import likelion12.puzzle.service.ClubService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static likelion12.puzzle.DTO.ClubDTO.ClubAllRequest;
-import static likelion12.puzzle.DTO.ClubDTO.ClubCreateRequest;
 
 
 @RestController

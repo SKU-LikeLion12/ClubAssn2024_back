@@ -100,8 +100,11 @@ public class ItemRentDTO {
         @Schema(description = "물품 예약번호", example = "1")
         Long itemRentId;
 
-        @Schema(description = "학번", example = "00000000")
+        @Schema(description = "대여자 학번", example = "00000000")
         String studentId;
+
+        @Schema(description = "대여지 이름", example = "홍길동")
+        String name;
 
         @Schema(description = "물품 이름", example = "방석")
         String itemName;
@@ -124,6 +127,9 @@ public class ItemRentDTO {
 
         @Schema(description = "대여자 학번", example = "00000000")
         String studentId;
+
+        @Schema(description = "대여지 이름", example = "홍길동")
+        String name;
 
         @Schema(description = "물품명", example = "방석")
         String itemName;

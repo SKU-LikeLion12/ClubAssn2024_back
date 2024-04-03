@@ -39,7 +39,7 @@ public class JoinEventAdminController {
     }
 
     // 회원 퍼즐 조각 추가 +
-    @PostMapping("add")
+    @PostMapping("/add")
     public ResponseEntity<?> addJoinEvent(@RequestBody RequestJoinEvent request) {
         joinEventService.saveJoinEvent(request.getStudentId(), request.getId());
 

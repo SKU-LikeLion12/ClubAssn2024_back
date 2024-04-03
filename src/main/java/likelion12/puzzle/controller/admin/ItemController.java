@@ -23,7 +23,6 @@ public class ItemController {
     private final ItemService itemService;
 
     // 물품 추가
-    @ResponseBody
     @Operation(summary = "관리자가 대여 물품 추가하는 API", description = "물품명, 물품 개수, 물품 이미지 삽입", tags={"item", "add"})
     @PostMapping("") //, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Item> addItem(@RequestParam String name,
@@ -47,7 +46,6 @@ public class ItemController {
         return ResponseEntity.status(HttpStatus.CREATED).body(new ItemCreateRequest(item.getName(), item.getCount(), item.arrayToImage()));
     }
 
-    @ResponseBody
     @Operation(summary = "물품 1개 정보 확인하는 API", description = "물품의 id입력", tags={"item"})
     @GetMapping("/{itemId}")
     public ItemCreateRequest findOneItem(@PathVariable("itemId") Long itemId) {
@@ -62,7 +60,6 @@ public class ItemController {
     }
 
 
-    @ResponseBody
     @Operation(summary = "관리자가 모든 대여 물품 조회하는 API (이미지 제외)", description = "이미지를 제외한 물품 정보 반환", tags={"item"})
     @GetMapping("/all")
     public List<ItemDTO.ItemAllRequestExceptImage> findAllItemsExceptImage() {
