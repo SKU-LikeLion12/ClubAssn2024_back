@@ -55,7 +55,9 @@ public class ItemService {
         if (image != null) {
             item.setImage(image);
         }
-        item.changeItem(name, count);
+        String newName = (name != null ? name : item.getName());
+        item.changeItem(newName, count);
+
         return item;
     }
 
