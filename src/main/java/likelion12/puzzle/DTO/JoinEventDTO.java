@@ -20,6 +20,7 @@ public class JoinEventDTO {
 
     @Data
     public static class RequestJoinEvent {
+        private String studentId;
         private Long id;
         private String name;
         private LocalDateTime addDate;
@@ -27,7 +28,13 @@ public class JoinEventDTO {
 
     @Data
     public static class RequestJoinEventForDelete {
+        private String studentId;
         private Long id;
         private String name;
+    }
+
+    @Data
+    public static class RequestMember{
+        private String studentId;
     }
 }

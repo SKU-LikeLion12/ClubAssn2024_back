@@ -20,7 +20,7 @@ public class JoinClubDTO {
 
     @Data
     public static class DeleteJC {
-        private String studentId;
+        private String memberId;
         private String clubName;
     }
 

@@ -26,24 +26,26 @@ public class JoinClubService {
     // 동아리에 새로운 학생 추가
     @Transactional
     public JoinClub saveNewMember(String studentId, String studentName, String clubName) {
-        Club club = clubService.findByName(clubName);
-        Member member = new Member(studentId, studentName, club);
-        JoinClub joinClub = new JoinClub(club, member);
+        Club iconClub = clubService.findByName(clubName);
+        Member member = new Member(studentId, studentName, iconClub);
+        JoinClub joinClub = new JoinClub(iconClub, member);
 
         return joinClubRepository.saveNewMemberForClub(joinClub);
     }
 
     // 기존 학생, 기존 동아리
     @Transactional
-    public JoinClub saveNewMember(String studentId, Club club) {
+    public JoinClub saveNewMember(String studentId, String clubName) {
         Member member = memberService.findByStudentId(studentId);
+        Club club = clubService.findByName(clubName);
         JoinClub joinClub = new JoinClub(club, member);
 
         return joinClubRepository.saveNewMemberForClub(joinClub);
     }
 
     // 동아리에 가입된 학생들 찾기
-    public List<JoinClub> findAllByClubName(Club club) {
+    public List<JoinClub> findAllByClubName(String clubName) {
+        Club club = clubService.findByName(clubName);
         return joinClubRepository.findAllByClubName(club);
     }
 

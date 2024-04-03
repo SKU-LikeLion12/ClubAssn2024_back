@@ -5,6 +5,10 @@ import likelion12.puzzle.service.ImageUtility;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -23,10 +27,19 @@ public class Club {
     @Column(name = "logo", columnDefinition = "MEDIUMBLOB") // TINYBLOB: ~255Byte BLOB: ~64KB  MEDIUMBLOB: ~16MB LONGBLOB: ~4GB
     private byte[] logo;
 
-    public Club(String clubName, String description,  byte[] logo) {
+    public Club(String clubName, String description, byte[] logo) {
         this.name = clubName;
         this.description = description;
         this.logo = logo;
+    }
+
+    public void setLogo(MultipartFile logo) throws IOException {
+        this.logo = logo.getBytes();
+    }
+
+    public void changeClub(String name, String description) {
+        this.name = name;
+        this.description = description;
     }
 
     public String arrayToImage() {

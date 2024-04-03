@@ -88,7 +88,6 @@ public class EventService {
 
     // 내가 참여한 행사 리스트 반환 (id로)
     public List<Event> findAllEvents(String studentId) {
-
         Member member = memberService.findByStudentId(studentId);
         List<Event> eventList = eventRepository.findAllPartEventsExceptImage(member);
 
