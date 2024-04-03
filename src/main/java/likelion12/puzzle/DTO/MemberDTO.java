@@ -1,5 +1,6 @@
 package likelion12.puzzle.DTO;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import likelion12.puzzle.domain.RoleType;
@@ -23,7 +24,10 @@ public class MemberDTO {
     // 로그인 할 때
     @Data
     public static class RequestMember {
+        @Schema(description = "학번", example = "00000000")
         private String studentId;
+
+        @Schema(description = "이름", example = "홍길동")
         private String name;
     }
 

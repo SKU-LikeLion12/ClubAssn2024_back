@@ -28,6 +28,7 @@ public class MemberController {
     private final ItemRentService itemRentService;
     private final JoinClubService joinClubService;
 
+    @Operation(summary = "로그인", description = "학번과 이름 필요", tags={"login"})
     @GetMapping("/login")
     public ResponseEntity<ResponseLogin> login(@RequestBody RequestMember request) {
         return ResponseEntity.ok(memberService.login(request));

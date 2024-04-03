@@ -19,7 +19,7 @@ public class ItemRentAdminController {
 
     private final ItemRentService itemRentService;
 
-    @Operation(summary = "물품 예약 리스트", description = "헤더에 관리자 토큰 필요", tags={"admin-item-rent"})
+    @Operation(summary = "물품 예약 리스트", description = "헤더에 관리자 토큰 필요", tags={"admin-item-book"})
     @GetMapping("/book-list")
     public ResponseEntity<List<AdminBookListDTO>> itemBookList(){
         List<AdminBookListDTO> adminBookList = itemRentService.allBookList();
@@ -33,7 +33,7 @@ public class ItemRentAdminController {
         return ResponseEntity.ok().body(adminRentList);
     }
 
-    @Operation(summary = "물품 수령", description = "헤더에 관리자 토큰 필요", tags={"admin-item-rent"})
+    @Operation(summary = "물품 수령", description = "헤더에 관리자 토큰 필요", tags={"admin-item-book"})
     @PostMapping("")
     public ResponseEntity<?> itemReceive(@RequestBody RequestItemRent request){
         itemRentService.receiveItem(request.getItemRentId());
@@ -47,7 +47,7 @@ public class ItemRentAdminController {
         return ResponseEntity.ok().build();
     }
 
-    @Operation(summary = "예약 취소", description = "헤더에 관리자 토큰 필요", tags={"admin-item-rent"})
+    @Operation(summary = "예약 취소", description = "헤더에 관리자 토큰 필요", tags={"admin-item-book"})
     @DeleteMapping("")
     public ResponseEntity<?> cancelRent(@RequestBody RequestItemRent request){
         itemRentService.adminCancelRent(request.getItemRentId());
