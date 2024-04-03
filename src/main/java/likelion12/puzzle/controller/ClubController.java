@@ -24,7 +24,6 @@ import static likelion12.puzzle.DTO.ClubDTO.ClubCreateRequest;
 @RequiredArgsConstructor
 public class ClubController {
     private final ClubService clubService;
-    private final MemberService memberService;
 
 //    @PostMapping("/club/add")
 //    public Club testClub(@RequestBody Club club) {
@@ -40,7 +39,7 @@ public class ClubController {
 //    }
 
     // 동아리 추가
-    @Operation(summary = "동아리 추가", description = "동아리명과 동아리 설명, 로고 사진을 받아 동아리 생성", tags = {"club"},
+    @Operation(summary = "동아리 추가", description = "동아리명과 동아리 설명, 로고 사진 필요", tags = {"club", "add"},
             responses = {@ApiResponse(responseCode = "201", description = "생성 후 club 객체 반환"),
                     @ApiResponse(responseCode = "", description = "")})
     @PostMapping("/club") //, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -55,7 +54,7 @@ public class ClubController {
     }
 
     // 동아리 수정
-    @Operation(summary = "동아리 수정", description = "동아리 id와 동아리명, 동아리 설명, 동아리 로고를 받아 수정", tags = {"club"},
+    @Operation(summary = "동아리 수정", description = "동아리 id, 동아리명, 동아리 설명, 동아리 로고 필요", tags = {"club", "update"},
             responses = {@ApiResponse(responseCode = "201", description = "수정 성공 후 변경된 정보를 포함한 객체 생성 "),
                     @ApiResponse(responseCode = "", description = "")})
     @PutMapping("/club/{clubId}")
@@ -70,7 +69,7 @@ public class ClubController {
 
 
     @Operation(summary = "", description = "", tags = {"club"},
-            responses = {@ApiResponse(responseCode = "", description = ""),
+            responses = {@ApiResponse(responseCode = "200", description = ""),
                     @ApiResponse(responseCode = "", description = "")})
     @GetMapping("club/{clubId}")
     public ResponseEntity<ClubCreateRequest> findOneClub(@PathVariable("clubId") Long clubId) {
@@ -80,8 +79,8 @@ public class ClubController {
     }
 
 
-    @Operation(summary = "모든 동아리 조회", description = "학번과 동아리 이름을 받아 동아리원 삭제", tags = {"club"},
-            responses = {@ApiResponse(responseCode = "204", description = "삭제 성공 후 삭제 완료 메시지 반환"),
+    @Operation(summary = "모든 동아리 조회", description = "모든 동아리에 대한 동아리 아이디, 동아리명, 동아리 설명 조회", tags = {"club", "get"},
+            responses = {@ApiResponse(responseCode = "200", description = "조회를 하면 동아리의 아이디, 동아리명, 동아리 설명이 나타난다."),
                     @ApiResponse(responseCode = "", description = "")})
     @GetMapping("/clubs")
     public ResponseEntity<List<ClubAllRequest>> findAllClubs() {
