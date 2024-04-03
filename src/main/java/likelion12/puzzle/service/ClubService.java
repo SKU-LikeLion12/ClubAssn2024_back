@@ -1,6 +1,7 @@
 package likelion12.puzzle.service;
 
 import likelion12.puzzle.domain.Club;
+import likelion12.puzzle.domain.Event;
 import likelion12.puzzle.repository.ClubRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -8,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import java.util.List;
@@ -20,8 +22,9 @@ public class ClubService {
 
     // 동아리 추가
     @Transactional
-    public Club addNewClub(String clubName, String description, byte[] logo) {
-        Club club = new Club(clubName, description, logo);
+    public Club addNewClub(String clubName, String description, MultipartFile logo) throws IOException {
+        byte[] imageBytes = logo.getBytes();
+        Club club = new Club(clubName, description, imageBytes);
         return clubRepository.addNewClub(club);
     }
 
@@ -46,14 +49,13 @@ public class ClubService {
     }
 
     @Transactional
-    public Club changeClub (Long clubId, String clubName, String description, MultipartFile logo) throws IOException {
+    public Club changeClub(Long clubId, String clubName, String description, MultipartFile logo) throws IOException {
         Club club = findById(clubId);
 
-        byte[] imageBytes = (logo != null) ? logo.getBytes() : club.getLogo();
-        club.setLogo(imageBytes);
-
-        club.setName(clubName != null ? clubName : club.getName());
-        club.setDescription(description != null ? description : club.getDescription());
+        if (logo != null) {
+            club.setLogo(logo);
+        }
+        club.changeClub(clubName, description);
 
         return club;
     }
