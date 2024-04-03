@@ -1,5 +1,7 @@
 package likelion12.puzzle.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import likelion12.puzzle.domain.Club;
 import likelion12.puzzle.service.ClubService;
 import likelion12.puzzle.service.ImageUtility;
@@ -22,12 +24,11 @@ import static likelion12.puzzle.DTO.ClubDTO.ClubCreateRequest;
 @RequiredArgsConstructor
 public class ClubController {
     private final ClubService clubService;
-    private final MemberService memberService;
 
-    @PostMapping("/club/add")
-    public Club testClub(@RequestBody Club club) {
-        return clubService.addNewClub(club.getName(), club.getDescription(), club.getLogo());
-    }
+//    @PostMapping("/club/add")
+//    public Club testClub(@RequestBody Club club) {
+//        return clubService.addNewClub(club.getName(), club.getDescription(), club.getLogo());
+//    }
 
 //    @PostMapping("/club/add/{studentId}")
 //    public ResponseJoinClub addJoinClub(@RequestBody RequestJoinClub request, @PathVariable("studentId") String studentId) {
@@ -38,6 +39,9 @@ public class ClubController {
 //    }
 
     // 동아리 추가
+    @Operation(summary = "동아리 추가", description = "동아리명과 동아리 설명, 로고 사진 필요", tags = {"club", "add"},
+            responses = {@ApiResponse(responseCode = "201", description = "생성 후 club 객체 반환"),
+                    @ApiResponse(responseCode = "", description = "")})
     @PostMapping("/club") //, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Club> addClub(@RequestParam String clubName,
                                         @RequestParam String description,
@@ -50,6 +54,9 @@ public class ClubController {
     }
 
     // 동아리 수정
+    @Operation(summary = "동아리 수정", description = "동아리 id, 동아리명, 동아리 설명, 동아리 로고 필요", tags = {"club", "update"},
+            responses = {@ApiResponse(responseCode = "201", description = "수정 성공 후 변경된 정보를 포함한 객체 생성 "),
+                    @ApiResponse(responseCode = "", description = "")})
     @PutMapping("/club/{clubId}")
     public ResponseEntity<ClubCreateRequest> changeClub(@PathVariable Long clubId,
                                                         @RequestParam String clubName,
@@ -61,16 +68,22 @@ public class ClubController {
     }
 
 
+    @Operation(summary = "", description = "", tags = {"club"},
+            responses = {@ApiResponse(responseCode = "200", description = ""),
+                    @ApiResponse(responseCode = "", description = "")})
     @GetMapping("club/{clubId}")
-    public ClubCreateRequest findOneClub(@PathVariable("clubId") Long clubId) {
+    public ResponseEntity<ClubCreateRequest> findOneClub(@PathVariable("clubId") Long clubId) {
         Club club = clubService.findById(clubId);
         String base64Logo = ImageUtility.encodeImage(club.getLogo());
-        return new ClubCreateRequest(club.getName(), club.getDescription(), base64Logo);
+        return ResponseEntity.status(HttpStatus.OK).body(new ClubCreateRequest(club.getName(), club.getDescription(), base64Logo));
     }
 
 
+    @Operation(summary = "모든 동아리 조회", description = "모든 동아리에 대한 동아리 아이디, 동아리명, 동아리 설명 조회", tags = {"club", "get"},
+            responses = {@ApiResponse(responseCode = "200", description = "조회를 하면 동아리의 아이디, 동아리명, 동아리 설명이 나타난다."),
+                    @ApiResponse(responseCode = "", description = "")})
     @GetMapping("/clubs")
-    public List<ClubAllRequest> findAllClubs() {
+    public ResponseEntity<List<ClubAllRequest>> findAllClubs() {
         List<Club> clubs = clubService.findAll();
         List<ClubAllRequest> clubDTOS = new ArrayList<>();
 
@@ -78,7 +91,7 @@ public class ClubController {
             ClubAllRequest dto = new ClubAllRequest(club.getId(), club.getName(), club.getDescription());
             clubDTOS.add(dto);
         }
-        return clubDTOS;
+        return ResponseEntity.status(HttpStatus.OK).body(clubDTOS);
     }
 }
 
