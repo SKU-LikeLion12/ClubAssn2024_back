@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 public class JoinEventDTO {
     @Data
     public static class ResponseJoinEvent {
-        @Schema(description = "행사 번호", example = "2024-03-31T00:04:43.982361")
+        @Schema(description = "행사 번호", example = "1")
         private Long id;
 
         @Schema(description = "행사명", example = "동아리페스티벌")
@@ -29,7 +29,7 @@ public class JoinEventDTO {
         @Schema(description = "학번", example = "00000000")
         private String studentId;
 
-        @Schema(description = "이벤트 번호", example = "1")
+        @Schema(description = "행사 번호", example = "1")
         private Long id;
 //        private String name;
 //        private LocalDateTime addDate;
@@ -40,7 +40,7 @@ public class JoinEventDTO {
         @Schema(description = "학번", example = "00000000")
         private String studentId;
 
-        @Schema(description = "이벤트 번호", example = "1")
+        @Schema(description = "행사 번호", example = "1")
         private Long id;
 
 //        @Schema(description = "이벤트 이름", example = "동아리페스티벌")

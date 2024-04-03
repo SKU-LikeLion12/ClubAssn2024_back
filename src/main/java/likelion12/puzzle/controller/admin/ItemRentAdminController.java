@@ -54,6 +54,4 @@ public class ItemRentAdminController {
         return ResponseEntity.ok().build();
     }
 
-
-
 }

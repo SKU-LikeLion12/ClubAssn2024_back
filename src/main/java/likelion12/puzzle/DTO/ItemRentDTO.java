@@ -158,7 +158,10 @@ public class ItemRentDTO {
 
     @Getter
     public static class ReceiveDTO {
+        @Schema(description = "물품대여번호", example = "1")
         ItemRent itemRent;
+
+        @Schema(description = "필요반납일", example = "2024-04-07T00:04:43.982361")
         LocalDateTime needReturnTime;
 
         public ReceiveDTO(ItemRent itemRent, LocalDateTime needReturnTime) {

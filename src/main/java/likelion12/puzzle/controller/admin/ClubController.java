@@ -84,7 +84,7 @@ public class ClubController {
         List<ClubAllRequest> clubDTOS = new ArrayList<>();
 
         for (Club club : clubs) {
-            ClubAllRequest dto = new ClubAllRequest(club.getId(), club.getName(), club.getDescription());
+            ClubAllRequest dto = new ClubAllRequest(club.getName(), club.getDescription());
             clubDTOS.add(dto);
         }
         return ResponseEntity.status(HttpStatus.OK).body(clubDTOS);
