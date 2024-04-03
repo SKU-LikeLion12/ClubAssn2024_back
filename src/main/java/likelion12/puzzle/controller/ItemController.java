@@ -23,7 +23,7 @@ public class ItemController {
 
     // 물품 추가
     @ResponseBody
-    @Operation(summary = "", description = "", tags={""})
+    @Operation(summary = "관리자가 대여 물품 추가하는 API", description = "물품명, 물품 개수, 물품 이미지 삽입", tags={"item", "add"})
     @PostMapping("/item") //, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Item> addItem(@RequestParam String name,
                                              @RequestParam int count,
@@ -34,7 +34,8 @@ public class ItemController {
     }
 
     // 물품 수정(이미지 안바꾸고 싶으면 안넣으면 됨)
-    @Operation(summary = "", description = "", tags={""})
+    @Operation(summary = "관리자가 대여 물품 수정하는 API",
+            description = "물품id, 수정하고자하는 이름, 사진 입력. 넣지 않은 항목은 원래 값으로 들어감. 개수는 입력해줘야함", tags={"item", "update"})
     @PutMapping("/item/{itemId}")
     public ResponseEntity<ItemCreateRequest> changeItem(@PathVariable Long itemId,
                                            @RequestParam String name,
@@ -46,14 +47,14 @@ public class ItemController {
     }
 
     @ResponseBody
-    @Operation(summary = "", description = "", tags={""})
+    @Operation(summary = "물품 1개 정보 확인하는 API", description = "물품의 id입력", tags={"item"})
     @GetMapping("/item/{itemId}")
     public ItemCreateRequest findOneItem(@PathVariable("itemId") Long itemId) {
         Item item = itemService.findById(itemId);
         return new ItemCreateRequest(item.getName(), item.getCount(), item.arrayToImage());
     }
 
-    @Operation(summary = "", description = "", tags={""})
+    @Operation(summary = "관리자가 대여 물품 삭제하는 API", description = "물품의 id입력", tags={"item", "delete"})
     @DeleteMapping("/item/{itemId}")
     public void deleteItem(@PathVariable("itemId") Long itemId) {
         itemService.delete(itemId);
@@ -61,7 +62,7 @@ public class ItemController {
 
 
     @ResponseBody
-    @Operation(summary = "", description = "", tags={""})
+    @Operation(summary = "관리자가 모든 대여 물품 조회하는 API (이미지 제외)", description = "이미지를 제외한 물품 정보 반환", tags={"item"})
     @GetMapping("/items")
     public List<ItemDTO.ItemAllRequestExceptImage> findAllItemsExceptImage() {
         return itemService.findAllExceptImage(); // DTO로 쿼리 생성하기. hellospring => findUserAll() 참고

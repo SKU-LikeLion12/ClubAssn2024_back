@@ -103,7 +103,8 @@ public class ClubController {
         return ResponseEntity.status(HttpStatus.OK).body(clubDTOS);
     }
 
-    @Operation(summary = "", description = "", tags={""})
+    @Operation(summary = "동아리 삭제 API", description = "동아리 이름 넣으면 해당 동아리 삭제", tags={"club", "delete"},
+            responses = {@ApiResponse(responseCode = "200", description = "동아리 삭제 성공.")})
     @DeleteMapping("/deleteClub")
     public boolean deleteClub(@RequestBody ClubDTO.RequestJoinClub request) {
         return clubService.deleteClub(request.getClubName());

@@ -19,21 +19,8 @@ public class EventController {
     private final EventService eventService;
     private final JoinEventService joinEventService;
 
-//    @GetMapping("/events")
-//    public void myEvents() {
-//        // 로그인 되어있으면 실행. 토큰 없으면 알림 후 로그인 페이지로 이동
-//
-//        // 로그인 되어있으면 member(이름, 로고, 동아리)
-//        // joinevent 보고 member id 있는거에서 event id로 행사 id, name, image, date 뿌려주기
-//    }
-
-    // 퍼즐 조각 관리
-//    @GetMapping("/events/manage")
-//    public ResponseEntity<List<ResponseEvent>> eventsManage() {
-//
-//    }
     // 이벤트 추가
-    @Operation(summary = "", description = "", tags={""})
+    @Operation(summary = "관리자가 퍼즐 조각 추가하는 API", description = "퍼즐 이름, 퍼즐 이미지, 퍼즐 행사 날짜 받아야함", tags={"Event", "add"})
     @PostMapping("/events/manage/add")
     public ResponseEntity<ResponseEvent> addEvent(@RequestBody RequestEvent request) throws IOException {
         Event event = eventService.addEvent(request.getName(), request.getImage(), request.getDate());
