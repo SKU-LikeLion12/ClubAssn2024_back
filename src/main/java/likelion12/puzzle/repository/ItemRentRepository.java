@@ -95,14 +95,14 @@ public class ItemRentRepository {
     }
 
     public List<AdminBookListDTO> findBookWithoutImage(LocalDateTime localDateTime){
-        return em.createQuery("select new AdminBookListDTO(ir.id, ir.renter.studentId, ir.item.name, ir.renterClub, ir.count, ir.offerDate) " +
+        return em.createQuery("select new AdminBookListDTO(ir.id, ir.renter.studentId, ir.renter.name, ir.item.name, ir.renterClub, ir.count, ir.offerDate) " +
                         "from ItemRent ir where ir.status = :status and ir.offerDate >= :time", AdminBookListDTO.class)
                 .setParameter("status", RentStatus.BOOK).setParameter("time",localDateTime)
                 .getResultList();
     }
 
     public List<AdminRentListDTO> findRentWithoutImage(){
-        return em.createQuery("select new AdminRentListDTO(ir.id, ir.renter.studentId, ir.item.name, ir.renterClub, ir.count, ir.receiveDate) " +
+        return em.createQuery("select new AdminRentListDTO(ir.id, ir.renter.studentId, ir.renter.name, ir.item.name, ir.renterClub, ir.count, ir.receiveDate) " +
                         "from ItemRent ir where ir.status = :status", AdminRentListDTO.class)
                 .setParameter("status", RentStatus.RENT)
                 .getResultList();

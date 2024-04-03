@@ -30,6 +30,11 @@ public class JoinClubRepository {
                 .setParameter("id", studentId).getResultList();
     }
 
+    public List<Club> findJoinedClubByMemberId(String studentId){
+        return em.createQuery("SELECT jc.club FROM JoinClub jc WHERE jc.member.studentId =:studentId", Club.class)
+                .setParameter("studentId", studentId).getResultList();
+    }
+
 
     // iconClub이 null이면 해당 멤버의 club중 하나 세팅해야함 (위에 함수랑 다르게 club을 반환함.)
     public List<Club> findByStudentIdClub(String studentId){

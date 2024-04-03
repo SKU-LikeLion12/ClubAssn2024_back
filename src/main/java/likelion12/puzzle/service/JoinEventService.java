@@ -77,4 +77,8 @@ public class JoinEventService {
             return eventList;
         }
     }
+
+    public List<AllEvents> findEventsInfo(String studentId){
+        return joinEventRepository.findEventsInfo(studentId);
+    }
 }

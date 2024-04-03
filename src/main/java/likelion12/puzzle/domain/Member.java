@@ -1,6 +1,7 @@
 package likelion12.puzzle.domain;
 
 import jakarta.persistence.*;
+import likelion12.puzzle.service.ImageUtility;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
@@ -36,16 +37,14 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private RoleType role = RoleType.ROLE_MEMBER;
 
-    public Member(String studentId, String name, RoleType role, Club iconClub) {
-        this.studentId = studentId;
-        this.name = name;
-        this.role = role;
+    public void setIconClub(Club iconClub) {
         this.iconClub = iconClub;
     }
 
-    public Member(String studentId, String name, Club iconClub) {
+    // 아예 처음 넣을 때
+    public Member(String studentId, String name, RoleType role) {
         this.studentId = studentId;
-        this.iconClub = iconClub;
+        this.role = role;
         this.name = name;
     }
 
@@ -53,5 +52,10 @@ public class Member {
         this.iconClub = newIconClub;
 
 //        return member;
+    }
+
+
+    public void updateIsAgree() {
+        this.isAgree = true;
     }
 }

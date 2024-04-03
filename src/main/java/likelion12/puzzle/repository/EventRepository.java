@@ -52,8 +52,8 @@ public class EventRepository {
                 .setParameter("member", member).getResultList();
     }
 
+    // 모든 이벤트 반환(이미지 제외)
     public List<EventAllRequestExceptImage> findAllExceptImage() {
-
         return em.createQuery("SELECT new EventAllRequestExceptImage(e.id, e.name, e.date) " +
                     "FROM Event e", EventAllRequestExceptImage.class)
                 .getResultList();

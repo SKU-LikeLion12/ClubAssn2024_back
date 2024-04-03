@@ -20,28 +20,40 @@ import static likelion12.puzzle.DTO.ItemRentDTO.RentDTO;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/member")
 public class MemberController {
-
     private final MemberService memberService;
     private final JwtUtility jwtUtility;
     private final ItemRentService itemRentService;
-    private final JoinClubService joinClubService;
 
+    @Operation(summary = "로그인", description = "학번과 이름 필요", tags={"login"})
     @GetMapping("/login")
     public ResponseEntity<ResponseLogin> login(@RequestBody RequestMember request) {
         return ResponseEntity.ok(memberService.login(request));
     }
 
+    @PostMapping("/agree")
+    public ResponseEntity<ResponseLogin> checkAgree(@RequestBody RequestMember request) {
+        memberService.updateAgree(request);
+
+        return ResponseEntity.ok(memberService.login(request));
+    }
+
+    @GetMapping("/main")
+    public ResponseEntity<ResponseMain> mainPage(HttpServletRequest header) {
+        Member member = memberService.tokenToMember(header);
+
+        return ResponseEntity.ok(new ResponseMain(member));
+    }
+
     @Operation(summary = "특정 멤버가 예약중인 물품 리스트", description = "헤더에 토큰 필요", tags={"myPage"})
-    @GetMapping("/book-list")
+    @GetMapping("/member/book-list")
     public ResponseEntity<List<BookDTO>> memberBookList(HttpServletRequest header){
         List<BookDTO> list = itemRentService.memberBookList(jwtUtility.getStudentId(header.getHeader("Authorization")));
         return ResponseEntity.ok().body(list);
     }
 
     @Operation(summary = "특정 멤버가 대여중인 물품 리스트", description = "헤더에 토큰 필요", tags={"myPage"})
-    @GetMapping("/rent-list")
+    @GetMapping("/member/rent-list")
     public ResponseEntity<List<RentDTO>> memberRentList(HttpServletRequest header){
         List<RentDTO> list = itemRentService.memberRentList(jwtUtility.getStudentId(header.getHeader("Authorization")));
         return ResponseEntity.ok().body(list);

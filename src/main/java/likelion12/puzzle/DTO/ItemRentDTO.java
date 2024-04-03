@@ -2,6 +2,7 @@ package likelion12.puzzle.DTO;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import likelion12.puzzle.domain.ItemRent;
+import likelion12.puzzle.service.ImageUtility;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 public class ItemRentDTO {
+
 
     @AllArgsConstructor
     public static class MemberRentingSize {
@@ -33,7 +35,7 @@ public class ItemRentDTO {
         String itemName;
 
         @Schema(description = "물품 이미지")
-        byte[] image;
+        String image;
 
         @Schema(description = "예약 개수", example = "2")
         Integer count;
@@ -48,7 +50,7 @@ public class ItemRentDTO {
             this.itemRentId = itemRent.getId();
             this.studentId = itemRent.getRenter().getStudentId();
             this.itemName = itemRent.getItem().getName();
-            this.image = itemRent.getItem().getImage();
+            this.image = image;
             this.count = itemRent.getCount();
             this.bookTime = itemRent.getOfferDate();
             this.needReceiveTime = needReceiveTime;
@@ -67,7 +69,7 @@ public class ItemRentDTO {
         String itemName;
 
         @Schema(description = "물품 이미지", example = "")
-        byte[] image;
+        String image;
 
         @Schema(description = "물품 대여 개수", example = "2")
         Integer count;
@@ -85,7 +87,7 @@ public class ItemRentDTO {
             this.itemRentId = itemRent.getId();
             this.studentId = itemRent.getRenter().getStudentId();
             this.itemName = itemRent.getItem().getName();
-            this.image = itemRent.getItem().getImage();
+            this.image = ImageUtility.encodeImage(itemRent.getItem().getImage());
             this.count = itemRent.getCount();
             this.rentTime = itemRent.getReceiveDate();
             this.needReturnTime = needReturnTime;
@@ -100,8 +102,11 @@ public class ItemRentDTO {
         @Schema(description = "물품 예약번호", example = "1")
         Long itemRentId;
 
-        @Schema(description = "학번", example = "00000000")
+        @Schema(description = "대여자 학번", example = "00000000")
         String studentId;
+
+        @Schema(description = "대여지 이름", example = "홍길동")
+        String name;
 
         @Schema(description = "물품 이름", example = "방석")
         String itemName;
@@ -124,6 +129,9 @@ public class ItemRentDTO {
 
         @Schema(description = "대여자 학번", example = "00000000")
         String studentId;
+
+        @Schema(description = "대여지 이름", example = "홍길동")
+        String name;
 
         @Schema(description = "물품명", example = "방석")
         String itemName;
@@ -152,7 +160,10 @@ public class ItemRentDTO {
 
     @Getter
     public static class ReceiveDTO {
+        @Schema(description = "물품대여번호", example = "1")
         ItemRent itemRent;
+
+        @Schema(description = "필요반납일", example = "2024-04-07T00:04:43.982361")
         LocalDateTime needReturnTime;
 
         public ReceiveDTO(ItemRent itemRent, LocalDateTime needReturnTime) {
@@ -180,7 +191,6 @@ public class ItemRentDTO {
     }
 
     @Data
-    @AllArgsConstructor
 //    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class RestItemListDTO{
         @Schema(description = "물품번호", example = "1")
@@ -193,13 +203,22 @@ public class ItemRentDTO {
         Integer count;
 
         @Schema(description = "물품 이미지")
-        byte[] image;
+        String image;
 
         @Schema(description = "대여중인 물품 개수", example = "7")
         Integer rentingCount;
 
         @Schema(description = "예약중인 물품 개수", example = "2")
         Long bookingCount;
+
+        public RestItemListDTO(Long id, String name, Integer count, byte[] image, Integer rentingCount, Long bookingCount) {
+            this.id = id;
+            this.name = name;
+            this.count = count;
+            this.image = ImageUtility.encodeImage(image);
+            this.rentingCount = rentingCount;
+            this.bookingCount = bookingCount;
+        }
     }
 
     @Data
