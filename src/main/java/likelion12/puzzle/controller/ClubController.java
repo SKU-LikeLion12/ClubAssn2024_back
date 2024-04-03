@@ -4,8 +4,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import likelion12.puzzle.domain.Club;
 import likelion12.puzzle.service.ClubService;
-import likelion12.puzzle.service.ImageUtility;
-import likelion12.puzzle.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
