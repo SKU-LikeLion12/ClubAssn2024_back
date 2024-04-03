@@ -1,6 +1,7 @@
 package likelion12.puzzle.repository;
 
 import jakarta.persistence.EntityManager;
+import likelion12.puzzle.DTO.EventDTO.*;
 import likelion12.puzzle.domain.Event;
 import likelion12.puzzle.domain.Member;
 import lombok.RequiredArgsConstructor;
@@ -50,5 +51,11 @@ public class EventRepository {
     public List<Event> findAllPartEventsExceptImage(Member member) {
         return em.createQuery("SELECT je.event FROM JoinEvent je WHERE je.member = :member", Event.class)
                 .setParameter("member", member).getResultList();
+    }
+
+    public List<EventAllRequestExceptImage> findAllExceptImage() {
+    return em.createQuery("SELECT new EventAllRequestExceptImage(e.id, e.name, e.date) " +
+                    "FROM Event e", EventAllRequestExceptImage.class)
+                .getResultList();
     }
 }

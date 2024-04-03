@@ -1,12 +1,15 @@
 package likelion12.puzzle.service;
 
+import likelion12.puzzle.domain.Club;
 import likelion12.puzzle.domain.Event;
 import likelion12.puzzle.domain.Member;
 import likelion12.puzzle.repository.EventRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -88,4 +91,17 @@ public class EventService {
 //        }
 //    }
 
+//    @Transactional
+//    public Event changeEvent (Long eventId, String eventName, String description, MultipartFile logo) throws IOException {
+//        Event event = findByEventId(eventId);
+//        if (logo != null) {
+//            imageBytes = logo.getBytes();
+//        } else {
+//            imageBytes = club.getLogo();
+//        }
+//        club.setName(clubName);
+//        club.setDescription(description);
+//        club.setLogo(imageBytes);
+//        return club;
+//    }
 }

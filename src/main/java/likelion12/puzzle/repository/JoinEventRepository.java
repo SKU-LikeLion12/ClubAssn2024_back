@@ -39,14 +39,14 @@ public class JoinEventRepository {
 
     // 내가 참여한 행사 리스트 반환(이미지 빼고)
     public List<ResponseJoinEvent> findAllPartEventsExceptImage(Member member) {
-        return em.createQuery("SELECT new likelion12.puzzle.DTO.JoinEventDTO.ResponseJoinEvent(je.event.id, je.event.name, je.checkDate) FROM JoinEvent je WHERE je.member = :member", ResponseJoinEvent.class)
+        return em.createQuery("SELECT new ResponseJoinEvent(je.event.id, je.event.name, je.checkDate) FROM JoinEvent je WHERE je.member = :member", ResponseJoinEvent.class)
                 .setParameter("member", member).getResultList();
     }
 
     // 내가 참여하지 않은 행사 리스트 반환(이미지 빼고)
     public List<ResponsePuzzleForNotPart> findNotPartEventsExceptImage(Member member) {
         return em.createQuery(
-                        "SELECT new likelion12.puzzle.DTO.EventDTO.ResponsePuzzleForNotPart(e.id, e.name) " +
+                        "SELECT new ResponsePuzzleForNotPart(e.id, e.name) " +
                                 "FROM Event e " +
                                 "WHERE e NOT IN (SELECT distinct je.event FROM JoinEvent je WHERE je.member = :member)",
                         ResponsePuzzleForNotPart.class)

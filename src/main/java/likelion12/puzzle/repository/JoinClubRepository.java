@@ -55,7 +55,7 @@ public class JoinClubRepository {
 
     // 동아리원 검색
     public List<CreateJC> findCMManageByKeyword(String keyword) {
-        return em.createQuery("SELECT new likelion12.puzzle.DTO.JoinClubDTO.CreateJC(m.studentId, m.name, c.name) " +
+        return em.createQuery("SELECT new CreateJC(m.studentId, m.name, c.name) " +
                         "FROM JoinClub jc " +
                         "INNER JOIN jc.member m " +
                         "INNER JOIN jc.club c " +
