@@ -1,5 +1,6 @@
 package likelion12.puzzle.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import likelion12.puzzle.DTO.ClubDTO;
 import likelion12.puzzle.DTO.JoinClubDTO;
 import likelion12.puzzle.DTO.MemberClubDTO;
@@ -20,7 +21,7 @@ public class JoinClubController {
     private final ClubService clubService;
     private final JoinClubService joinClubService;
 
-
+    @Operation(summary = "", description = "", tags={""})
     @PostMapping("/club/add/{studentId}")
     public ClubDTO.ResponseJoinClub addJoinClub(@RequestBody ClubDTO.RequestJoinClub request, @PathVariable("studentId") String studentId) {
         Club club = clubService.findByName(request.getClubName());
@@ -31,6 +32,7 @@ public class JoinClubController {
 
 
     // 동아리원 검색
+    @Operation(summary = "", description = "", tags={""})
     @GetMapping("/member/manage")
     public ResponseEntity<List<JoinClubDTO>> CMManageSearch(@RequestParam String keyword) {
 //        if (keyword == null || keyword.trim().isEmpty()) {
@@ -45,6 +47,7 @@ public class JoinClubController {
     }
 
     // 모든 멤버의 가입된 클럽 리스트
+    @Operation(summary = "", description = "", tags={""})
     @PostMapping("/member/club-list")
     public ResponseEntity<List<MemberClubDTO.MemberJoinedClubDTO>> findJoinedClubsForAllMember(){
         return ResponseEntity.ok().body(joinClubService.findJoinedClubsForAllMember());
@@ -52,6 +55,7 @@ public class JoinClubController {
 
 
     // 특정 멤버의 가입 동아리, 미가입 동아리 리스트
+    @Operation(summary = "", description = "", tags={""})
     @PostMapping("/member/club-info")
     public ResponseEntity<MemberClubDTO.MemberJoinedUnjoinedClubDTO> findJoinedClubUnJoinedClub(@RequestBody MemberDTO.RequestMember member){
         return ResponseEntity.ok().body(joinClubService.findJoinedClubUnJoinedClub(member.getStudentId()));

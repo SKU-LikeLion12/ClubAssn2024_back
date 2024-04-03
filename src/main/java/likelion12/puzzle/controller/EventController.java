@@ -1,5 +1,6 @@
 package likelion12.puzzle.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import likelion12.puzzle.domain.Event;
 import likelion12.puzzle.service.EventService;
 import likelion12.puzzle.service.JoinEventService;
@@ -31,8 +32,8 @@ public class EventController {
 //    public ResponseEntity<List<ResponseEvent>> eventsManage() {
 //
 //    }
-
     // 이벤트 추가
+    @Operation(summary = "", description = "", tags={""})
     @PostMapping("/events/manage/add")
     public ResponseEntity<ResponseEvent> addEvent(@RequestBody RequestEvent request) throws IOException {
         Event event = eventService.addEvent(request.getName(), request.getImage(), request.getDate());

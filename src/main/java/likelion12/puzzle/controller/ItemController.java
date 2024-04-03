@@ -1,5 +1,6 @@
 package likelion12.puzzle.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import likelion12.puzzle.DTO.ItemDTO;
 import likelion12.puzzle.DTO.ItemDTO.ItemCreateRequest;
 import likelion12.puzzle.domain.Item;
@@ -22,6 +23,7 @@ public class ItemController {
 
     // 물품 추가
     @ResponseBody
+    @Operation(summary = "", description = "", tags={""})
     @PostMapping("/item") //, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Item> addItem(@RequestParam String name,
                                              @RequestParam int count,
@@ -32,6 +34,7 @@ public class ItemController {
     }
 
     // 물품 수정(이미지 안바꾸고 싶으면 안넣으면 됨)
+    @Operation(summary = "", description = "", tags={""})
     @PutMapping("/item/{itemId}")
     public ResponseEntity<ItemCreateRequest> changeItem(@PathVariable Long itemId,
                                            @RequestParam String name,
@@ -44,18 +47,21 @@ public class ItemController {
 
 
     @ResponseBody
+    @Operation(summary = "", description = "", tags={""})
     @GetMapping("/item/{itemId}")
     public ItemCreateRequest findOneItem(@PathVariable("itemId") Long itemId) {
         Item item = itemService.findById(itemId);
         return new ItemCreateRequest(item.getName(), item.getCount(), item.arrayToImage());
     }
 
+    @Operation(summary = "", description = "", tags={""})
     @DeleteMapping("/item/{itemId}")
     public void deleteItem(@PathVariable("itemId") Long itemId) {
         itemService.delete(itemId);
     }
 
     @ResponseBody
+    @Operation(summary = "", description = "", tags={""})
     @GetMapping("/items")
     public List<ItemDTO.ItemAllRequestExceptImage> findAllItemsExceptImage() {
         return itemService.findAllExceptImage(); // DTO로 쿼리 생성하기. hellospring => findUserAll() 참고

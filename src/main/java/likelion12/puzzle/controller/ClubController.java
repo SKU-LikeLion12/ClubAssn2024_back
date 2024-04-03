@@ -1,5 +1,6 @@
 package likelion12.puzzle.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import likelion12.puzzle.DTO.ClubDTO;
 import likelion12.puzzle.DTO.JoinClubDTO;
 import likelion12.puzzle.domain.Club;
@@ -27,6 +28,7 @@ public class ClubController {
     private final MemberService memberService;
     private final JoinClubService joinClubService;
 
+    @Operation(summary = "동아리 추가 메서드", description = "동아리명, 소개, 로고 필요", tags={"club"})
     @PostMapping("/club/add")
     public Club testClub(@RequestBody Club club) {
         return clubService.addNewClub(club.getName(), club.getDescription(), club.getLogo());
@@ -75,7 +77,7 @@ public class ClubController {
         }
         return clubDTOS;
     }
-
+    @Operation(summary = "", description = "", tags={""})
     @DeleteMapping("/deleteClub")
     public boolean deleteClub(@RequestBody ClubDTO.RequestJoinClub request) {
         return clubService.deleteClub(request.getClubName());
