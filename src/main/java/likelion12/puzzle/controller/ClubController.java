@@ -2,6 +2,8 @@ package likelion12.puzzle.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import likelion12.puzzle.DTO.ClubDTO;
+import likelion12.puzzle.DTO.JoinClubDTO;
 import likelion12.puzzle.domain.Club;
 import likelion12.puzzle.service.ClubService;
 import likelion12.puzzle.service.ImageUtility;
@@ -25,6 +27,7 @@ import static likelion12.puzzle.DTO.ClubDTO.ClubCreateRequest;
 public class ClubController {
     private final ClubService clubService;
 
+<<<<<<< HEAD
 //    @PostMapping("/club/add")
 //    public Club testClub(@RequestBody Club club) {
 //        return clubService.addNewClub(club.getName(), club.getDescription(), club.getLogo());
@@ -42,6 +45,12 @@ public class ClubController {
     @Operation(summary = "동아리 추가", description = "동아리명과 동아리 설명, 로고 사진 필요", tags = {"club", "add"},
             responses = {@ApiResponse(responseCode = "201", description = "생성 후 club 객체 반환"),
                     @ApiResponse(responseCode = "", description = "")})
+    @PostMapping("/club/add")
+    public Club testClub(@RequestBody Club club) {
+        return clubService.addNewClub(club.getName(), club.getDescription(), club.getLogo());
+    }
+
+    // 동아리 추가
     @PostMapping("/club") //, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Club> addClub(@RequestParam String clubName,
                                         @RequestParam String description,
@@ -92,6 +101,12 @@ public class ClubController {
             clubDTOS.add(dto);
         }
         return ResponseEntity.status(HttpStatus.OK).body(clubDTOS);
+    }
+
+    @Operation(summary = "", description = "", tags={""})
+    @DeleteMapping("/deleteClub")
+    public boolean deleteClub(@RequestBody ClubDTO.RequestJoinClub request) {
+        return clubService.deleteClub(request.getClubName());
     }
 }
 

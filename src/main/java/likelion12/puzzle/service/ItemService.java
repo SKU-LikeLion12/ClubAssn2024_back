@@ -1,5 +1,6 @@
 package likelion12.puzzle.service;
 
+import likelion12.puzzle.DTO.ItemDTO.*;
 import likelion12.puzzle.domain.Item;
 import likelion12.puzzle.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,8 +22,9 @@ public class ItemService {
     }
 
     @Transactional
-    public Item save(String name, int count, byte[] image){
-        Item item = new Item(name, count, image);
+    public Item save(String name, int count, MultipartFile image) throws IOException{
+        byte[] imageBytes = image.getBytes();
+        Item item = new Item(name, count, imageBytes);
         return itemRepository.save(item);
     }
 
@@ -35,7 +37,7 @@ public class ItemService {
         return itemRepository.findAll();
     }
 
-    public List<Item.ItemAllRequest> findAllExceptImage() {
+    public List<ItemAllRequestExceptImage> findAllExceptImage() {
         return itemRepository.findAllExceptImage();
     }
 
@@ -53,8 +55,7 @@ public class ItemService {
         if (image != null) {
             item.setImage(image);
         }
-        item.setCount(count);
-        item.setName(name);
+        item.changeItem(name, count);
         return item;
     }
 

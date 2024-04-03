@@ -1,5 +1,7 @@
 package likelion12.puzzle.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import likelion12.puzzle.DTO.ItemDTO;
 import likelion12.puzzle.DTO.ItemDTO.ItemCreateRequest;
 import likelion12.puzzle.domain.Item;
 import likelion12.puzzle.service.ItemService;
@@ -20,18 +22,19 @@ public class ItemController {
     private final ItemService itemService;
 
     // 물품 추가
+    @ResponseBody
+    @Operation(summary = "", description = "", tags={""})
     @PostMapping("/item") //, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Item> addItem(@RequestParam String name,
                                              @RequestParam int count,
                                              @RequestParam MultipartFile image)  throws IOException {
 
-        // 프론트에서 받은 이미지(이미지 그 자체) => getByte()함수로 byte배열로 변환
-        byte[] imageBytes = image.getBytes();
-        Item item = itemService.save(name, count, imageBytes);
+        Item item = itemService.save(name, count, image);
         return ResponseEntity.status(HttpStatus.CREATED).body(item);
     }
 
     // 물품 수정(이미지 안바꾸고 싶으면 안넣으면 됨)
+    @Operation(summary = "", description = "", tags={""})
     @PutMapping("/item/{itemId}")
     public ResponseEntity<ItemCreateRequest> changeItem(@PathVariable Long itemId,
                                            @RequestParam String name,
@@ -42,22 +45,25 @@ public class ItemController {
         return ResponseEntity.status(HttpStatus.CREATED).body(new ItemCreateRequest(item.getName(), item.getCount(), item.arrayToImage()));
     }
 
-
-
+    @ResponseBody
+    @Operation(summary = "", description = "", tags={""})
     @GetMapping("/item/{itemId}")
     public ItemCreateRequest findOneItem(@PathVariable("itemId") Long itemId) {
         Item item = itemService.findById(itemId);
         return new ItemCreateRequest(item.getName(), item.getCount(), item.arrayToImage());
     }
 
+    @Operation(summary = "", description = "", tags={""})
     @DeleteMapping("/item/{itemId}")
     public void deleteItem(@PathVariable("itemId") Long itemId) {
         itemService.delete(itemId);
     }
 
 
+    @ResponseBody
+    @Operation(summary = "", description = "", tags={""})
     @GetMapping("/items")
-    public List<Item.ItemAllRequest> findAllItems() {
+    public List<ItemDTO.ItemAllRequestExceptImage> findAllItemsExceptImage() {
         return itemService.findAllExceptImage(); // DTO로 쿼리 생성하기. hellospring => findUserAll() 참고
     }
 }

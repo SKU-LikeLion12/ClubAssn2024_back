@@ -1,11 +1,16 @@
 package likelion12.puzzle.repository;
 
 import jakarta.persistence.EntityManager;
+import likelion12.puzzle.DTO.MemberClubDTO;
+
+import likelion12.puzzle.domain.Club;
+import likelion12.puzzle.domain.JoinClub;
 import likelion12.puzzle.domain.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor

@@ -1,5 +1,6 @@
 package likelion12.puzzle.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import likelion12.puzzle.domain.Event;
 import likelion12.puzzle.service.EventService;
 import likelion12.puzzle.service.JoinEventService;
@@ -7,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 import static likelion12.puzzle.DTO.EventDTO.*;
@@ -30,13 +32,13 @@ public class EventController {
 //    public ResponseEntity<List<ResponseEvent>> eventsManage() {
 //
 //    }
-
     // 이벤트 추가
+    @Operation(summary = "", description = "", tags={""})
     @PostMapping("/events/manage/add")
-    public ResponseEntity<ResponseEvent> addEvent(@RequestBody RequestEvent request) {
+    public ResponseEntity<ResponseEvent> addEvent(@RequestBody RequestEvent request) throws IOException {
         Event event = eventService.addEvent(request.getName(), request.getImage(), request.getDate());
 
-        ResponseEvent responseEvent = new ResponseEvent(event.getId(), event.getName(), event.getImage(), event.getDate());
+        ResponseEvent responseEvent = new ResponseEvent(event.getId(), event.getName(), event.arrayToImage(), event.getDate());
         return ResponseEntity.ok(responseEvent);
     }
 

@@ -17,13 +17,13 @@ public class ItemDTO {
         private String image;
     }
 
-//    @Data
-//    @AllArgsConstructor
-//    public static class ItemAllRequest {
-//        private Long id;
-//        private String name;
-//        private int count;
-//    }
+    @Data
+    @AllArgsConstructor
+    public static class ItemAllRequestExceptImage {
+        private Long id;
+        private String name;
+        private int count;
+    }
 
 }
 

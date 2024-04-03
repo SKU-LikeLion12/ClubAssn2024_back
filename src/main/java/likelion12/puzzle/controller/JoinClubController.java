@@ -6,6 +6,15 @@ import likelion12.puzzle.domain.JoinClub;
 import likelion12.puzzle.service.JoinClubService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import likelion12.puzzle.DTO.ClubDTO;
+import likelion12.puzzle.DTO.JoinClubDTO;
+import likelion12.puzzle.DTO.MemberClubDTO;
+import likelion12.puzzle.DTO.MemberDTO;
+import likelion12.puzzle.domain.Club;
+import likelion12.puzzle.service.ClubService;
+import likelion12.puzzle.service.JoinClubService;
+import likelion12.puzzle.service.MemberService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +28,7 @@ import static likelion12.puzzle.DTO.JoinClubDTO.DeleteJC;
 public class JoinClubController {
 
     private final JoinClubService joinClubService;
+    private final ClubService clubService;
 
     @Operation(summary = "동아리원 추가", description = "학번, 성함, 동아리명 필요", tags = {"joinclub", "add"},
             responses = {@ApiResponse(responseCode = "201", description = "생성 성공 후 joinClub 객체 반환"),
@@ -59,4 +69,29 @@ public class JoinClubController {
             return ResponseEntity.status(HttpStatus.OK).body(results);
         }
     }
+    @Operation(summary = "", description = "", tags={""})
+    @PostMapping("/club/add/{studentId}")
+    public ClubDTO.ResponseJoinClub addJoinClub(@RequestBody ClubDTO.RequestJoinClub request, @PathVariable("studentId") String studentId) {
+        Club club = clubService.findByName(request.getClubName());
+        joinClubService.saveNewMember(studentId, club);
+
+        return new ClubDTO.ResponseJoinClub(studentId, club.getName());
+    }
+
+
+    // 모든 멤버의 가입된 클럽 리스트
+    @Operation(summary = "", description = "", tags={""})
+    @PostMapping("/member/club-list")
+    public ResponseEntity<List<MemberClubDTO.MemberJoinedClubDTO>> findJoinedClubsForAllMember(){
+        return ResponseEntity.ok().body(joinClubService.findJoinedClubsForAllMember());
+    }
+
+
+    // 특정 멤버의 가입 동아리, 미가입 동아리 리스트
+    @Operation(summary = "", description = "", tags={""})
+    @PostMapping("/member/club-info")
+    public ResponseEntity<MemberClubDTO.MemberJoinedUnjoinedClubDTO> findJoinedClubUnJoinedClub(@RequestBody MemberDTO.RequestMember member){
+        return ResponseEntity.ok().body(joinClubService.findJoinedClubUnJoinedClub(member.getStudentId()));
+    }
+
 }
