@@ -74,7 +74,6 @@ public class ClubController {
         return ResponseEntity.status(HttpStatus.CREATED).body(new ClubUpdateRequest(club.getName(), club.getDescription(), club.arrayToImage()));
     }
 
-
 //    @Operation(summary = "", description = "", tags = {"club"},
 //            responses = {@ApiResponse(responseCode = "200", description = ""),
 //                    @ApiResponse(responseCode = "", description = "")})
