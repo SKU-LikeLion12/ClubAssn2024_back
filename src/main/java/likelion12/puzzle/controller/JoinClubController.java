@@ -87,7 +87,7 @@ public class JoinClubController {
 
     // 특정 멤버의 가입 동아리, 미가입 동아리 리스트
     @Operation(summary = "url에 입력한 학번을 가진 학생이 가입한 동아리와 가입하지 않은 동아리 반환 API", description = "url에 학번 입력", tags={"joinclub"})
-    @GetMapping("/member/club-info/{studentId}")
+    @GetMapping("/member/club-info")
     public ResponseEntity<MemberClubDTO.MemberJoinedUnjoinedClubDTO> findJoinedClubUnJoinedClub(@PathVariable("studentId") String studentId){
         return ResponseEntity.ok().body(joinClubService.findJoinedClubUnJoinedClub(studentId));
     }

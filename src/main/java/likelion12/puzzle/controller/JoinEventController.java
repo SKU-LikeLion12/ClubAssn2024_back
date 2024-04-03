@@ -16,31 +16,31 @@ public class JoinEventController {
     public final JoinEventService joinEventService;
 
     // 회원 퍼즐 조각 관리 페이지
-    @PostMapping("/events/manage/{studentId}")
-    public ResponseEntity<List<ResponseJoinEvent>> manageEvents(@PathVariable("studentId") String studentId) {
-        List<ResponseJoinEvent> responsePuzzles = joinEventService.findAllJoinEvents(studentId);
+    @PostMapping("/events/manage")
+    public ResponseEntity<List<ResponseJoinEvent>> manageEvents(@RequestBody RequestMember request) {
+        List<ResponseJoinEvent> responsePuzzles = joinEventService.findAllJoinEvents(request.getStudentId());
 
         return ResponseEntity.ok(responsePuzzles);
     }
 
     // 회원 퍼즐 조각 삭제 페이지(기본키를 받아오나? 이벤트 이름만 받나?)
-    @DeleteMapping("/events/manage/{studentId}")
-    public void deleteEvents(@PathVariable("studentId") String studentId, @RequestBody RequestJoinEventForDelete request) {
-        joinEventService.removeJoinEvent(studentId, request.getId());
+    @DeleteMapping("/events/managex")
+    public void deleteEvents(@RequestBody RequestJoinEventForDelete request) {
+        joinEventService.removeJoinEvent(request.getStudentId(), request.getId());
     }
 
     // 회원 퍼즐 조각 추가 페이지(참여 안한거만 나오게)
-    @GetMapping("/events/manage/{studentId}/add")
-    public ResponseEntity<List<ResponsePuzzleForNotPart>> pageForAddEvent(@PathVariable("studentId") String studentId) {
-        List<ResponsePuzzleForNotPart> responseEvents = joinEventService.findNotPartEventsExceptImage(studentId);
+    @GetMapping("/events/manage")
+    public ResponseEntity<List<ResponsePuzzleForNotPart>> pageForAddEvent(@RequestBody RequestMember request) {
+        List<ResponsePuzzleForNotPart> responseEvents = joinEventService.findNotPartEventsExceptImage(request.getStudentId());
 
         return ResponseEntity.ok(responseEvents);
     }
 
     // 회원 퍼즐 조각 추가 +
-    @PostMapping("/events/manage/{studentId}/add")
-    public ResponseEntity<?> addJoinEvent(@PathVariable("studentId") String studentId, @RequestBody RequestJoinEvent request) {
-        joinEventService.saveJoinEvent(studentId, request.getId());
+    @PostMapping("/events/manage/add")
+    public ResponseEntity<?> addJoinEvent(@RequestBody RequestJoinEvent request) {
+        joinEventService.saveJoinEvent(request.getStudentId(), request.getId());
 
         return ResponseEntity.ok().build();
     }
