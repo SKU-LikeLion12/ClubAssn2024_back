@@ -1,6 +1,7 @@
 package likelion12.puzzle.controller.admin;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import likelion12.puzzle.DTO.ItemDTO;
 import likelion12.puzzle.DTO.ItemDTO.ItemCreateRequest;
 import likelion12.puzzle.domain.Item;
@@ -24,7 +25,9 @@ public class ItemController {
 
     // 물품 추가
     @ResponseBody
-    @Operation(summary = "관리자가 대여 물품 추가하는 API", description = "물품명, 물품 개수, 물품 이미지 삽입", tags={"item", "add"})
+    @Operation(summary = "관리자가 대여 물품 추가하는 API", description = "물품명, 물품 개수, 물품 이미지 삽입", tags={"item", "add"},
+            responses = {@ApiResponse(responseCode = "201", description = ""),
+                    @ApiResponse(responseCode = "", description = "")})
     @PostMapping("") //, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Item> addItem(@RequestParam String name,
                                              @RequestParam int count,

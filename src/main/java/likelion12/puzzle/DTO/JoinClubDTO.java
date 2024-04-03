@@ -19,6 +19,13 @@ public class JoinClubDTO {
     }
 
     @Data
+    public static class ResponseJC {
+        private String studentId;
+        private String studentName;
+        private String clubName;
+    }
+
+    @Data
     public static class DeleteJC {
         private String memberId;
         private String clubName;
