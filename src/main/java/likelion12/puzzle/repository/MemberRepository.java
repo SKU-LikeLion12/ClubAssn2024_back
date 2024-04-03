@@ -18,10 +18,8 @@ public class MemberRepository {
     private final EntityManager em;
 
     // 새로운 학생 추가
-    public Member addNewMember(Member member) {
+    public void addNewMember(Member member) {
         em.persist(member);
-
-        return member;
     }
 
     // 기본키로 조회

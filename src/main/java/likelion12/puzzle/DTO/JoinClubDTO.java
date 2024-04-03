@@ -8,12 +8,10 @@ public class JoinClubDTO {
     @Data
     public static class CreateJC {
         private String studentId;
-        private String studentName;
         private String clubName;
 
-        public CreateJC(String studentId, String studentName, String clubName) {
+        public CreateJC(String studentId, String clubName) {
             this.studentId = studentId;
-            this.studentName = studentName;
             this.clubName = clubName;
         }
     }
@@ -23,5 +21,4 @@ public class JoinClubDTO {
         private String memberId;
         private String clubName;
     }
-
-    }
+}

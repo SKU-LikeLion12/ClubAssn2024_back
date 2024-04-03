@@ -32,9 +32,10 @@ public class JoinClubController {
             responses = {@ApiResponse(responseCode = "201", description = "생성 성공 후 joinClub 객체 반환"),
                     @ApiResponse(responseCode = "", description = "")})
     @PostMapping("/add")
-    public ResponseEntity<JoinClub> addNewMember(@RequestBody CreateJC request) {
-        JoinClub joinClub = joinClubService.saveNewMember(request.getStudentId(), request.getStudentName(), request.getClubName());
-        return ResponseEntity.status(HttpStatus.CREATED).body(joinClub);
+    public ResponseEntity<?> addNewMember(@RequestBody CreateJC request) {
+        joinClubService.saveNewMember(request.getStudentId(), request.getClubName());
+
+        return ResponseEntity.status(HttpStatus.CREATED).build();
 //        try {
 //            JoinClub joinClub = joinClubService.saveNewMember(request.getStudentId(), request.getStudentName(), request.getClubName());
 //            return ResponseEntity.status(HttpStatus.CREATED).body(joinClub);
@@ -89,5 +90,4 @@ public class JoinClubController {
     public ResponseEntity<MemberClubDTO.MemberJoinedUnjoinedClubDTO> findJoinedClubUnJoinedClub(@RequestBody JoinEventDTO.RequestMember request){
         return ResponseEntity.ok().body(joinClubService.findJoinedClubUnJoinedClub(request.getStudentId()));
     }
-
 }

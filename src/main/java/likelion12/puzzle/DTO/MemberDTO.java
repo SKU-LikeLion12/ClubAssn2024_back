@@ -2,9 +2,12 @@ package likelion12.puzzle.DTO;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import likelion12.puzzle.domain.Member;
 import likelion12.puzzle.domain.RoleType;
+import likelion12.puzzle.service.ImageUtility;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 public class MemberDTO {
     @Data
@@ -28,6 +31,26 @@ public class MemberDTO {
     }
 
     @Data
+    public static class RequestAgree {
+        private String studentId;
+        private String name;
+        private Boolean isAgree;
+    }
+
+    @Data
+    public static class ResponseMain {
+        private String name;
+        private String clubName;
+        private String logo;
+
+        public ResponseMain(Member member) {
+            this.name = member.getName();
+            this.clubName = member.getIconClub().getName();
+            this.logo = member.getIconClub().arrayToImage();
+        }
+    }
+
+    @Data
     public static class ResponseLogin {
         private String accessToken;
 
@@ -41,21 +64,18 @@ public class MemberDTO {
         private String studentId;
         private String name;
         private RoleType role;
-        private String clubName;
     }
 
     @Data
     public static class AddMemberResponse {
         private String studentId;
         private String name;
-        private String clubName;
         private RoleType role;
 
-        public AddMemberResponse(String studentId, String name, RoleType role, String clubName) {
+        public AddMemberResponse(String studentId, String name, RoleType role) {
             this.studentId = studentId;
             this.name = name;
             this.role = role;
-            this.clubName = clubName;
         }
     }
 }

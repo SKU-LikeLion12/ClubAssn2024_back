@@ -1,5 +1,6 @@
 package likelion12.puzzle.service;
 
+import jakarta.servlet.http.HttpServletRequest;
 import likelion12.puzzle.domain.Club;
 import likelion12.puzzle.domain.Member;
 import likelion12.puzzle.exception.DuplicatedStudentIdException;
@@ -25,16 +26,21 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final JwtUtility jwtUtility;
 
+    // 토큰으로 멤버 추출
+    public Member tokenToMember(HttpServletRequest request) {
+        return memberRepository.findByStudentId(jwtUtility.getStudentId(jwtUtility.resolveToken(request)));
+    }
+
     // 로그인
     public ResponseLogin login(RequestMember request) {
         Member member = memberRepository.findByStudentId(request.getStudentId());
 
         if (member == null) {
-            throw new MemberLoginException("없는 학번입니다.", HttpStatus.BAD_REQUEST);
+            throw new MemberLoginException("동아리원만 이용 가능합니다.\n학번과 이름을 확인해주세요.", HttpStatus.BAD_REQUEST);
         }
 
         if (!Objects.equals(member.getName(), request.getName())) {
-            throw new MemberLoginException("이름이 틀렸습니다.", HttpStatus.BAD_REQUEST);
+            throw new MemberLoginException("동아리원만 이용 가능합니다.\n학번과 이름을 확인해주세요.", HttpStatus.BAD_REQUEST);
         }
 
         if (!member.isAgree()) {
@@ -44,13 +50,20 @@ public class MemberService {
         }
     }
 
+    // 동의 체크
+    @Transactional
+    public void updateAgree(RequestMember request) {
+        Member member = memberRepository.findByStudentId(request.getStudentId());
+        member.updateIsAgree();
+    }
+
     // 새로운 학생 추가
     @Transactional
-    public Member addNewMember(String studentId, String name, RoleType role, String clubName) {
-        Club iconClub = clubService.findByName(clubName);
+    public Member addNewMember(String studentId, String name, RoleType role) {
+//        Club iconClub = clubService.findByName(clubName);
         Member alreadyExistsMember = memberRepository.findByStudentId(studentId);
         if (alreadyExistsMember == null) {
-            Member member = new Member(studentId, name, role, iconClub);
+            Member member = new Member(studentId, name, role);
             memberRepository.addNewMember(member);
 
             return member;
