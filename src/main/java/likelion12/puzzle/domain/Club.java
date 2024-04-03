@@ -1,6 +1,7 @@
 package likelion12.puzzle.domain;
 
 import jakarta.persistence.*;
+import likelion12.puzzle.service.ImageUtility;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,5 +27,9 @@ public class Club {
         this.name = clubName;
         this.description = description;
         this.logo = logo;
+    }
+
+    public String arrayToImage() {
+        return ImageUtility.encodeImage(this.logo);
     }
 }

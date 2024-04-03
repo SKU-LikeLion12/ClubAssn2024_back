@@ -1,8 +1,8 @@
 package likelion12.puzzle.repository;
 
 import jakarta.persistence.EntityManager;
-import likelion12.puzzle.DTO.EventDTO.ResponseJoinEvent;
-import likelion12.puzzle.DTO.EventDTO.ResponsePuzzleForNotPart;
+import likelion12.puzzle.DTO.EventDTO.*;
+import likelion12.puzzle.DTO.JoinEventDTO.*;
 import likelion12.puzzle.domain.Event;
 import likelion12.puzzle.domain.JoinEvent;
 import likelion12.puzzle.domain.Member;
@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+
+
 
 @Repository
 @RequiredArgsConstructor

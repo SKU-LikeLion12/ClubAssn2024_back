@@ -1,14 +1,11 @@
 package likelion12.puzzle.repository;
 
 import jakarta.persistence.EntityManager;
-import likelion12.puzzle.DTO.EventDTO;
-import likelion12.puzzle.DTO.ItemDTO;
 import likelion12.puzzle.domain.Event;
 import likelion12.puzzle.domain.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static likelion12.puzzle.DTO.EventDTO.*;
@@ -56,7 +53,9 @@ public class EventRepository {
     }
 
     public List<EventAllRequestExceptImage> findAllExceptImage() {
-        return em.createQuery("SELECT new EventAllRequestExceptImage(e.id, e.name, e.date) FROM Event e", EventAllRequestExceptImage.class)
+
+        return em.createQuery("SELECT new EventAllRequestExceptImage(e.id, e.name, e.date) " +
+                    "FROM Event e", EventAllRequestExceptImage.class)
                 .getResultList();
     }
 }

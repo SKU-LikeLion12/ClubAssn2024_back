@@ -30,7 +30,7 @@ public class JoinClubController {
     private final JoinClubService joinClubService;
     private final ClubService clubService;
 
-    @Operation(summary = "동아리원 추가", description = "학번, 성함, 동아리명 필요", tags = {"joinclub", "add"},
+    @Operation(summary = "동아리원 추가", description = "학번, 성함, 동아리명 필요", tags = {"clubMember-manage"},
             responses = {@ApiResponse(responseCode = "201", description = "생성 성공 후 joinClub 객체 반환"),
                     @ApiResponse(responseCode = "", description = "")})
     @PostMapping("/member/manage/add")
@@ -45,7 +45,7 @@ public class JoinClubController {
 //        }
     }
 
-    @Operation(summary = "동아리원 삭제", description = "학번, 동아리 이름 필요", tags = {"joinclub", "delete"},
+    @Operation(summary = "동아리원 삭제", description = "학번, 동아리 이름 필요", tags = {"clubMember-manage"},
             responses = {@ApiResponse(responseCode = "204", description = "삭제 성공 후 삭제 완료 메시지 반환"),
                     @ApiResponse(responseCode = "", description = "")})
     @DeleteMapping("/member/manage")
@@ -54,7 +54,7 @@ public class JoinClubController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("삭제 완료");
     }
 
-    @Operation(summary = "동아리원 검색", description = "학번, 이름, 동아리를 검색하면 알맞은 동아리원 정보가 나옴", tags = {"joinclub", "get"},
+    @Operation(summary = "동아리원 검색", description = "학번, 이름, 동아리를 검색하면 알맞은 동아리원 정보가 나옴", tags = {"clubMember-manage"},
             responses = {@ApiResponse(responseCode = "200", description = "검색 성공 후 학번, 성함, 동아리명 반환"),
                     @ApiResponse(responseCode = "204", description = "없는 정보를 입력하면 요청에 대해 보내줄 콘텐츠가 없음")})
     @GetMapping("/member/manage")
