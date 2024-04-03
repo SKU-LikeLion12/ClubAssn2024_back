@@ -4,6 +4,7 @@ import likelion12.puzzle.DTO.MemberDTO.*;
 import likelion12.puzzle.domain.Club;
 import likelion12.puzzle.domain.Member;
 import likelion12.puzzle.domain.RoleType;
+import likelion12.puzzle.exception.MemberExistException;
 import likelion12.puzzle.exception.MemberLoginException;
 import likelion12.puzzle.repository.MemberRepository;
 import likelion12.puzzle.security.JwtUtility;
@@ -46,10 +47,14 @@ public class MemberService {
     @Transactional
     public Member addNewMember(String studentId, String name, RoleType role, String clubName) {
         Club iconClub = clubService.findByName(clubName);
-        Member member = new Member(studentId, name, role, iconClub);
-        memberRepository.addNewMember(member);
+        Member alreadyExistsMember = memberRepository.findByStudentId(studentId);
+        if (alreadyExistsMember == null) {
+            Member member = new Member(studentId, name, role, iconClub);
+            memberRepository.addNewMember(member);
 
-        return member;
+            return member;
+        }
+        throw new MemberExistException("이미 사용중인 아이디입니다.", HttpStatus.BAD_REQUEST);
     }
 
     // 테스트용
