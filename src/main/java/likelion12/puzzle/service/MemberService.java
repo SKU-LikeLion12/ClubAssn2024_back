@@ -18,8 +18,6 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class MemberService {
     private final MemberRepository memberRepository;
-    private final JoinClubRepository joinClubRepository;
-    private final JoinClubService joinClubService;
 
     // 첫 화면 로그인
     public Member login(String studentId, String name) {
@@ -86,14 +84,5 @@ public class MemberService {
         Member member = findByStudentId(studentId);
 
         return memberRepository.deleteMember(member);
-    }
-
-    // 로그인을 위해서 member조회할 때 iconClub이 null이면 이 함수 사용할 것.
-    @Transactional
-    public void setRandomIconClub(String studentId){
-        List<Club> joinedClubs = joinClubService.findByStudentIdClub(studentId);
-        if (joinedClubs.isEmpty()){
-            throw new NoJoinedClubException("가입된 club 없음.");
-        }
     }
 }

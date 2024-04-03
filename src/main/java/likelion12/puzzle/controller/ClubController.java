@@ -25,8 +25,6 @@ import static likelion12.puzzle.DTO.ClubDTO.*;
 @RequiredArgsConstructor
 public class ClubController {
     private final ClubService clubService;
-    private final MemberService memberService;
-    private final JoinClubService joinClubService;
 
     @Operation(summary = "동아리 추가 메서드", description = "동아리명, 소개, 로고 필요", tags={"club"})
     @PostMapping("/club/add")
