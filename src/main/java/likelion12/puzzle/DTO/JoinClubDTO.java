@@ -17,9 +17,8 @@ public class JoinClubDTO {
         @Schema(description = "동아리 이름", example = "멋쟁이사자처럼")
         private String clubName;
 
-        public CreateJC(String studentId, String studentName, String clubName) {
+        public CreateJC(String studentId, String clubName) {
             this.studentId = studentId;
-            this.studentName = studentName;
             this.clubName = clubName;
         }
     }
@@ -32,5 +31,4 @@ public class JoinClubDTO {
         @Schema(description = "동아리이름", example = "멋쟁이사자처럼")
         private String clubName;
     }
-
-    }
+}

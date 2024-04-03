@@ -23,16 +23,6 @@ public class JoinClubService {
     private final MemberService memberService;
     private final ClubService clubService;
 
-    // 동아리에 새로운 학생 추가
-    @Transactional
-    public JoinClub saveNewMember(String studentId, String studentName, String clubName) {
-        Club iconClub = clubService.findByName(clubName);
-        Member member = new Member(studentId, studentName, iconClub);
-        JoinClub joinClub = new JoinClub(iconClub, member);
-
-        return joinClubRepository.saveNewMemberForClub(joinClub);
-    }
-
     // 기존 학생, 기존 동아리
     @Transactional
     public JoinClub saveNewMember(String studentId, String clubName) {

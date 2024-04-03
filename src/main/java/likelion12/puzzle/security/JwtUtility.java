@@ -48,6 +48,8 @@ public class JwtUtility {
         return claims.getSubject();
     }
 
+    //
+
     // 토큰 추출
     public String resolveToken(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");

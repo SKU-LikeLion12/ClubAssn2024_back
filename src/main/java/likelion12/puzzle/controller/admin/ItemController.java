@@ -25,12 +25,12 @@ public class ItemController {
     // 물품 추가
     @Operation(summary = "관리자가 대여 물품 추가하는 API", description = "물품명, 물품 개수, 물품 이미지 삽입", tags={"admin-item"})
     @PostMapping("") //, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Item> addItem(@RequestParam String name,
+    public ResponseEntity<?> addItem(@RequestParam String name,
                                              @RequestParam int count,
                                              @RequestParam MultipartFile image)  throws IOException {
 
         Item item = itemService.save(name, count, image);
-        return ResponseEntity.status(HttpStatus.CREATED).body(item);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     // 물품 수정(이미지 안바꾸고 싶으면 안넣으면 됨)
