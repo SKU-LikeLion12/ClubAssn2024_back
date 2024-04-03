@@ -3,10 +3,16 @@ package likelion12.puzzle.controller.admin;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import likelion12.puzzle.DTO.*;
+import likelion12.puzzle.DTO.ClubDTO;
+import likelion12.puzzle.DTO.MemberClubDTO;
 import likelion12.puzzle.domain.JoinClub;
 import likelion12.puzzle.service.JoinClubService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import likelion12.puzzle.DTO.ClubDTO.*;
+import likelion12.puzzle.DTO.JoinClubDTO;
+import likelion12.puzzle.DTO.MemberClubDTO.*;
+import likelion12.puzzle.DTO.MemberDTO;
 import likelion12.puzzle.domain.Club;
 import likelion12.puzzle.service.ClubService;
 import likelion12.puzzle.service.JoinClubService;
@@ -88,6 +94,7 @@ public class JoinClubController {
     @GetMapping("/info")
     public ResponseEntity<MemberClubDTO.MemberJoinedUnjoinedClubDTO> findJoinedClubUnJoinedClub(@RequestBody JoinEventDTO.RequestMember request){
         return ResponseEntity.ok().body(joinClubService.findJoinedClubUnJoinedClub(request.getStudentId()));
+
     }
 
 }

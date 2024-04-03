@@ -2,7 +2,7 @@ package likelion12.puzzle.controller.admin;
 
 import io.swagger.v3.oas.annotations.Operation;
 import likelion12.puzzle.DTO.ItemDTO;
-import likelion12.puzzle.DTO.ItemDTO.ItemCreateRequest;
+import likelion12.puzzle.DTO.ItemDTO.*;
 import likelion12.puzzle.domain.Item;
 import likelion12.puzzle.service.ItemService;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +31,7 @@ public class ItemController {
                                              @RequestParam MultipartFile image)  throws IOException {
 
         Item item = itemService.save(name, count, image);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(item);
     }
 
@@ -38,21 +39,21 @@ public class ItemController {
     @Operation(summary = "관리자가 대여 물품 수정하는 API",
             description = "물품id, 수정하고자하는 이름, 사진 입력. 넣지 않은 항목은 원래 값으로 들어감. 개수는 입력해줘야함", tags={"item", "update"})
     @PutMapping("/{itemId}")
-    public ResponseEntity<ItemCreateRequest> changeItem(@PathVariable Long itemId,
-                                           @RequestParam String name,
-                                           @RequestParam int count,
-                                           @RequestParam(required = false) MultipartFile image)  throws IOException  {
+    public ResponseEntity<ItemCreateResponse> changeItem(@PathVariable Long itemId,
+                                                         @RequestParam String name,
+                                                         @RequestParam int count,
+                                                         @RequestParam(required = false) MultipartFile image)  throws IOException  {
 
         Item item = itemService.changeItem(itemId, name, count, image);
-        return ResponseEntity.status(HttpStatus.CREATED).body(new ItemCreateRequest(item.getName(), item.getCount(), item.arrayToImage()));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ItemCreateResponse(item.getName(), item.getCount(), item.arrayToImage()));
     }
 
     @ResponseBody
     @Operation(summary = "물품 1개 정보 확인하는 API", description = "물품의 id입력", tags={"item"})
     @GetMapping("/{itemId}")
-    public ItemCreateRequest findOneItem(@PathVariable("itemId") Long itemId) {
+    public ItemCreateResponse findOneItem(@PathVariable("itemId") Long itemId) {
         Item item = itemService.findById(itemId);
-        return new ItemCreateRequest(item.getName(), item.getCount(), item.arrayToImage());
+        return new ItemCreateResponse(item.getName(), item.getCount(), item.arrayToImage());
     }
 
     @Operation(summary = "관리자가 대여 물품 삭제하는 API", description = "물품의 id입력", tags={"item", "delete"})

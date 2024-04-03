@@ -40,7 +40,7 @@ public class EventService {
         if (poster != null) {
             event.setPoster(poster);
         }
-        event.changeEvent(name, date);
+        event.changeEvent((name != null ? name : event.getName()), (date != null ? date : event.getDate()));
         return event;
     }
 
