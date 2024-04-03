@@ -27,7 +27,7 @@ import static likelion12.puzzle.DTO.ClubDTO.ClubCreateRequest;
 public class ClubController {
     private final ClubService clubService;
 
-<<<<<<< HEAD
+
 //    @PostMapping("/club/add")
 //    public Club testClub(@RequestBody Club club) {
 //        return clubService.addNewClub(club.getName(), club.getDescription(), club.getLogo());

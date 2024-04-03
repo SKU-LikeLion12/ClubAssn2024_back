@@ -21,6 +21,7 @@ import static likelion12.puzzle.DTO.JoinClubDTO.*;
 public class JoinClubService {
     private final JoinClubRepository joinClubRepository;
     private final MemberService memberService;
+    private final ClubService clubService;
 
     // 동아리에 새로운 학생 추가
     @Transactional
