@@ -54,10 +54,11 @@ public class ClubController {
             responses = {@ApiResponse(responseCode = "200", description = "생성"),
                     @ApiResponse(responseCode = "", description = "")})
     @PostMapping("/club/manage/add") //, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<ResponseClub> addClub(@RequestParam ClubCreateRequest request)  throws IOException {
-        Club club = clubService.addNewClub(request.getName(), request.getDescription(), request.getLogo());
-        ResponseClub responseClub = new ResponseClub(club.getId(), club.getName(), club.getDescription(), club.arrayToImage());
-        return ResponseEntity.ok(responseClub);
+    public ResponseEntity<Club> addClub(@RequestParam String clubName,
+                                        @RequestParam String description,
+                                        @RequestParam(required = false) MultipartFile logo)  throws IOException {
+        Club club = clubService.addNewClub(clubName, description, logo);
+        return ResponseEntity.status(HttpStatus.CREATED).body(club);
     }
 
     // 동아리 수정

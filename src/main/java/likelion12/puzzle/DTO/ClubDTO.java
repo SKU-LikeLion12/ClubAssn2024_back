@@ -47,7 +47,7 @@ public class ClubDTO {
         @NotEmpty
         private String description;
         @NotEmpty
-        private MultipartFile logo;
+        private String logo;
     }
 
     @Data

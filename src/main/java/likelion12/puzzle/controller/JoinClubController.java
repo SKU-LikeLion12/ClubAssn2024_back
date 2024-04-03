@@ -50,7 +50,7 @@ public class JoinClubController {
                     @ApiResponse(responseCode = "", description = "")})
     @DeleteMapping("/member/manage")
     public ResponseEntity<String> deleteClubMember(@RequestBody DeleteJC request) {
-        joinClubService.deleteJoinClub(request.getStudentId(), request.getClubName());
+        joinClubService.deleteJoinClub(request.getMemberId(), request.getClubName());
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("삭제 완료");
     }
 
