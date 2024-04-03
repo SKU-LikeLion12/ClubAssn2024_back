@@ -33,7 +33,7 @@ public class Member {
     private boolean isAgree = false;
 
     @Enumerated(EnumType.STRING)
-    private RoleType roleType;
+    private RoleType role = RoleType.ROLE_MEMBER;
 
     public Member(String studentId, String name, Club iconClub) {
         this.studentId = studentId;
@@ -44,6 +44,12 @@ public class Member {
     public Member(String studentId, String name) {
         this.studentId = studentId;
         this.name = name;
+    }
+
+    public Member(String studentId, String name, RoleType role) {
+        this.studentId = studentId;
+        this.name = name;
+        this.role = role;
     }
 
     public void updateIconClub(Club newIconClub) {

@@ -40,7 +40,6 @@ public class ClubController {
     }
 
     // 동아리 추가
-
     @PostMapping("/club") //, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Club> addClub(@RequestParam String clubName,
                                         @RequestParam String description,

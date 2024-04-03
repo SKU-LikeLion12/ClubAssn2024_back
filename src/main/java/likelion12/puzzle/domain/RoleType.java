@@ -1,5 +1,5 @@
 package likelion12.puzzle.domain;
 
 public enum RoleType {
-    ADMIN, MEMBER
+    ROLE_ADMIN, ROLE_MEMBER
 }

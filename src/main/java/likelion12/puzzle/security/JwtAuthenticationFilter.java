@@ -5,10 +5,12 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import likelion12.puzzle.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -21,6 +23,7 @@ import java.util.List;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtUtility jwtUtility;
+    private final CustomUserDetailsService customUserDetailsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -33,16 +36,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                 if (claims != null) {
                     // 유효한지 검사부터
-                    String username = claims.getSubject();
+                    String studentId = claims.getSubject();
 
-                    // 권한 부여
-                    List<SimpleGrantedAuthority> authorities = Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN"));
+                    UserDetails userDetails = customUserDetailsService.loadUserByUsername(studentId);
 
                     // 인증 객체 생성(매번 생성하는거 맞음)
                     UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                            username, null, authorities);
+                            userDetails, null, userDetails.getAuthorities());
 
-                    // SecurityContext 에 인증 객체 저장
+                    // SecurityContext에 인증 객체 저장
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
             } catch (Exception e) {

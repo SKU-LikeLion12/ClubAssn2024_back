@@ -40,13 +40,13 @@ public class EventController {
         return ResponseEntity.ok(responseEvent);
     }
 
-//    // 퍼즐 조각 수정 페이지
+    // 퍼즐 조각 수정 페이지
 //    @GetMapping("/events/manage/update")
 //    public ResponseEntity<ResponseEvent> eventUpdatePage(@RequestBody RequestEvent request) {
 //
 //    }
 //
-//    // 퍼즐 조각 수정 기능
+    // 퍼즐 조각 수정 기능
 //    @PostMapping("/events/manage/update")
 //    public ResponseEntity<ResponseEvent> eventUpdatePage(@RequestBody RequestEvent request) {
 //
