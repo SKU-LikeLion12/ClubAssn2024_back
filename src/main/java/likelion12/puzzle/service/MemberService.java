@@ -1,55 +1,75 @@
 package likelion12.puzzle.service;
 
-import likelion12.puzzle.DTO.MemberClubDTO;
 import likelion12.puzzle.domain.Club;
 import likelion12.puzzle.domain.Member;
 import likelion12.puzzle.exception.DuplicatedStudentIdException;
-import likelion12.puzzle.exception.NoJoinedClubException;
-import likelion12.puzzle.repository.JoinClubRepository;
+import likelion12.puzzle.DTO.MemberDTO.*;
+import likelion12.puzzle.domain.RoleType;
+import likelion12.puzzle.exception.MemberExistException;
+import likelion12.puzzle.exception.MemberLoginException;
 import likelion12.puzzle.repository.MemberRepository;
+import likelion12.puzzle.security.JwtUtility;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class MemberService {
+    private final ClubService clubService;
     private final MemberRepository memberRepository;
+    private final JwtUtility jwtUtility;
 
-    // 첫 화면 로그인
-    public Member login(String studentId, String name) {
-        Member member = findByStudentId(studentId);
+    // 로그인
+    public ResponseLogin login(RequestMember request) {
+        Member member = memberRepository.findByStudentId(request.getStudentId());
 
-        if (member.getName().equals(name)) {
-            return member;
+        if (member == null) {
+            throw new MemberLoginException("없는 학번입니다.", HttpStatus.BAD_REQUEST);
+        }
+
+        if (!Objects.equals(member.getName(), request.getName())) {
+            throw new MemberLoginException("이름이 틀렸습니다.", HttpStatus.BAD_REQUEST);
+        }
+
+        if (!member.isAgree()) {
+            throw new MemberLoginException("개인정보 동의 필요", HttpStatus.UNAUTHORIZED);
         } else {
-            return null;
+            return new ResponseLogin(jwtUtility.generateToken(member.getStudentId()));
         }
     }
 
     // 새로운 학생 추가
     @Transactional
-    public Member addNewMember(String studentId, String name, Club iconClub) {
-        Member member = new Member(studentId, name, iconClub);
-        memberRepository.addNewMember(member);
+    public Member addNewMember(String studentId, String name, RoleType role, String clubName) {
+        Club iconClub = clubService.findByName(clubName);
+        Member alreadyExistsMember = memberRepository.findByStudentId(studentId);
+        if (alreadyExistsMember == null) {
+            Member member = new Member(studentId, name, role, iconClub);
+            memberRepository.addNewMember(member);
 
-        return member;
+            return member;
+        }
+        throw new MemberExistException("이미 사용중인 아이디입니다.", HttpStatus.BAD_REQUEST);
     }
 
     // 테스트용
-    @Transactional
-    public Member addNewMember(String studentId, String name) {
-        if (isDuplicated(studentId)){
-            throw new DuplicatedStudentIdException(studentId + "번은 이미 가입된 학번입니다.");
-        }
-        Member member = new Member(studentId, name);
-        memberRepository.addNewMember(member);
+//    @Transactional
+//    public Member addNewMember(String studentId, String name) {
+//        if (isDuplicated(studentId)){
+//            throw new DuplicatedStudentIdException(studentId + "번은 이미 가입된 학번입니다.");
+//        }
+//        Member member = new Member(studentId, name);
+//        memberRepository.addNewMember(member);
+//
+//        return member;
+//    }
 
-        return member;
-    }
 
     public boolean isDuplicated(String studentId){
         Member member = memberRepository.findByStudentId(studentId);
@@ -57,7 +77,9 @@ public class MemberService {
     }
 
     // 대표 동아리 변경
-    public Member updateIconClub(Member member, Club newIconClub) {
+    public Member updateIconClub(String studentId, String clubName) {
+        Member member = memberRepository.findByStudentId(studentId);
+        Club newIconClub = clubService.findByName(clubName);
         member.updateIconClub(newIconClub);
 
         return member;

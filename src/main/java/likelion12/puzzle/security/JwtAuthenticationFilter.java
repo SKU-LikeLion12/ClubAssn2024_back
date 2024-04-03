@@ -5,10 +5,12 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import likelion12.puzzle.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -21,27 +23,26 @@ import java.util.List;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtUtility jwtUtility;
-
-
+    private final CustomUserDetailsService customUserDetailsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        String token = request.getHeader("Authorization");
-        if (token != null && token.startsWith("Bearer ")) {
-//            token = token.substring(7);
+        String token = jwtUtility.resolveToken(request);
+
+        if (token != null) {
             try {
                 Claims claims = jwtUtility.validateToken(token);
-                if (claims != null) {
-                    //유효한지 검사부터
-                    String username = claims.getSubject();
 
-                    // 권한 부여
-                    List<SimpleGrantedAuthority> authorities = Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN"));
+                if (claims != null) {
+                    // 유효한지 검사부터
+                    String studentId = claims.getSubject();
+
+                    UserDetails userDetails = customUserDetailsService.loadUserByUsername(studentId);
 
                     // 인증 객체 생성(매번 생성하는거 맞음)
                     UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                            username, null, authorities);
+                            userDetails, null, userDetails.getAuthorities());
 
                     // SecurityContext에 인증 객체 저장
                     SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -54,7 +55,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
         }
 
-        filterChain.doFilter(request, response); // 다음 필터로 요청과 응답을 전달
+        filterChain.doFilter(request, response);    // 다음 필터로 요청과 응답을 전달
     }
-
 }
