@@ -1,6 +1,7 @@
 package likelion12.puzzle.DTO;
 
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,7 +35,10 @@ public class EventDTO {
 
     @Data
     public static class ResponsePuzzleForNotPart {
+        @Schema(description = "이벤트 번호", example = "1")
         private Long id;
+
+        @Schema(description = "이벤트 이름", example = "동아리페스티벌")
         private String name;
 
         public ResponsePuzzleForNotPart(Long id, String name) {

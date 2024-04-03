@@ -1,5 +1,6 @@
 package likelion12.puzzle.DTO;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -7,8 +8,13 @@ import java.time.LocalDateTime;
 public class JoinEventDTO {
     @Data
     public static class ResponseJoinEvent {
+        @Schema(description = "행사 번호", example = "2024-03-31T00:04:43.982361")
         private Long id;
+
+        @Schema(description = "행사명", example = "동아리페스티벌")
         private String name;
+
+        @Schema(description = "행사 참여 시간", example = "2024-03-31T17:04:43.982361")
         private LocalDateTime addedTime;
 
         public ResponseJoinEvent(Long id, String name, LocalDateTime dateTime) {
@@ -20,21 +26,30 @@ public class JoinEventDTO {
 
     @Data
     public static class RequestJoinEvent {
+        @Schema(description = "학번", example = "00000000")
         private String studentId;
+
+        @Schema(description = "이벤트 번호", example = "1")
         private Long id;
-        private String name;
-        private LocalDateTime addDate;
+//        private String name;
+//        private LocalDateTime addDate;
     }
 
     @Data
     public static class RequestJoinEventForDelete {
+        @Schema(description = "학번", example = "00000000")
         private String studentId;
+
+        @Schema(description = "이벤트 번호", example = "1")
         private Long id;
-        private String name;
+
+//        @Schema(description = "이벤트 이름", example = "동아리페스티벌")
+//        private String name;
     }
 
     @Data
     public static class RequestMember{
+        @Schema(description = "조회학번", example = "00000000")
         private String studentId;
     }
 }
