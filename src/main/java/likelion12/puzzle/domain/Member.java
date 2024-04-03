@@ -30,26 +30,23 @@ public class Member {
 
     @Column(nullable = false)
     private String name;
+
     private boolean isAgree = false;
 
     @Enumerated(EnumType.STRING)
     private RoleType role = RoleType.ROLE_MEMBER;
 
-    public Member(String studentId, String name, Club iconClub) {
-        this.studentId = studentId;
-        this.name = name;
-        this.iconClub = iconClub;
-    }
-
-    public Member(String studentId, String name) {
-        this.studentId = studentId;
-        this.name = name;
-    }
-
-    public Member(String studentId, String name, RoleType role) {
+    public Member(String studentId, String name, RoleType role, Club iconClub) {
         this.studentId = studentId;
         this.name = name;
         this.role = role;
+        this.iconClub = iconClub;
+    }
+
+    public Member(String studentId, String name, Club iconClub) {
+        this.studentId = studentId;
+        this.iconClub = iconClub;
+        this.name = name;
     }
 
     public void updateIconClub(Club newIconClub) {

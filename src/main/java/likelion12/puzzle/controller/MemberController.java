@@ -45,10 +45,10 @@ public class MemberController {
     }
 
     // 테스트용
-    @PostMapping("/add")
-    public ResponseMember addMember(@RequestBody RequestMember request) {
-        Member member = memberService.addNewMember(request.getStudentId(), request.getName());
-
-        return new ResponseMember(member.getStudentId(), member.getName());
-    }
+//    @PostMapping("/add")
+//    public ResponseMember addMember(@RequestBody RequestMember request) {
+//        Member member = memberService.addNewMember(request.getStudentId(), request.getName());
+//
+//        return new ResponseMember(member.getStudentId(), member.getName(), "asdf");
+//    }
 }

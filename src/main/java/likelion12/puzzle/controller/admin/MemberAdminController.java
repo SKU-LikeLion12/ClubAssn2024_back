@@ -18,8 +18,8 @@ public class MemberAdminController {
 
     @PostMapping("/member/add")
     public AddMemberResponse addMember(@RequestBody AddRequestMember request) {
-        Member member = memberService.addNewMember(request.getStudentId(), request.getName(), request.getRole());
+        Member member = memberService.addNewMember(request.getStudentId(), request.getName(), request.getRole(), request.getClubName());
 
-        return new AddMemberResponse(member.getStudentId(), member.getName(), member.getRole());
+        return new AddMemberResponse(member.getStudentId(), member.getName(), member.getRole(), member.getIconClub().getName());
     }
 }

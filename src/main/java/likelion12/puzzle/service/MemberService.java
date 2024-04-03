@@ -14,25 +14,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class MemberService {
+    private final ClubService clubService;
     private final MemberRepository memberRepository;
     private final JwtUtility jwtUtility;
-
-    // 첫 화면 로그인
-//    public Member login(String studentId, String name) {
-//        Member member = findByStudentId(studentId);
-//
-//        if (member.getName().equals(name)) {
-//            return member;
-//        } else {
-//            return null;
-//        }
-//    }
 
     // 로그인
     public ResponseLogin login(RequestMember request) {
@@ -46,38 +35,36 @@ public class MemberService {
             throw new MemberLoginException("이름이 틀렸습니다.", HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseLogin(jwtUtility.generateToken(member.getStudentId()));
+        if (!member.isAgree()) {
+            throw new MemberLoginException("개인정보 동의 필요", HttpStatus.UNAUTHORIZED);
+        } else {
+            return new ResponseLogin(jwtUtility.generateToken(member.getStudentId()));
+        }
     }
 
     // 새로운 학생 추가
     @Transactional
-    public Member addNewMember(String studentId, String name, Club iconClub) {
-        Member member = new Member(studentId, name, iconClub);
+    public Member addNewMember(String studentId, String name, RoleType role, String clubName) {
+        Club iconClub = clubService.findByName(clubName);
+        Member member = new Member(studentId, name, role, iconClub);
         memberRepository.addNewMember(member);
 
         return member;
     }
 
     // 테스트용
-    @Transactional
-    public Member addNewMember(String studentId, String name) {
-        Member member = new Member(studentId, name);
-        memberRepository.addNewMember(member);
-
-        return member;
-    }
-
-    @Transactional
-    public Member addNewMember(String studentId, String name, RoleType role) {
-        Member member = new Member(studentId, name, role);
-        System.out.println("member.getName() = " + member.getName());
-        memberRepository.addNewMember(member);
-
-        return member;
-    }
+//    @Transactional
+//    public Member addNewMember(String studentId, String name) {
+//        Member member = new Member(studentId, name);
+//        memberRepository.addNewMember(member);
+//
+//        return member;
+//    }
 
     // 대표 동아리 변경
-    public Member updateIconClub(Member member, Club newIconClub) {
+    public Member updateIconClub(String studentId, String clubName) {
+        Member member = memberRepository.findByStudentId(studentId);
+        Club newIconClub = clubService.findByName(clubName);
         member.updateIconClub(newIconClub);
 
         return member;
