@@ -32,6 +32,9 @@ public class Member {
     private String name;
     private boolean isAgree = false;
 
+    @Enumerated(EnumType.STRING)
+    private RoleType roleType;
+
     public Member(String studentId, String name, Club iconClub) {
         this.studentId = studentId;
         this.name = name;

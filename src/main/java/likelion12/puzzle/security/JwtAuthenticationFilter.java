@@ -53,6 +53,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
         }
 
-        filterChain.doFilter(request, response); // 다음 필터로 요청과 응답을 전달
+        filterChain.doFilter(request, response);    // 다음 필터로 요청과 응답을 전달
     }
 }
