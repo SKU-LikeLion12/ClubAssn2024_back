@@ -1,5 +1,6 @@
 package likelion12.puzzle.controller;
 
+import likelion12.puzzle.DTO.ClubDTO;
 import likelion12.puzzle.DTO.JoinClubDTO;
 import likelion12.puzzle.domain.Club;
 import likelion12.puzzle.service.ClubService;
@@ -73,6 +74,11 @@ public class ClubController {
             clubDTOS.add(dto);
         }
         return clubDTOS;
+    }
+
+    @DeleteMapping("/deleteClub")
+    public boolean deleteClub(@RequestBody ClubDTO.RequestJoinClub request) {
+        return clubService.deleteClub(request.getClubName());
     }
 }
 
