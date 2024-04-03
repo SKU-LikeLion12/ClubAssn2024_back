@@ -51,16 +51,4 @@ public class MemberController {
 
         return new ResponseMember(member1.getStudentId(), member1.getName());
     }
-
-    // 모든 멤버의 가입된 클럽 리스트
-    @PostMapping("/member/club-list")
-    public ResponseEntity<List<MemberJoinedClubDTO>> findJoinedClubsForAllMember(){
-        return ResponseEntity.ok().body(joinClubService.findJoinedClubsForAllMember());
-    }
-
-    // 특정 멤버의 가입 동아리, 미가입 동아리 리스트
-    @PostMapping("/member/club-info")
-    public ResponseEntity<MemberJoinedUnjoinedClubDTO> findJoinedClubUnJoinedClub(@RequestBody RequestMember member){
-        return ResponseEntity.ok().body(joinClubService.findJoinedClubUnJoinedClub(member.getStudentId()));
-    }
 }

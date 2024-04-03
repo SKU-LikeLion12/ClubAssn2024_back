@@ -31,16 +31,7 @@ public class ClubController {
         return clubService.addNewClub(club.getName(), club.getDescription(), club.getLogo());
     }
 
-    @PostMapping("/club/add/{studentId}")
-    public ResponseJoinClub addJoinClub(@RequestBody RequestJoinClub request, @PathVariable("studentId") String studentId) {
-        Club club = clubService.findByName(request.getClubName());
-        joinClubService.saveNewMember(studentId, club);
-
-        return new ResponseJoinClub(studentId, club.getName());
-    }
-
     // 동아리 추가
-
     @PostMapping("/club") //, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Club> addClub(@RequestParam String clubName,
                                         @RequestParam String description,
@@ -82,20 +73,6 @@ public class ClubController {
             clubDTOS.add(dto);
         }
         return clubDTOS;
-    }
-
-    // 동아리원 검색
-    @GetMapping("/member/manage")
-    public ResponseEntity<List<JoinClubDTO>> CMManageSearch(@RequestParam String keyword) {
-//        if (keyword == null || keyword.trim().isEmpty()) {
-//            return ResponseEntity.noContent().build();
-//        }
-        List<JoinClubDTO> results = joinClubService.searchByKeyword(keyword);
-        if(results.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.ok(results);
-        }
     }
 }
 
