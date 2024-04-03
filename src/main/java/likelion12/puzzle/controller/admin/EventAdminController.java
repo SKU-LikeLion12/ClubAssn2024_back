@@ -4,10 +4,13 @@ import io.swagger.v3.oas.annotations.Operation;
 import likelion12.puzzle.domain.Event;
 import likelion12.puzzle.service.EventService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static likelion12.puzzle.DTO.EventDTO.*;
 
@@ -28,6 +31,19 @@ public class EventAdminController {
     }
 
     //이벤트 리스트 조회 추가 필요
+    @Operation(summary = "모든 이벤트 조회", description = "모든 이벤트를 조회하여 이벤트 포스터를 제외한 이벤트 이름, 이벤트 일자 조회", tags={"admin-event"})
+    @GetMapping("/all")
+    public ResponseEntity<List<EventAllRequestExceptImage>> findAllEvents() {
+        List<Event> events = eventService.findAllEvents();
+        List<EventAllRequestExceptImage> eventDTOs = new ArrayList<>();
+
+        for (Event event : events) {
+            EventAllRequestExceptImage dto = new EventAllRequestExceptImage(event.getId(), event.getName(), event.getDate());
+            eventDTOs.add(dto);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(eventDTOs);
+    }
+
 
     //개별 리스트 조회는 만들지 않을 예정
 
@@ -38,9 +54,8 @@ public class EventAdminController {
 //    }
 //
     // 퍼즐 조각 수정 기능
-//    @PostMapping("/events/manage/update")
-//    public ResponseEntity<ResponseEvent> eventUpdatePage(@RequestBody RequestEvent request) {
-//
+//    public ResponseEntity<ResponseEvent> updateEvent(@RequestBody ResponseEvent request) {
+//        Event event = eventService.changeEvent(request.getId(), request.getName(), request.getDate(), request.())
 //    }
     // 퍼즐 조각 삭제
     @Operation(summary = "관리자가 퍼즐 조각 삭제하는 API", description = "퍼즐 id 입력", tags={"admin-event"})
