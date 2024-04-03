@@ -1,4 +1,4 @@
-package likelion12.puzzle.controller;
+package likelion12.puzzle.controller.admin;
 
 import likelion12.puzzle.DTO.JoinEventDTO.*;
 import likelion12.puzzle.service.JoinEventService;
@@ -12,11 +12,12 @@ import static likelion12.puzzle.DTO.EventDTO.*;
 
 @RestController
 @RequiredArgsConstructor
-public class JoinEventController {
+@RequestMapping("/admin/join-events")
+public class JoinEventAdminController {
     public final JoinEventService joinEventService;
 
     // 회원 퍼즐 조각 관리 페이지
-    @PostMapping("/events/manage")
+    @PostMapping("")
     public ResponseEntity<List<ResponseJoinEvent>> manageEvents(@RequestBody RequestMember request) {
         List<ResponseJoinEvent> responsePuzzles = joinEventService.findAllJoinEvents(request.getStudentId());
 
@@ -24,13 +25,13 @@ public class JoinEventController {
     }
 
     // 회원 퍼즐 조각 삭제 페이지(기본키를 받아오나? 이벤트 이름만 받나?)
-    @DeleteMapping("/events/managex")
+    @DeleteMapping("")
     public void deleteEvents(@RequestBody RequestJoinEventForDelete request) {
         joinEventService.removeJoinEvent(request.getStudentId(), request.getId());
     }
 
     // 회원 퍼즐 조각 추가 페이지(참여 안한거만 나오게)
-    @GetMapping("/events/manage")
+    @GetMapping("")
     public ResponseEntity<List<ResponsePuzzleForNotPart>> pageForAddEvent(@RequestBody RequestMember request) {
         List<ResponsePuzzleForNotPart> responseEvents = joinEventService.findNotPartEventsExceptImage(request.getStudentId());
 
@@ -38,7 +39,7 @@ public class JoinEventController {
     }
 
     // 회원 퍼즐 조각 추가 +
-    @PostMapping("/events/manage/add")
+    @PostMapping("add")
     public ResponseEntity<?> addJoinEvent(@RequestBody RequestJoinEvent request) {
         joinEventService.saveJoinEvent(request.getStudentId(), request.getId());
 
