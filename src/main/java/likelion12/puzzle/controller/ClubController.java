@@ -39,7 +39,7 @@ public class ClubController {
 //    }
 
     // 동아리 추가
-    @Operation(summary = "동아리 추가", description = "동아리명과 동아리 설명, 로고 사진 필요", tags = {"club", "add"},
+    @Operation(summary = "동아리 추가", description = "동아리명과 동아리 설명, 로고 사진 필요", tags = {"club"},
             responses = {@ApiResponse(responseCode = "201", description = "생성 후 club 객체 반환"),
                     @ApiResponse(responseCode = "", description = "")})
     @PostMapping("/club") //, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -54,7 +54,7 @@ public class ClubController {
     }
 
     // 동아리 수정
-    @Operation(summary = "동아리 수정", description = "동아리 id, 동아리명, 동아리 설명, 동아리 로고 필요", tags = {"club", "update"},
+    @Operation(summary = "동아리 수정", description = "동아리 id, 동아리명, 동아리 설명, 동아리 로고 필요", tags = {"club"},
             responses = {@ApiResponse(responseCode = "201", description = "수정 성공 후 변경된 정보를 포함한 객체 생성 "),
                     @ApiResponse(responseCode = "", description = "")})
     @PutMapping("/club/{clubId}")
@@ -63,8 +63,7 @@ public class ClubController {
                                                         @RequestParam String description,
                                                         @RequestParam(required = false) MultipartFile logo) throws IOException {
         Club club = clubService.changeClub(clubId, clubName, description, logo);
-        String base64Image = ImageUtility.encodeImage(club.getLogo());
-        return ResponseEntity.status(HttpStatus.CREATED).body(new ClubCreateRequest(club.getName(), club.getDescription(), base64Image));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ClubCreateRequest(club.getName(), club.getDescription(), club.arrayToImage()));
     }
 
 
@@ -74,12 +73,11 @@ public class ClubController {
     @GetMapping("club/{clubId}")
     public ResponseEntity<ClubCreateRequest> findOneClub(@PathVariable("clubId") Long clubId) {
         Club club = clubService.findById(clubId);
-        String base64Logo = ImageUtility.encodeImage(club.getLogo());
-        return ResponseEntity.status(HttpStatus.OK).body(new ClubCreateRequest(club.getName(), club.getDescription(), base64Logo));
+        return ResponseEntity.status(HttpStatus.OK).body(new ClubCreateRequest(club.getName(), club.getDescription(), club.arrayToImage()));
     }
 
 
-    @Operation(summary = "모든 동아리 조회", description = "모든 동아리에 대한 동아리 아이디, 동아리명, 동아리 설명 조회", tags = {"club", "get"},
+    @Operation(summary = "모든 동아리 조회", description = "모든 동아리에 대한 동아리 아이디, 동아리명, 동아리 설명 조회", tags = {"club"},
             responses = {@ApiResponse(responseCode = "200", description = "조회를 하면 동아리의 아이디, 동아리명, 동아리 설명이 나타난다."),
                     @ApiResponse(responseCode = "", description = "")})
     @GetMapping("/clubs")
