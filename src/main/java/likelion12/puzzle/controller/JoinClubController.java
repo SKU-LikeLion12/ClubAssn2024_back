@@ -69,18 +69,16 @@ public class JoinClubController {
             return ResponseEntity.status(HttpStatus.OK).body(results);
         }
     }
-    @Operation(summary = "학생에게 동아리 부여(동아리 가입) API", description = "body에 동아리명, url에 학번 입력", tags={"joinclub", "add"})
-    @PostMapping("/club/add/{studentId}")
-    public ClubDTO.ResponseJoinClub addJoinClub(@RequestBody ClubDTO.RequestJoinClub request, @PathVariable("studentId") String studentId) {
-        Club club = clubService.findByName(request.getClubName());
-        joinClubService.saveNewMember(studentId, club);
-
-        return new ClubDTO.ResponseJoinClub(studentId, club.getName());
-    }
+//    @Operation(summary = "학생에게 동아리 부여(동아리 가입) API", description = "body에 동아리명, url에 학번 입력", tags={"joinclub", "add"})
+//    @PostMapping("/club/add/{studentId}")
+//    public ClubDTO.ResponseJoinClub addJoinClub(@RequestBody ClubDTO.RequestJoinClub request, @PathVariable("studentId") String studentId) {
+//        joinClubService.saveNewMember(studentId, request.getClubName());
+//        return new ClubDTO.ResponseJoinClub(studentId, request.getClubName());
+//    }
 
 
     // 모든 멤버의 가입된 클럽 리스트
-    @Operation(summary = "모든 멤버의 가입된 동아리 리스트 반환 API", description = "", tags={"joinclub", "get"})
+    @Operation(summary = "모든 멤버의 가입된 동아리 리스트 반환 API", description = "", tags={"joinclub"})
     @GetMapping("/member/club-list")
     public ResponseEntity<List<MemberClubDTO.MemberJoinedClubDTO>> findJoinedClubsForAllMember(){
         return ResponseEntity.ok().body(joinClubService.findJoinedClubsForAllMember());
@@ -88,7 +86,7 @@ public class JoinClubController {
 
 
     // 특정 멤버의 가입 동아리, 미가입 동아리 리스트
-    @Operation(summary = "url에 입력한 학번을 가진 학생이 가입한 동아리와 가입하지 않은 동아리 반환 API", description = "url에 학번 입력", tags={"joinclub", "get"})
+    @Operation(summary = "url에 입력한 학번을 가진 학생이 가입한 동아리와 가입하지 않은 동아리 반환 API", description = "url에 학번 입력", tags={"joinclub"})
     @GetMapping("/member/club-info/{studentId}")
     public ResponseEntity<MemberClubDTO.MemberJoinedUnjoinedClubDTO> findJoinedClubUnJoinedClub(@PathVariable("studentId") String studentId){
         return ResponseEntity.ok().body(joinClubService.findJoinedClubUnJoinedClub(studentId));

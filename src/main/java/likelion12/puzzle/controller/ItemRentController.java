@@ -24,7 +24,7 @@ public class ItemRentController {
 
     @Operation(summary = "물품 대여창 목록 출력용", description = "대여중, 예약중 개수를 포함하여 물품의 목록을 조회", tags={"item-rent"})
     @GetMapping("/item-rent/list")
-    public ResponseEntity<List<RestItemListDTO>> restItemList(HttpServletRequest header){
+    public ResponseEntity<List<RestItemListDTO>> restItemList() {
         return ResponseEntity.ok(itemRentService.getrestItemList());
     }
 

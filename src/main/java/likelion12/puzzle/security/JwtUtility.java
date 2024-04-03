@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -30,24 +31,31 @@ public class JwtUtility {
 
     // JWT 유효성 검사
     public Claims validateToken(String token) {
-        if(token==null || !token.startsWith("Bearer ")) throw new SignatureException("");
-        token = token.substring(7);
         try {
             // 토큰 파싱 및 클레임 반환
-            Claims claims = Jwts.parser()
+            return Jwts.parser()
                     .setSigningKey(secret.getBytes(StandardCharsets.UTF_8))
                     .parseClaimsJws(token)
-                    .getBody();
-
-            return claims; // 유효한 경우, 클레임 반환
+                    .getBody(); // 유효한 경우, 클레임 반환
         } catch (Exception ex) {
             throw ex;
         }
     }
 
+    // 토큰으로 학번 추출
     public String getStudentId(String token){
         Claims claims = validateToken(token);
         return claims.getSubject();
+    }
+
+    // 토큰 추출
+    public String resolveToken(HttpServletRequest request) {
+        String bearerToken = request.getHeader("Authorization");
+
+        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7);        // "Bearer " 문자 이후의 토큰 부분을 반환
+        }
+        return null;
     }
 
     public static void main(String[] args) {

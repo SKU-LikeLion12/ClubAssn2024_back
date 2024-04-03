@@ -1,10 +1,12 @@
 package likelion12.puzzle.security;
 
+import likelion12.puzzle.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -12,26 +14,23 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-
     private final JwtUtility jwtUtility;
+    private final CustomUserDetailsService customUserDetailsService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
+        http.httpBasic(AbstractHttpConfigurer::disable) // spring security 기본 인증 해제 -> jwt 사용
+                .formLogin(AbstractHttpConfigurer::disable)
+                .cors(Customizer.withDefaults())       // CORS 설정
                 .authorizeHttpRequests((authorize) -> authorize
-//                        .requestMatchers("/swagger-ui/**").authenticated()
-//                        .requestMatchers("/admin/**").hasRole("ADMIN")
-//                        .requestMatchers("/item-rent/**").hasRole("MEMBER")
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/item-rent/**").hasRole("MEMBER")
                         .anyRequest().permitAll()
                 )
-                .httpBasic(Customizer.withDefaults())
-                //간단한 테스트를 위해 csrf토큰 비활성화
+                // 간단한 테스트를 위해 csrf토큰 비활성화
                 .csrf((csrf) -> csrf.ignoringRequestMatchers("/**"))
-                .addFilterBefore(new JwtAuthenticationFilter(jwtUtility), UsernamePasswordAuthenticationFilter.class);
-        ;
+                .addFilterBefore(new JwtAuthenticationFilter(jwtUtility, customUserDetailsService), UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
-
-
 }
-

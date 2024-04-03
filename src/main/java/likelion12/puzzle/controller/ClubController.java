@@ -42,14 +42,6 @@ public class ClubController {
 //    }
 
     // 동아리 추가
-//    @Operation(summary = "동아리 추가", description = "동아리명과 동아리 설명, 로고 사진 필요", tags = {"club"},
-//            responses = {@ApiResponse(responseCode = "201", description = "생성 후 club 객체 반환"),
-//                    @ApiResponse(responseCode = "", description = "")})
-//    @PostMapping("/club/add")
-//    public Club testClub(@RequestBody Club club) {
-//        return clubService.addNewClub(club.getName(), club.getDescription(), club.getLogo());
-//    }
-
     @Operation(summary = "동아리 추가", description = "동아리명과 동아리 설명, 로고 사진 필요", tags = {"club"},
             responses = {@ApiResponse(responseCode = "200", description = "생성"),
                     @ApiResponse(responseCode = "", description = "")})
@@ -107,4 +99,3 @@ public class ClubController {
         return clubService.deleteClub(request.getClubName());
     }
 }
-
