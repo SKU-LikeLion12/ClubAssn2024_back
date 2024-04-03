@@ -1,6 +1,8 @@
 package likelion12.puzzle.repository;
 
 import jakarta.persistence.EntityManager;
+import likelion12.puzzle.DTO.ClubDTO;
+import likelion12.puzzle.DTO.ClubDTO.*;
 import likelion12.puzzle.domain.Club;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -29,8 +31,8 @@ public class ClubRepository {
                 .setParameter("clubName", clubName).getSingleResult();
     }
 
-    public List<Club> findAll() {
-        return em.createQuery("select c from Club c", Club.class).getResultList();
+    public List<Club> findAll(){
+        return em.createQuery("SELECT c FROM Club c", Club.class).getResultList();
     }
 
     // 동아리 삭제

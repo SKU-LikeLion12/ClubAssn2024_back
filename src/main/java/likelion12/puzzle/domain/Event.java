@@ -4,9 +4,13 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import likelion12.puzzle.service.ImageUtility;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 
 @Entity
@@ -20,14 +24,26 @@ public class Event {
     @Column(nullable = false)
     private String name; // 행사 이름
 
-//    @Column(nullable = false) // 아직 어떻게 넣을지 몰라서
-    private String image; // 행사 포스터, 자료형은 미정
+    @Column(nullable = false, name = "poster", columnDefinition = "MEDIUMBLOB") // 아직 어떻게 넣을지 몰라서
+    private byte[] poster; // 행사 포스터, 자료형은 미정
 
     private LocalDateTime date; // 행사 날짜
 
-    public Event(String name, String image, LocalDateTime date) {
+    public Event(String name, byte[] poster, LocalDateTime date) {
         this.name = name;
-        this.image = image;
+        this.poster = poster;
+        this.date = date;
+    }
+
+    public void setPoster(MultipartFile poster) throws IOException {
+        this.poster = poster.getBytes();
+    }
+    public String arrayToImage() {
+        return ImageUtility.encodeImage(this.poster);
+    }
+
+    public void changeEvent(String name, LocalDateTime date) {
+        this.name = name;
         this.date = date;
     }
 }

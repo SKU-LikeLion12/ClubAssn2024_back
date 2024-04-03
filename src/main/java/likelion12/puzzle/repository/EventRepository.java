@@ -1,14 +1,14 @@
 package likelion12.puzzle.repository;
 
 import jakarta.persistence.EntityManager;
-import likelion12.puzzle.DTO.EventDTO.*;
 import likelion12.puzzle.domain.Event;
 import likelion12.puzzle.domain.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
 import java.util.List;
+
+import static likelion12.puzzle.DTO.EventDTO.*;
 
 @Repository
 @RequiredArgsConstructor
@@ -17,10 +17,9 @@ public class EventRepository {
     private final EntityManager em;
 
     // 이벤트 추가
-    public Event addEvent(String name, String image, LocalDateTime date) {
-        Event newEvent = new Event(name, image, date);
-        em.persist(newEvent);
-        return newEvent;
+    public Event addEvent(Event event) {
+        em.persist(event);
+        return event;
     }
 
     // 이벤트 삭제
@@ -54,7 +53,8 @@ public class EventRepository {
     }
 
     public List<EventAllRequestExceptImage> findAllExceptImage() {
-    return em.createQuery("SELECT new EventAllRequestExceptImage(e.id, e.name, e.date) " +
+
+        return em.createQuery("SELECT new EventAllRequestExceptImage(e.id, e.name, e.date) " +
                     "FROM Event e", EventAllRequestExceptImage.class)
                 .getResultList();
     }

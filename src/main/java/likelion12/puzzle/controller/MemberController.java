@@ -5,8 +5,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import likelion12.puzzle.DTO.MemberDTO.RequestMember;
 import likelion12.puzzle.DTO.MemberDTO.ResponseMember;
 import likelion12.puzzle.domain.Member;
+import likelion12.puzzle.DTO.MemberClubDTO.*;
 import likelion12.puzzle.security.JwtUtility;
 import likelion12.puzzle.service.ItemRentService;
+import likelion12.puzzle.service.JoinClubService;
 import likelion12.puzzle.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +29,7 @@ public class MemberController {
     private final MemberService memberService;
     private final JwtUtility jwtUtility;
     private final ItemRentService itemRentService;
+    private final JoinClubService joinClubService;
 
     @Operation(summary = "특정 멤버가 예약중인 물품 리스트", description = "헤더에 토큰 필요", tags={"myPage"})
     @GetMapping("/member/book-list")

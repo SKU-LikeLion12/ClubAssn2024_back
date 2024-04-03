@@ -10,6 +10,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -45,17 +47,14 @@ public class ClubService {
 
     @Transactional
     public Club changeClub (Long clubId, String clubName, String description, MultipartFile logo) throws IOException {
-
-        byte[] imageBytes = null;
         Club club = findById(clubId);
-        if (logo != null) {
-            imageBytes = logo.getBytes();
-        } else {
-            imageBytes = club.getLogo();
-        }
-        club.setName(clubName);
-        club.setDescription(description);
+
+        byte[] imageBytes = (logo != null) ? logo.getBytes() : club.getLogo();
         club.setLogo(imageBytes);
+
+        club.setName(clubName != null ? clubName : club.getName());
+        club.setDescription(description != null ? description : club.getDescription());
+
         return club;
     }
 }

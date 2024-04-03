@@ -1,6 +1,6 @@
 package likelion12.puzzle.service;
 
-import likelion12.puzzle.domain.Club;
+
 import likelion12.puzzle.domain.Event;
 import likelion12.puzzle.domain.Member;
 import likelion12.puzzle.repository.EventRepository;
@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static likelion12.puzzle.DTO.EventDTO.*;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -24,8 +26,21 @@ public class EventService {
 
     // 이벤트 추가
     @Transactional
-    public Event addEvent(String name, String image, LocalDateTime date) {
-        Event event = eventRepository.addEvent(name, image, date);
+    public Event addEvent(String name, MultipartFile image, LocalDateTime date) throws IOException {
+        byte[] imageBytes = image.getBytes();
+        Event event = new Event(name, imageBytes, date);
+        return eventRepository.addEvent(event);
+    }
+
+    @Transactional
+    public Event changeEvent(Long eventId, String name, LocalDateTime date, MultipartFile poster) throws IOException {
+
+        Event event = findByEventId(eventId);
+        // 사진 넣으면 바꾼 사진으로
+        if (poster != null) {
+            event.setPoster(poster);
+        }
+        event.changeEvent(name, date);
         return event;
     }
 
@@ -44,6 +59,11 @@ public class EventService {
     // 모든 이벤트 조회
     public List<Event> findAllEvents() {
         return eventRepository.findAllEvents();
+    }
+
+    // 포스터를 제외한 모든 이벤트 조회(관리자용)
+    public List<EventAllRequestExceptImage> findAllEventsExceptImage() {
+        return eventRepository.findAllExceptImage();
     }
 
     // 이벤트 이름으로 이벤트 찾기

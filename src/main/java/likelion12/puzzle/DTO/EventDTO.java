@@ -1,7 +1,9 @@
 package likelion12.puzzle.DTO;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 
@@ -27,7 +29,7 @@ public class EventDTO {
     public static class RequestEvent {
         private String name;
         private LocalDateTime date;
-        private String image;
+        private MultipartFile image;
     }
 
     @Data
