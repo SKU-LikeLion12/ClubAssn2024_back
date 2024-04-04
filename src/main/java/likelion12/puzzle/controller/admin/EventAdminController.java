@@ -2,21 +2,26 @@ package likelion12.puzzle.controller.admin;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import likelion12.puzzle.DTO.EventDTO;
-import likelion12.puzzle.DTO.EventDTO.EventAllRequestExceptImage;
+import likelion12.puzzle.DTO.EventDTO.*;
+//import likelion12.puzzle.DTO.EventDTO.UpdateRequestEvent;
+//import likelion12.puzzle.DTO.EventDTO.DeleteEvents;
+//import likelion12.puzzle.DTO.EventDTO.EventAllRequestExceptImage;
+//import likelion12.puzzle.DTO.EventDTO.RequestEvent;
+//import likelion12.puzzle.DTO.EventDTO.ResponseEvent;
 import likelion12.puzzle.domain.Event;
 import likelion12.puzzle.service.EventService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static likelion12.puzzle.DTO.EventDTO.RequestEvent;
-import static likelion12.puzzle.DTO.EventDTO.ResponseEvent;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -28,7 +33,7 @@ public class EventAdminController {
     // 이벤트 추가
     @Operation(summary = "(택원) 관리자가 새로운 퍼즐 조각 추가하는 API", description = "퍼즐 이름, 퍼즐 이미지, 퍼즐 행사 날짜 받아야함")
     @PostMapping("/add")
-    public ResponseEntity<ResponseEvent> addEvent(@RequestBody RequestEvent request) throws IOException {
+    public ResponseEntity<ResponseEvent> addEvent(RequestEvent request) throws IOException {
         Event event = eventService.addEvent(request.getName(), request.getImage(), request.getDate());
 
         ResponseEvent responseEvent = new ResponseEvent(event.getId(), event.getName(), event.arrayToImage(), event.getDate());
@@ -58,13 +63,17 @@ public class EventAdminController {
 //    }
 //
     // 퍼즐 조각 수정 기능
-//    public ResponseEntity<ResponseEvent> updateEvent(@RequestBody ResponseEvent request) {
-//        Event event = eventService.changeEvent(request.getId(), request.getName(), request.getDate(), request.())
-//    }
+    @Operation(summary = "(민규) 관리자가 퍼즐 조각 수정",
+            description = "이벤트id, 수정하고자하는 이름, 날짜, 사진 입력. 넣지 않은 항목은 원래 값으로 들어감.")
+    @PutMapping("/update")
+    public ResponseEntity<ResponseEvent> updateEvent(UpdateRequestEvent request) throws IOException {
+        Event event = eventService.changeEvent(request.getId(), request.getName(), request.getDate(), request.getImage());
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseEvent(event.getId(), event.getName(), event.arrayToImage(), event.getDate()));
+    }
     // 퍼즐 조각 삭제
-    @Operation(summary = "(택원) 관리자가 퍼즐 조각 삭제하는 API", description = "퍼즐 id 입력")
-    @DeleteMapping("/delete/{eventId}")
-    public boolean eventDeletePage(@PathVariable("eventId") Long eventId){
-        return eventService.removeEvent(eventId);
+    @Operation(summary = "(민규) 관리자가 퍼즐 조각 삭제하는 API", description = "퍼즐 id 입력")
+    @DeleteMapping("")
+    public void deleteEvent(@RequestBody DeleteEvents request) {
+        eventService.removeEvent(request.getId());
     }
 }

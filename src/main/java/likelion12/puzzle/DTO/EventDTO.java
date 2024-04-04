@@ -7,6 +7,7 @@ import lombok.Data;
 import org.springframework.cglib.core.Local;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class EventDTO {
@@ -43,6 +44,29 @@ public class EventDTO {
         @Schema(description = "이벤트 이미지", example = "")
 
         private MultipartFile image;
+    }
+
+    @Data
+    public static class UpdateRequestEvent {
+        @Schema(description = "이벤트 번호", example = "1")
+        private Long id;
+        @Schema(description = "이벤트 이름", example = "동아리페스티벌")
+        private String name;
+        @Schema(description = "이벤트 일자", example = "2024-03-31")
+        private LocalDateTime date;
+        @Schema(description = "이벤트 이미지", example = "")
+        private MultipartFile image;
+    }
+
+    @Data
+    @AllArgsConstructor
+    public static class UpdateResponseEvent {
+        @Schema(description = "이벤트 이름", example = "동아리페스티벌")
+        private String name;
+        @Schema(description = "이벤트 일자", example = "2024-03-31")
+        private LocalDateTime date;
+        @Schema(description = "이벤트 이미지", example = "")
+        private String image;
     }
 
     @Data
@@ -96,5 +120,11 @@ public class EventDTO {
             this.date = date;
             this.joined = joined;
         }
+    }
+
+    @Data
+    public static class DeleteEvents {
+        @Schema(description = "이벤트 번호", example = "1")
+        private Long id;
     }
 }
