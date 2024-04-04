@@ -68,16 +68,6 @@ public class EventDTO {
         private String image;
     }
 
-//    @Data
-//    public static class Event {
-//        @Schema(description = "이벤트 이름", example = "동아리페스티벌")
-//        private String name;
-//        @Schema(description = "이벤트 일자", example = "2024-03-31")
-//        private LocalDateTime date;
-//        @Schema(description = "이벤트 이미지", example = "")
-//        private String image;
-//    }
-
     @Data
     public static class ResponsePuzzleForNotPart {
         @Schema(description = "이벤트 번호", example = "1")
@@ -129,5 +119,11 @@ public class EventDTO {
             this.date = date;
             this.joined = joined;
         }
+    }
+
+    @Data
+    public static class DeleteEvents {
+        @Schema(description = "이벤트 번호", example = "1")
+        private Long id;
     }
 }

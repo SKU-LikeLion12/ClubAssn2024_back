@@ -2,11 +2,12 @@ package likelion12.puzzle.controller.admin;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import likelion12.puzzle.DTO.EventDTO.UpdateRequestEvent;
-import likelion12.puzzle.DTO.EventDTO.UpdateResponseEvent;
-import likelion12.puzzle.DTO.EventDTO.EventAllRequestExceptImage;
-import likelion12.puzzle.DTO.EventDTO.RequestEvent;
-import likelion12.puzzle.DTO.EventDTO.ResponseEvent;
+import likelion12.puzzle.DTO.EventDTO.*;
+//import likelion12.puzzle.DTO.EventDTO.UpdateRequestEvent;
+//import likelion12.puzzle.DTO.EventDTO.DeleteEvents;
+//import likelion12.puzzle.DTO.EventDTO.EventAllRequestExceptImage;
+//import likelion12.puzzle.DTO.EventDTO.RequestEvent;
+//import likelion12.puzzle.DTO.EventDTO.ResponseEvent;
 import likelion12.puzzle.domain.Event;
 import likelion12.puzzle.service.EventService;
 import lombok.RequiredArgsConstructor;
@@ -71,9 +72,9 @@ public class EventAdminController {
         return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseEvent(event.getId(), event.getName(), event.arrayToImage(), event.getDate()));
     }
     // 퍼즐 조각 삭제
-    @Operation(summary = "관리자가 퍼즐 조각 삭제하는 API", description = "퍼즐 id 입력")
-    @DeleteMapping("/delete/{eventId}")
-    public boolean eventDeletePage(@PathVariable("eventId") Long eventId){
-        return eventService.removeEvent(eventId);
+    @Operation(summary = "퍼즐 조각 삭제", description = "이벤트id를 받아 삭제")
+    @DeleteMapping("")
+    public void deleteEvent(@RequestBody DeleteEvents request) {
+        eventService.removeEvent(request.getId());
     }
 }
