@@ -4,7 +4,10 @@ import jakarta.persistence.EntityManager;
 import likelion12.puzzle.DTO.ClubDTO;
 import likelion12.puzzle.DTO.ClubDTO.*;
 import likelion12.puzzle.domain.Club;
+import likelion12.puzzle.exception.MemberLoginException;
+import likelion12.puzzle.exception.NotExistClubException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -27,8 +30,12 @@ public class ClubRepository {
 
     // 동아리 조회
     public Club findByName(String clubName) {
-        return em.createQuery("select c from Club c where c.name =:clubName", Club.class)
-                .setParameter("clubName", clubName).getSingleResult();
+        try {
+            return em.createQuery("select c from Club c where c.name =:clubName", Club.class)
+                    .setParameter("clubName", clubName).getSingleResult();
+        } catch (Exception e) {
+            throw new NotExistClubException("해당 이름의 동아리가 없습니다.", HttpStatus.BAD_REQUEST);
+        }
     }
 
     public List<Club> findAll(){

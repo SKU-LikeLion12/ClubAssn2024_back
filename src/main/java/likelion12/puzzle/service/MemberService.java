@@ -35,16 +35,12 @@ public class MemberService {
     public ResponseLogin login(RequestMember request) {
         Member member = memberRepository.findByStudentId(request.getStudentId());
 
-        if (member == null) {
-            throw new MemberLoginException("동아리원만 이용 가능합니다.\n학번과 이름을 확인해주세요.", HttpStatus.BAD_REQUEST);
-        }
-
         if (!Objects.equals(member.getName(), request.getName())) {
             throw new MemberLoginException("동아리원만 이용 가능합니다.\n학번과 이름을 확인해주세요.", HttpStatus.BAD_REQUEST);
         }
 
         if (!member.isAgree()) {
-            throw new MemberLoginException("개인정보 동의 필요", HttpStatus.UNAUTHORIZED);
+            throw new MemberLoginException("개인정보 동의가 필요합니다.", HttpStatus.UNAUTHORIZED);
         } else {
             return new ResponseLogin(jwtUtility.generateToken(member.getStudentId()));
         }
@@ -68,7 +64,7 @@ public class MemberService {
 
             return member;
         }
-        throw new MemberExistException("이미 사용중인 아이디입니다.", HttpStatus.BAD_REQUEST);
+        throw new MemberExistException("이미 존재하는 학번입니다.", HttpStatus.BAD_REQUEST);
     }
 
     // 테스트용

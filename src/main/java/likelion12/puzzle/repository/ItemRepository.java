@@ -35,14 +35,4 @@ public class ItemRepository {
         return em.createQuery("SELECT new ItemAllRequestExceptImage(i.id, i.name, i.count) FROM Item i", ItemAllRequestExceptImage.class)
                 .getResultList();
     }
-
-    public Item findByName(String name){
-        try{
-            return em.createQuery("select i from Item i where i.name = :name", Item.class)
-                    .setParameter("name",name).getSingleResult();
-        }catch(NoResultException e){
-            return null;
-        }
-    }
-
 }

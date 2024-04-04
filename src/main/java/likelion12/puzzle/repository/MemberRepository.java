@@ -6,7 +6,9 @@ import likelion12.puzzle.DTO.MemberClubDTO;
 import likelion12.puzzle.domain.Club;
 import likelion12.puzzle.domain.JoinClub;
 import likelion12.puzzle.domain.Member;
+import likelion12.puzzle.exception.MemberLoginException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -29,8 +31,12 @@ public class MemberRepository {
 
     // 학번으로 학생 조회(학생이 없을 때 경우 수정)
     public Member findByStudentId(String studentId) {
-        return em.createQuery("select m from Member m where m.studentId =:id", Member.class)
-                .setParameter("id", studentId).getSingleResult();
+        try {
+            return em.createQuery("select m from Member m where m.studentId =:id", Member.class)
+                    .setParameter("id", studentId).getSingleResult();
+        } catch (Exception e) {
+            throw new MemberLoginException("동아리원만 이용 가능합니다.\n학번과 이름을 확인해주세요.", HttpStatus.BAD_REQUEST);
+        }
     }
 
     // 이름으로 학생 조회

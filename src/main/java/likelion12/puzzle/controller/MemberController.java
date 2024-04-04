@@ -28,7 +28,7 @@ public class MemberController {
             responses = {@ApiResponse(responseCode = "200", description = "로그인 성공"),
                     @ApiResponse(responseCode = "400", description = "학번 혹은 이름이 틀렸을 경우"),
                     @ApiResponse(responseCode = "401", description = "개인정보 동의하지 않았을 경우")})
-    @GetMapping("/login")
+    @PostMapping("/login")
     public ResponseEntity<ResponseLogin> login(@RequestBody RequestMember request) {
         return ResponseEntity.ok(memberService.login(request));
     }

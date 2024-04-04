@@ -30,7 +30,7 @@ public class MemberDTO {
     // 로그인 할 때
     @Data
     public static class RequestMember {
-        @Schema(description = "학번", example = "00000000")
+        @Schema(description = "학번", example = "20190826")
         private String studentId;
 
         @Schema(description = "이름", example = "홍길동")
@@ -53,6 +53,7 @@ public class MemberDTO {
         private String name;
         @Schema(description = "동아리명", example = "멋쟁이사자처럼")
         private String clubName;
+        @Schema(description = "사진 반환형(문자열)", example = "대충 엄청 긴 문자열")
         private String logo;
 
         public ResponseMain(Member member) {
@@ -64,7 +65,7 @@ public class MemberDTO {
 
     @Data
     public static class ResponseLogin {
-        @Schema(description = "토큰", example = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDAwMDAwMCIsImlhdCI6MTcxMTgxMDc2NSwiZXhwIjoyMDcxODEwNzY1fQ.2gbH5s0ODmTE59NRrFi9Fd8kqahHsfQqgHu6NQjjte1_4abMHmI6VfSKVI46SjftueKXSDFVr8WATiuf1ZMNzg")
+        @Schema(description = "JWT 토큰", example = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDAwMDAwMCIsImlhdCI6MTcxMTgxMDc2NSwiZXhwIjoyMDcxODEwNzY1fQ.2gbH5s0ODmTE59NRrFi9Fd8kqahHsfQqgHu6NQjjte1_4abMHmI6VfSKVI46SjftueKXSDFVr8WATiuf1ZMNzg")
         private String accessToken;
 
         public ResponseLogin(String accessToken) {

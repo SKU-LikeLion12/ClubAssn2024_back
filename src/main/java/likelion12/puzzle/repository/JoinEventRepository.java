@@ -6,7 +6,9 @@ import likelion12.puzzle.DTO.JoinEventDTO.*;
 import likelion12.puzzle.domain.Event;
 import likelion12.puzzle.domain.JoinEvent;
 import likelion12.puzzle.domain.Member;
+import likelion12.puzzle.exception.NotExistJoinEventException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -21,8 +23,12 @@ public class JoinEventRepository {
 
     // 내가 참여한 이벤트 하나 이벤트 id와 studentId 로 조회
     public JoinEvent findJoinEvent(Member member, Event event) {
-        return em.createQuery("SELECT je FROM JoinEvent je WHERE je.member = :member and je.event = :event", JoinEvent.class)
-                .setParameter("member", member).setParameter("event", event).getSingleResult();
+        try {
+            return em.createQuery("SELECT je FROM JoinEvent je WHERE je.member = :member and je.event = :event", JoinEvent.class)
+                    .setParameter("member", member).setParameter("event", event).getSingleResult();
+        } catch (Exception e) {
+            throw new NotExistJoinEventException("일치하는 결과가 없습니다.", HttpStatus.BAD_REQUEST);
+        }
     }
 
     // (관리자용) 멤버에게 참여한 이벤트(퍼즐) 추가

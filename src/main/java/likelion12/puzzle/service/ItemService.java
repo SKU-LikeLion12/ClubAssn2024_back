@@ -28,10 +28,6 @@ public class ItemService {
         return itemRepository.save(item);
     }
 
-    public Item findByName(String name){
-        return itemRepository.findByName(name);
-    }
-
     // 관리자 페이지 전용 (물품 관리)
     public List<Item> findAll() {
         return itemRepository.findAll();

@@ -3,7 +3,10 @@ package likelion12.puzzle.repository;
 import jakarta.persistence.EntityManager;
 import likelion12.puzzle.domain.Event;
 import likelion12.puzzle.domain.Member;
+import likelion12.puzzle.exception.CustomEventException;
+import likelion12.puzzle.exception.MemberLoginException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -36,14 +39,22 @@ public class EventRepository {
 
     // 이벤트 이름으로 이벤트 찾기
     public Event findByEventName(String eventName) {
-        return em.createQuery("SELECT e FROM Event e WHERE e.name = :EventName", Event.class)
-                .setParameter("EventName", eventName).getSingleResult();
+        try {
+            return em.createQuery("SELECT e FROM Event e WHERE e.name = :EventName", Event.class)
+                    .setParameter("EventName", eventName).getSingleResult();
+        } catch (Exception e) {
+            throw new CustomEventException("해당하는 퍼즐조각이 없습니다.", HttpStatus.BAD_REQUEST);
+        }
     }
 
     // 이벤트 id로 이벤트 찾기
     public Event findByEventId(Long eventId) {
-        return em.createQuery("SELECT e FROM Event e WHERE e.id = :EventId", Event.class)
-                .setParameter("EventId", eventId).getSingleResult();
+        try {
+            return em.createQuery("SELECT e FROM Event e WHERE e.id = :EventId", Event.class)
+                    .setParameter("EventId", eventId).getSingleResult();
+        } catch (Exception e) {
+            throw new CustomEventException("해당하는 퍼즐조각이 없습니다.", HttpStatus.BAD_REQUEST);
+        }
     }
 
     // 내가 참여한 행사 리스트 반환(하나씩 반환하는 디자인이 없어서 한번에 반환하는 코드만 필요할듯) + 참여 안한 이벤트들만 나오게(이미지 빼고)
