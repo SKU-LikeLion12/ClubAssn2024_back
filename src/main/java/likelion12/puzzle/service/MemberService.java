@@ -34,6 +34,7 @@ public class MemberService {
     // 로그인
     public ResponseLogin login(RequestMember request) {
         Member member = memberRepository.findByStudentId(request.getStudentId());
+        System.out.println("request = " + request);
 
         if (!Objects.equals(member.getName(), request.getName())) {
             throw new MemberLoginException("동아리원만 이용 가능합니다.\n학번과 이름을 확인해주세요.", HttpStatus.BAD_REQUEST);
