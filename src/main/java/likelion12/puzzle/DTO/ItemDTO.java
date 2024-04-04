@@ -28,17 +28,27 @@ public class ItemDTO {
     @AllArgsConstructor
     public static class ItemCreateRequest{
         @NotEmpty
+        @Schema(description = "물품명", example = "방석")
         private String name;
+
+        @Schema(description = "물품 총개수", example = "13")
         private int count;
+
         @NotEmpty
+        @Schema(description = "물품 사진", example = "")
         private MultipartFile image;
     }
 
     @Data
     @AllArgsConstructor
     public static class ItemUpdateRequest{
+        @Schema(description = "물품명", example = "방석")
         private String name;
+
+        @Schema(description = "물품 총개수", example = "13")
         private int count;
+
+        @Schema(description = "물품 사진", example = "")
         private MultipartFile image;
     }
 

@@ -1,8 +1,11 @@
 package likelion12.puzzle.controller.admin;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import likelion12.puzzle.DTO.JoinEventDTO.*;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import likelion12.puzzle.DTO.JoinEventDTO.RequestJoinEvent;
+import likelion12.puzzle.DTO.JoinEventDTO.RequestJoinEventForDelete;
+import likelion12.puzzle.DTO.JoinEventDTO.RequestMember;
+import likelion12.puzzle.DTO.JoinEventDTO.ResponseJoinEvent;
 import likelion12.puzzle.service.JoinEventService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -10,16 +13,17 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static likelion12.puzzle.DTO.EventDTO.*;
+import static likelion12.puzzle.DTO.EventDTO.ResponsePuzzleForNotPart;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/admin/join-events")
+@Tag(name = "관리자 페이지: 퍼즐조각 관리 관련")
 public class JoinEventAdminController {
     public final JoinEventService joinEventService;
 
     // 회원 퍼즐 조각 관리 페이지
-    @Operation(summary = "회원의 이벤트 리스트 조회", description = "관리자 토큰 필요, 바디에 학번 필요", tags = {"admin-join-event"})
+    @Operation(summary = "회원의 이벤트 리스트 조회", description = "관리자 토큰 필요, 바디에 학번 필요")
     @PostMapping("")
     public ResponseEntity<List<ResponseJoinEvent>> manageEvents(@RequestBody RequestMember request) {
         List<ResponseJoinEvent> responsePuzzles = joinEventService.findAllJoinEvents(request.getStudentId());
@@ -28,14 +32,14 @@ public class JoinEventAdminController {
     }
 
     // 회원 퍼즐 조각 삭제 페이지(기본키를 받아오나? 이벤트 이름만 받나?)
-    @Operation(summary = "이벤트 참여 삭제", description = "관리자 토큰 필요, 바디에 학번 필요", tags = {"admin-join-event"})
+    @Operation(summary = "이벤트 참여 삭제", description = "관리자 토큰 필요, 바디에 학번 필요")
     @DeleteMapping("")
     public void deleteEvents(@RequestBody RequestJoinEventForDelete request) {
         joinEventService.removeJoinEvent(request.getStudentId(), request.getId());
     }
 
     // 회원 퍼즐 조각 추가 페이지(참여 안한거만 나오게)
-    @Operation(summary = "회원의 미참여 이벤트 리스트 조회", description = "관리자 토큰 필요, 바디에 학번 필요", tags = {"admin-join-event"})
+    @Operation(summary = "회원의 미참여 이벤트 리스트 조회", description = "관리자 토큰 필요, 바디에 학번 필요")
     @GetMapping("")
     public ResponseEntity<List<ResponsePuzzleForNotPart>> pageForAddEvent(@RequestBody RequestMember request) {
         List<ResponsePuzzleForNotPart> responseEvents = joinEventService.findNotPartEventsExceptImage(request.getStudentId());
@@ -44,7 +48,7 @@ public class JoinEventAdminController {
     }
 
     // 회원 퍼즐 조각 추가 +
-    @Operation(summary = "이벤트 참여 추가", description = "관리자 토큰 필요, 바디에 학번 필요", tags = {"admin-join-event"})
+    @Operation(summary = "이벤트 참여 추가", description = "관리자 토큰 필요, 바디에 학번 필요")
     @PostMapping("/add")
     public ResponseEntity<?> addJoinEvent(@RequestBody RequestJoinEvent request) {
         joinEventService.saveJoinEvent(request.getStudentId(), request.getId());

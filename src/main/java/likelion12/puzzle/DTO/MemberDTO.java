@@ -13,8 +13,11 @@ import lombok.RequiredArgsConstructor;
 public class MemberDTO {
     @Data
     public static class ResponseMember {
+        @Schema(description = "학번", example = "00000000")
         private String studentId;
+        @Schema(description = "이름", example = "홍길동")
         private String name;
+        @Schema(description = "동아리명", example = "멋쟁이사자처럼")
         private String clubName;
 
         public ResponseMember(String studentId, String name, String clubName) {
@@ -36,14 +39,19 @@ public class MemberDTO {
 
     @Data
     public static class RequestAgree {
+        @Schema(description = "학번", example = "00000000")
         private String studentId;
+        @Schema(description = "이름", example = "홍길동")
         private String name;
+        @Schema(description = "동아리명", example = "멋쟁이사자처럼")
         private Boolean isAgree;
     }
 
     @Data
     public static class ResponseMain {
+        @Schema(description = "이름", example = "홍길동")
         private String name;
+        @Schema(description = "동아리명", example = "멋쟁이사자처럼")
         private String clubName;
         private String logo;
 
@@ -66,15 +74,21 @@ public class MemberDTO {
 
     @Data
     public static class AddRequestMember {
+        @Schema(description = "학번", example = "00000000")
         private String studentId;
+        @Schema(description = "이름", example = "홍길동")
         private String name;
+        @Schema(description = "권한", example = "ROLE_ADMIN")
         private RoleType role;
     }
 
     @Data
     public static class AddMemberResponse {
+        @Schema(description = "학번", example = "00000000")
         private String studentId;
+        @Schema(description = "이름", example = "홍길동")
         private String name;
+        @Schema(description = "권한", example = "ROLE_ADMIN")
         private RoleType role;
 
         public AddMemberResponse(String studentId, String name, RoleType role) {

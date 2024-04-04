@@ -36,8 +36,11 @@ public class EventDTO {
 
     @Data
     public static class RequestEvent {
+        @Schema(description = "이벤트 이름", example = "동아리페스티벌")
         private String name;
+        @Schema(description = "이벤트 일자", example = "2024-03-31")
         private LocalDateTime date;
+        @Schema(description = "이벤트 이미지", example = "")
         private MultipartFile image;
     }
 
@@ -70,19 +73,27 @@ public class EventDTO {
 
     @Data
     public static class AllEvents{
+        @Schema(description = "이벤트 번호", example = "1")
         private Long id;
+
+        @Schema(description = "이벤트 이름", example = "동아리페스티벌")
         private String name;
+
+        @Schema(description = "이벤트 이미지", example = "")
         private String image;
-        private LocalDateTime data;
+
+        @Schema(description = "이벤트 일자", example = "2024-03-31")
+        private LocalDateTime date;
+
+        @Schema(description = "참여여부", example = "true")
         private boolean joined;
 
-        public AllEvents(Long id, String name, String image, LocalDateTime data, boolean joined) {
+        public AllEvents(Long id, String name, String image, LocalDateTime date, boolean joined) {
             this.id = id;
             this.name = name;
             this.image = image;
-            this.data = data;
+            this.date = date;
             this.joined = joined;
         }
-
     }
 }

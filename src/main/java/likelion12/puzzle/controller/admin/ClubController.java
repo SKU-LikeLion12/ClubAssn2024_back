@@ -2,6 +2,7 @@ package likelion12.puzzle.controller.admin;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import likelion12.puzzle.DTO.ClubDTO.ClubUpdateRequest;
 import likelion12.puzzle.DTO.ClubDTO.RequestJoinClub;
 import likelion12.puzzle.domain.Club;
@@ -22,9 +23,9 @@ import static likelion12.puzzle.DTO.ClubDTO.ClubAllRequest;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/admin/club")
+@Tag(name = "관리자 페이지: 동아리 관리 관련")
 public class ClubController {
     private final ClubService clubService;
-
 
 //    @PostMapping("/club/add")
 //    public Club testClub(@RequestBody Club club) {
@@ -40,7 +41,7 @@ public class ClubController {
 //    }
 
     // 동아리 추가
-    @Operation(summary = "동아리 추가", description = "동아리명과 동아리 설명, 로고 사진 필요", tags = {"admin-club"},
+    @Operation(summary = "동아리 추가", description = "동아리명과 동아리 설명, 로고 사진 필요",
             responses = {@ApiResponse(responseCode = "200", description = "생성"),
                     @ApiResponse(responseCode = "", description = "")})
     @PostMapping("/add") //, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -52,7 +53,7 @@ public class ClubController {
     }
 
     // 동아리 수정
-    @Operation(summary = "동아리 수정", description = "동아리 id, 동아리명, 동아리 설명 필요, 이미지는 안바꾸고 싶으면 안넣으면 됨", tags = {"admin-club"},
+    @Operation(summary = "동아리 수정", description = "동아리 id, 동아리명, 동아리 설명 필요, 이미지는 안바꾸고 싶으면 안넣으면 됨",
             responses = {@ApiResponse(responseCode = "201", description = "수정 성공 후 변경된 정보를 포함한 객체 생성 "),
                     @ApiResponse(responseCode = "", description = "")})
     @PutMapping("/{clubId}")
@@ -75,7 +76,7 @@ public class ClubController {
 //    }
 
 
-    @Operation(summary = "모든 동아리 조회", description = "모든 동아리에 대한 동아리 아이디, 동아리명, 동아리 설명 조회", tags = {"admin-club"},
+    @Operation(summary = "모든 동아리 조회", description = "모든 동아리에 대한 동아리 아이디, 동아리명, 동아리 설명 조회",
             responses = {@ApiResponse(responseCode = "200", description = "조회를 하면 동아리의 아이디, 동아리명, 동아리 설명이 나타난다."),
                     @ApiResponse(responseCode = "", description = "")})
     @GetMapping("/all")
@@ -90,7 +91,7 @@ public class ClubController {
         return ResponseEntity.status(HttpStatus.OK).body(clubDTOS);
     }
 
-    @Operation(summary = "동아리 삭제 API", description = "동아리 이름 넣으면 해당 동아리 삭제", tags={"admin-club"},
+    @Operation(summary = "동아리 삭제", description = "동아리 이름 넣으면 해당 동아리 삭제",
             responses = {@ApiResponse(responseCode = "200", description = "동아리 삭제 성공.")})
     @DeleteMapping("")
     public boolean deleteClub(@RequestBody RequestJoinClub request) {

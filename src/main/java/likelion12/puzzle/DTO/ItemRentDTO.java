@@ -12,10 +12,11 @@ import java.util.Set;
 
 public class ItemRentDTO {
 
-
     @AllArgsConstructor
     public static class MemberRentingSize {
+
         public Set<Long> variety;
+
         public int count;
     }
 

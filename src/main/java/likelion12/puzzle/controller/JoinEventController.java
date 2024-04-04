@@ -1,8 +1,8 @@
 package likelion12.puzzle.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
-import likelion12.puzzle.DTO.EventDTO;
-import likelion12.puzzle.DTO.EventDTO.*;
+import likelion12.puzzle.DTO.EventDTO.AllEvents;
 import likelion12.puzzle.security.JwtUtility;
 import likelion12.puzzle.service.JoinEventService;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "멤버 페이지: 퍼즐조각 관련")
 public class JoinEventController {
     private final JoinEventService joinEventService;
     private final JwtUtility jwtUtility;

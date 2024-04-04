@@ -1,36 +1,40 @@
 package likelion12.puzzle.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
-import likelion12.puzzle.DTO.MemberDTO.*;
+import likelion12.puzzle.DTO.MemberDTO.RequestMember;
+import likelion12.puzzle.DTO.MemberDTO.ResponseLogin;
+import likelion12.puzzle.DTO.MemberDTO.ResponseMain;
 import likelion12.puzzle.domain.Member;
-import likelion12.puzzle.DTO.MemberClubDTO.*;
 import likelion12.puzzle.security.JwtUtility;
-import likelion12.puzzle.service.ItemRentService;
-import likelion12.puzzle.service.JoinClubService;
 import likelion12.puzzle.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-
-import static likelion12.puzzle.DTO.ItemRentDTO.BookDTO;
-import static likelion12.puzzle.DTO.ItemRentDTO.RentDTO;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "멤버 페이지: 로그인, 동의서, 마이페이지")
 public class MemberController {
     private final MemberService memberService;
     private final JwtUtility jwtUtility;
-    private final ItemRentService itemRentService;
 
-    @Operation(summary = "로그인", description = "학번과 이름 필요", tags={"login"})
+    @Operation(summary = "로그인", description = "request: 학번, 이름\nresponse: jwt",
+            responses = {@ApiResponse(responseCode = "200", description = "로그인 성공"),
+                    @ApiResponse(responseCode = "400", description = "학번 혹은 이름이 틀렸을 경우"),
+                    @ApiResponse(responseCode = "401", description = "개인정보 동의하지 않았을 경우")})
     @GetMapping("/login")
     public ResponseEntity<ResponseLogin> login(@RequestBody RequestMember request) {
         return ResponseEntity.ok(memberService.login(request));
     }
 
+    @Operation(summary = "개인정보 동의서 api", description = "request: 학번, 이름\nresponse: jwt",
+            responses = {@ApiResponse(responseCode = "200", description = "로그인 성공")})
     @PostMapping("/agree")
     public ResponseEntity<ResponseLogin> checkAgree(@RequestBody RequestMember request) {
         memberService.updateAgree(request);
@@ -38,25 +42,13 @@ public class MemberController {
         return ResponseEntity.ok(memberService.login(request));
     }
 
-    @GetMapping("/main")
+    @Operation(summary = "마이페이지", description = "request: 발급된 jwt 필드를 헤더에서 받아옴\nresponse: 학번, 이름, 동아리 이미지",
+            responses = {@ApiResponse(responseCode = "200", description = "")})
+    @GetMapping("/mypage")
     public ResponseEntity<ResponseMain> mainPage(HttpServletRequest header) {
         Member member = memberService.tokenToMember(header);
 
         return ResponseEntity.ok(new ResponseMain(member));
-    }
-
-    @Operation(summary = "특정 멤버가 예약중인 물품 리스트", description = "헤더에 토큰 필요", tags={"myPage"})
-    @GetMapping("/member/book-list")
-    public ResponseEntity<List<BookDTO>> memberBookList(HttpServletRequest header){
-        List<BookDTO> list = itemRentService.memberBookList(jwtUtility.getStudentId(header.getHeader("Authorization")));
-        return ResponseEntity.ok().body(list);
-    }
-
-    @Operation(summary = "특정 멤버가 대여중인 물품 리스트", description = "헤더에 토큰 필요", tags={"myPage"})
-    @GetMapping("/member/rent-list")
-    public ResponseEntity<List<RentDTO>> memberRentList(HttpServletRequest header){
-        List<RentDTO> list = itemRentService.memberRentList(jwtUtility.getStudentId(header.getHeader("Authorization")));
-        return ResponseEntity.ok().body(list);
     }
 
     // 테스트용
