@@ -28,8 +28,8 @@ public class ItemController {
     @Operation(summary = "관리자가 대여 물품 추가하는 API", description = "물품명, 물품 개수, 물품 이미지 삽입")
     @PostMapping("") //, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> addItem(@RequestParam String name,
-                                             @RequestParam int count,
-                                             @RequestParam MultipartFile image)  throws IOException {
+                                     @RequestParam int count,
+                                     @RequestParam MultipartFile image)  throws IOException {
 
         Item item = itemService.save(name, count, image);
         return ResponseEntity.status(HttpStatus.CREATED).build();

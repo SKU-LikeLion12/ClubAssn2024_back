@@ -57,14 +57,12 @@ public class ClubController {
             responses = {@ApiResponse(responseCode = "201", description = "수정 성공 후 변경된 정보를 포함한 객체 생성 "),
                     @ApiResponse(responseCode = "", description = "")})
     @PutMapping("/{clubId}")
-    public ResponseEntity<ClubUpdateRequest> changeClub(@PathVariable Long clubId,
-                                                        @RequestParam String clubName,
+    public ResponseEntity<ClubUpdateRequest> changeClub(@RequestParam String clubName,
                                                         @RequestParam String description,
                                                         @RequestParam(required = false) MultipartFile logo) throws IOException {
-        Club club = clubService.changeClub(clubId, clubName, description, logo);
+        Club club = clubService.changeClub(clubName, description, logo);
         return ResponseEntity.status(HttpStatus.CREATED).body(new ClubUpdateRequest(club.getName(), club.getDescription(), club.arrayToImage()));
     }
-
 
 //    @Operation(summary = "", description = "", tags = {"club"},
 //            responses = {@ApiResponse(responseCode = "200", description = ""),

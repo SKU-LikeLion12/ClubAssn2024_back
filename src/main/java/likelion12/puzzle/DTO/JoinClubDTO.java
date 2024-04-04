@@ -24,6 +24,13 @@ public class JoinClubDTO {
     }
 
     @Data
+    public static class ResponseJC {
+        private String studentId;
+        private String studentName;
+        private String clubName;
+    }
+
+    @Data
     public static class DeleteJC {
         @Schema(description = "학번", example = "00000000")
         private String memberId;

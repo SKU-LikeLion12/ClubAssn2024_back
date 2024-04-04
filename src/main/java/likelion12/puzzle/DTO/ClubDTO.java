@@ -56,6 +56,7 @@ public class ClubDTO {
         private String logo;
     }
 
+
     @Data
     @AllArgsConstructor
     public static class ClubUpdateRequest{
