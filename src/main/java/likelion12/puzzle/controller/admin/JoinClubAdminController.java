@@ -54,8 +54,8 @@ public class JoinClubAdminController {
     @Operation(summary = "동아리원 검색", description = "학번, 이름, 동아리를 검색하면 알맞은 동아리원 정보가 나옴",
             responses = {@ApiResponse(responseCode = "200", description = "검색 성공 후 학번, 성함, 동아리명 반환"),
                     @ApiResponse(responseCode = "204", description = "없는 정보를 입력하면 요청에 대해 보내줄 콘텐츠가 없음")})
-    @GetMapping("")
-    public ResponseEntity<List<CreateJC>> CMManageSearch(@RequestParam String keyword) {
+    @GetMapping("/{keyword}")
+    public ResponseEntity<List<CreateJC>> CMManageSearch(@PathVariable String keyword) {
 //        if (keyword == null || keyword.trim().isEmpty()) {
 //            return ResponseEntity.noContent().build();
 //        }
@@ -84,8 +84,8 @@ public class JoinClubAdminController {
 
     // 특정 멤버의 가입 동아리, 미가입 동아리 리스트
     @Operation(summary = "학생이 가입한 동아리와 가입하지 않은 동아리 반환 API", description = "url에 학번 입력")
-    @GetMapping("/info")
-    public ResponseEntity<MemberClubDTO.MemberJoinedUnjoinedClubDTO> findJoinedClubUnJoinedClub(@RequestBody JoinEventDTO.RequestMember request){
-        return ResponseEntity.ok().body(joinClubService.findJoinedClubUnJoinedClub(request.getStudentId()));
+    @GetMapping("/info/{studentId}")
+    public ResponseEntity<MemberClubDTO.MemberJoinedUnjoinedClubDTO> findJoinedClubUnJoinedClub(@RequestParam("studentId") String studentId){
+        return ResponseEntity.ok().body(joinClubService.findJoinedClubUnJoinedClub(studentId));
     }
 }
