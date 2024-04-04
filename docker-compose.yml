@@ -15,47 +15,47 @@ services:
 
     environment:
       - SPRING_DATASOURCE_DRIVER-CLASS-NAME=com.mysql.cj.jdbc.Driver
-      - SPRING_DATASOURCE_URL=jdbc:mysql://puzzle_db:3306/puzzle2024
+      - SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/puzzle2024
       - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=rootPassword
-#      - SPRING_DATA_REDIS_HOST=redis
+      - SPRING_DATASOURCE_PASSWORD=
+      - SPRING_DATA_REDIS_HOST=redis
 
     networks:
       - db-network
 
-    depends_on:
-      mysql:
-        condition: service_healthy
+#    depends_on:
+#      mysql:
+#        condition: service_healthy
 
 
-  mysql:
-    container_name: puzzle_db
-    image: mysql:8.0.36
-    ports:
-      - "3306:3306"
-
-    environment:
-      - MYSQL_DATABASE=puzzle2024
-      - MYSQL_ROOT_HOST=%
-      - MYSQL_ROOT_PASSWORD=rootPassword
-
-    volumes:
-      - ./mysql/conf.d:/etc/mysql/conf.d
-
-    command:
-      - "mysqld"
-      - "--character-set-server=utf8mb4"
-      - "--collation-server=utf8mb4_unicode_ci"
-
-    networks:
-      - db-network
-
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      timeout: 5s
-      retries: 5
-      interval: 5s
-
-networks:
-  db-network:
-    driver: bridge
+#  mysql:
+#    container_name: puzzle_db
+#    image: mysql:8.0.36
+#    ports:
+#      - "3306:3306"
+#
+#    environment:
+#      - MYSQL_DATABASE=puzzle2024
+#      - MYSQL_ROOT_HOST=%
+#      - MYSQL_ROOT_PASSWORD=rootPassword
+#
+#    volumes:
+#      - ./mysql/conf.d:/etc/mysql/conf.d
+#
+#    command:
+#      - "mysqld"
+#      - "--character-set-server=utf8mb4"
+#      - "--collation-server=utf8mb4_unicode_ci"
+#
+#    networks:
+#      - db-network
+#
+#    healthcheck:
+#      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+#      timeout: 5s
+#      retries: 5
+#      interval: 5s
+#
+#networks:
+#  db-network:
+#    driver: bridge
