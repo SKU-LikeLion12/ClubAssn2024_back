@@ -23,7 +23,7 @@ public class JoinEventAdminController {
     public final JoinEventService joinEventService;
 
     // 회원 퍼즐 조각 관리 페이지
-    @Operation(summary = "회원의 이벤트 리스트 조회", description = "관리자 토큰 필요, 바디에 학번 필요")
+    @Operation(summary = "(호주) 회원의 이벤트 리스트 조회", description = "관리자 토큰 필요, 바디에 학번 필요")
     @PostMapping("")
     public ResponseEntity<List<ResponseJoinEvent>> manageEvents(@RequestBody RequestMember request) {
         List<ResponseJoinEvent> responsePuzzles = joinEventService.findAllJoinEvents(request.getStudentId());
@@ -39,7 +39,7 @@ public class JoinEventAdminController {
     }
 
     // 회원 퍼즐 조각 추가 페이지(참여 안한거만 나오게)
-    @Operation(summary = "회원의 미참여 이벤트 리스트 조회", description = "관리자 토큰 필요, 바디에 학번 필요")
+    @Operation(summary = "(호주) 회원의 미참여 이벤트 리스트 조회", description = "관리자 토큰 필요, 바디에 학번 필요")
     @GetMapping("")
     public ResponseEntity<List<ResponsePuzzleForNotPart>> pageForAddEvent(@RequestBody RequestMember request) {
         List<ResponsePuzzleForNotPart> responseEvents = joinEventService.findNotPartEventsExceptImage(request.getStudentId());
@@ -48,7 +48,7 @@ public class JoinEventAdminController {
     }
 
     // 회원 퍼즐 조각 추가 +
-    @Operation(summary = "이벤트 참여 추가", description = "관리자 토큰 필요, 바디에 학번 필요")
+    @Operation(summary = "(호주) 이벤트 참여 추가", description = "관리자 토큰 필요, 바디에 학번 필요")
     @PostMapping("/add")
     public ResponseEntity<?> addJoinEvent(@RequestBody RequestJoinEvent request) {
         joinEventService.saveJoinEvent(request.getStudentId(), request.getId());

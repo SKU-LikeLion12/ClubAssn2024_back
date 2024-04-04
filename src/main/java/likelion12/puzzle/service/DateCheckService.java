@@ -34,13 +34,10 @@ public class DateCheckService {
         if(buzDay != null){
             return buzDay;
         }
-        try {
-            buzDay = new DateCheck(date, nextBuzDay(date.plusDays(1)), nextBuzDay(date.plusDays(7)));
-            dateCheckRepository.save(buzDay);
-        } catch (Exception e) {
-            System.out.println("e = " + e);
-            throw new
-        }
+
+        buzDay = new DateCheck(date, nextBuzDay(date.plusDays(1)), nextBuzDay(date.plusDays(7)));
+        dateCheckRepository.save(buzDay);
+
         return buzDay;
     }
     @Transactional(readOnly = true)

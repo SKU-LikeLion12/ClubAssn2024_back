@@ -25,19 +25,19 @@ public class DateCheckRepository {
         try{
             return em.createQuery("select dc from DateCheck dc where dc.date = :date", DateCheck.class)
                     .setParameter("date", date).getSingleResult();
-        }catch (NoResultException e){
+        }catch (NoResultException e) {
             return null;
         }
     }
 
-    public DateCheck findBookDay(LocalDate date){
-        try{
-            return em.createQuery("select d from DateCheck d where d.nextBizDay = :today order by d.date asc", DateCheck.class)
-                    .setParameter("today",date).getSingleResult();
-        }catch (NoResultException e){
-            return null;
-        }
-    }
+//    public DateCheck findBookDay(LocalDate date){
+//        try{
+//            return em.createQuery("select d from DateCheck d where d.nextBizDay = :today order by d.date asc", DateCheck.class)
+//                    .setParameter("today",date).getSingleResult();
+//        }catch (NoResultException e){
+//            return null;
+//        }
+//    }
 
     public void remove(DateCheck date){
         em.remove(date);

@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MemberAdminController {
     private final MemberService memberService;
 
-    @Operation(summary = "새로운 학생 추가", description = "request: 학번, 성함, 권한\n response: 학번, 성함, 권한",
+    @Operation(summary = "(호주) 새로운 학생 추가", description = "request: 학번, 성함, 권한<br>response: 학번, 성함, 권한",
             responses = {@ApiResponse(responseCode = "201", description = "생성 성공 후 joinClub 객체 반환"),
                         @ApiResponse(responseCode = "", description = "")})
     @PostMapping("/member/add")

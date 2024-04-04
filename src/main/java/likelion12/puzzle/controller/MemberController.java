@@ -19,12 +19,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@Tag(name = "멤버 페이지: 로그인, 동의서, 마이페이지")
+@Tag(name = "멤버 페이지: 기본")
 public class MemberController {
     private final MemberService memberService;
     private final JwtUtility jwtUtility;
 
-    @Operation(summary = "로그인", description = "request: 학번, 이름\nresponse: jwt",
+    @Operation(summary = "(호주) 로그인", description = "request: 학번, 이름\nresponse: jwt",
             responses = {@ApiResponse(responseCode = "200", description = "로그인 성공"),
                     @ApiResponse(responseCode = "400", description = "학번 혹은 이름이 틀렸을 경우"),
                     @ApiResponse(responseCode = "401", description = "개인정보 동의하지 않았을 경우")})
@@ -33,7 +33,7 @@ public class MemberController {
         return ResponseEntity.ok(memberService.login(request));
     }
 
-    @Operation(summary = "개인정보 동의서 api", description = "request: 학번, 이름\nresponse: jwt",
+    @Operation(summary = "(호주) 개인정보 동의서 api", description = "request: 학번, 이름\nresponse: jwt",
             responses = {@ApiResponse(responseCode = "200", description = "로그인 성공")})
     @PostMapping("/agree")
     public ResponseEntity<ResponseLogin> checkAgree(@RequestBody RequestMember request) {
@@ -42,7 +42,7 @@ public class MemberController {
         return ResponseEntity.ok(memberService.login(request));
     }
 
-    @Operation(summary = "마이페이지", description = "request: 발급된 jwt 필드를 헤더에서 받아옴\nresponse: 학번, 이름, 동아리 이미지",
+    @Operation(summary = "(호주) 마이페이지", description = "request: 발급된 jwt 필드를 헤더에서 받아옴\nresponse: 학번, 이름, 동아리 이미지",
             responses = {@ApiResponse(responseCode = "200", description = "")})
     @GetMapping("/mypage")
     public ResponseEntity<ResponseMain> mainPage(HttpServletRequest header) {
