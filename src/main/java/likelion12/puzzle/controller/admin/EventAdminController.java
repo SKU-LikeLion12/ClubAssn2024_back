@@ -2,6 +2,8 @@ package likelion12.puzzle.controller.admin;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import likelion12.puzzle.DTO.EventDTO;
+import likelion12.puzzle.DTO.EventDTO.EventAllRequestExceptImage;
 import likelion12.puzzle.domain.Event;
 import likelion12.puzzle.service.EventService;
 import lombok.RequiredArgsConstructor;
