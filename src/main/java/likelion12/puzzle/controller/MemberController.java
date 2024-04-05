@@ -12,10 +12,7 @@ import likelion12.puzzle.security.JwtUtility;
 import likelion12.puzzle.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -30,6 +27,7 @@ public class MemberController {
                     @ApiResponse(responseCode = "401", description = "개인정보 동의하지 않았을 경우")})
     @PostMapping("/login")
     public ResponseEntity<ResponseLogin> login(@RequestBody RequestMember request) {
+        System.out.println("request = " + request.getName());
         return ResponseEntity.ok(memberService.login(request));
     }
 
