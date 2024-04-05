@@ -24,9 +24,7 @@ import static likelion12.puzzle.DTO.JoinClubDTO.DeleteJC;
 public class JoinClubAdminController {
     private final JoinClubService joinClubService;
 
-    @Operation(summary = "(민규) 동아리원 추가", description = "학번, 성함, 동아리명 필요",
-            responses = {@ApiResponse(responseCode = "201", description = "생성 성공 후 joinClub 객체 반환"),
-                    @ApiResponse(responseCode = "", description = "")})
+    @Operation(summary = "(민규) 동아리원 추가", description = "학번, 성함, 동아리명 필요")
     @PostMapping("/add")
     public ResponseEntity<?> addNewMember(@RequestBody CreateJC request) {
         joinClubService.saveNewMember(request.getStudentId(), request.getClubName());
@@ -40,17 +38,13 @@ public class JoinClubAdminController {
 //        }
     }
 
-    @Operation(summary = "(민규) 동아리원 삭제", description = "학번, 동아리 이름 필요",
-            responses = {@ApiResponse(responseCode = "204", description = "삭제 성공 후 삭제 완료 메시지 반환"),
-                    @ApiResponse(responseCode = "", description = "")})
+    @Operation(summary = "(민규) 동아리원 삭제", description = "학번, 동아리 이름 필요")
     @DeleteMapping("")
     public void deleteClubMember(@RequestBody DeleteJC request) {
         joinClubService.deleteJoinClub(request.getMemberId(), request.getClubName());
     }
 
-    @Operation(summary = "(민규) 동아리원 검색", description = "학번, 이름, 동아리를 검색하면 알맞은 동아리원 정보가 나옴",
-            responses = {@ApiResponse(responseCode = "200", description = "검색 성공 후 학번, 성함, 동아리명 반환"),
-                    @ApiResponse(responseCode = "204", description = "없는 정보를 입력하면 요청에 대해 보내줄 콘텐츠가 없음")})
+    @Operation(summary = "(민규) 동아리원 검색", description = "학번, 이름, 동아리를 검색하면 알맞은 동아리원 정보가 나옴")
     @GetMapping("/{keyword}")
     public ResponseEntity<List<CreateJC>> CMManageSearch(@PathVariable String keyword) {
 //        if (keyword == null || keyword.trim().isEmpty()) {
