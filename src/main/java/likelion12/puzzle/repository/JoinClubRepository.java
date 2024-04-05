@@ -34,19 +34,18 @@ public class JoinClubRepository {
                 .setParameter("id", studentId).getResultList();
     }
 
+    // 학번으로 가입된 동아리 찾기
     public List<Club> findJoinedClubByMemberId(String studentId){
         return em.createQuery("SELECT jc.club FROM JoinClub jc WHERE jc.member.studentId =:studentId", Club.class)
                 .setParameter("studentId", studentId).getResultList();
     }
 
-
     // iconClub이 null이면 해당 멤버의 club중 하나 세팅해야함 (위에 함수랑 다르게 club을 반환함.)
-    public List<Club> findByStudentIdClub(String studentId){
+    public List<Club> findByStudentIdClub(String studentId) {
         return em.createQuery("SELECT jc.club FROM JoinClub jc WHERE jc.member.studentId =:studentId", Club.class)
                 .setParameter("studentId", studentId)
                 .getResultList();
     }
-
 
     // 동아리에 있는 동아리원 조회
     public List<JoinClub> findAllByClubName(Club club) {
@@ -65,11 +64,9 @@ public class JoinClubRepository {
         }
     }
 
-    // 동아리에서 해당 학생 삭제
-    public boolean deleteJoinClub(JoinClub joinClub) {
+    // 동아리에서 해당 학생 삭제 (동아리 탈퇴)
+    public void deleteJoinClub(JoinClub joinClub) {
         em.remove(joinClub);
-
-        return true;
     }
 
     // 동아리원 검색

@@ -36,9 +36,13 @@ public class MemberService {
         Member member = memberRepository.findByStudentId(request.getStudentId());
         System.out.println("request = " + request);
 
-        if (!Objects.equals(member.getName(), request.getName())) {
+        if (!member.getName().equals(request.getName())) {
             throw new MemberLoginException("동아리원만 이용 가능합니다.\n학번과 이름을 확인해주세요.", HttpStatus.BAD_REQUEST);
         }
+
+//        if (member.getIconClub().equals(null)) {
+//            joinClubService.setRandomIconClub();
+//        }
 
         if (!member.isAgree()) {
             throw new MemberLoginException("개인정보 동의가 필요합니다.", HttpStatus.UNAUTHORIZED);

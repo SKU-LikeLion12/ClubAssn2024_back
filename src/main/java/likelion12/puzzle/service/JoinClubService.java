@@ -40,22 +40,28 @@ public class JoinClubService {
     }
 
     // 학번으로 어느 동아리 가입되어있는지 조회
-    public List<JoinClub> findByStudentId(String studentId) {
-        return joinClubRepository.findByMemberId(studentId);
-    }
+//    public List<JoinClub> findByStudentId(String studentId) {
+//        return joinClubRepository.findByMemberId(studentId);
+//    }
 
+    // 학번으로 어느 동아리 가입되어있는지 조회
     public List<Club> findJoinedClubByMemberId(String studentId){
         return joinClubRepository.findJoinedClubByMemberId(studentId);
     }
 
     // 동아리에서 학생 탈퇴
     @Transactional
-    public boolean deleteJoinClub(String student, String clubName) {
-        Member member = memberService.findByStudentId(student);
+    public void deleteJoinClub(String studentId, String clubName) {
+        Member member = memberService.findByStudentId(studentId);
         Club club = clubService.findByName(clubName);
+
+        if (member.getIconClub().equals(club)) {
+            setRandomIconClub(studentId);
+        }
+
         JoinClub joinClub = joinClubRepository.findJoinClub(club, member);
 
-        return joinClubRepository.deleteJoinClub(joinClub);
+        joinClubRepository.deleteJoinClub(joinClub);
     }
 
     // 동아리원 검색
