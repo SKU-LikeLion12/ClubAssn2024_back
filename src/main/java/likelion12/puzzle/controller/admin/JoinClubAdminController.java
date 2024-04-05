@@ -24,9 +24,7 @@ import static likelion12.puzzle.DTO.JoinClubDTO.DeleteJC;
 public class JoinClubAdminController {
     private final JoinClubService joinClubService;
 
-    @Operation(summary = "(민규) 동아리원 추가", description = "학번, 성함, 동아리명 필요",
-            responses = {@ApiResponse(responseCode = "201", description = "생성 성공 후 joinClub 객체 반환"),
-                    @ApiResponse(responseCode = "", description = "")})
+    @Operation(summary = "(민규) 동아리원 추가", description = "학번, 성함, 동아리명 필요")
     @PostMapping("/add")
     public ResponseEntity<?> addNewMember(@RequestBody CreateJC request) {
         joinClubService.saveNewMember(request.getStudentId(), request.getClubName());
