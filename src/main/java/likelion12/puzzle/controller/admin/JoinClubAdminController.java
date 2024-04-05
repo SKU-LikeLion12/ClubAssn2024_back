@@ -44,9 +44,8 @@ public class JoinClubAdminController {
             responses = {@ApiResponse(responseCode = "204", description = "삭제 성공 후 삭제 완료 메시지 반환"),
                     @ApiResponse(responseCode = "", description = "")})
     @DeleteMapping("")
-    public ResponseEntity<String> deleteClubMember(@RequestBody DeleteJC request) {
+    public void deleteClubMember(@RequestBody DeleteJC request) {
         joinClubService.deleteJoinClub(request.getMemberId(), request.getClubName());
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("삭제 완료");
     }
 
     @Operation(summary = "(민규) 동아리원 검색", description = "학번, 이름, 동아리를 검색하면 알맞은 동아리원 정보가 나옴",
