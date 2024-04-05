@@ -3,14 +3,21 @@ package likelion12.puzzle.controller.admin;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import likelion12.puzzle.DTO.EventDTO.*;
+//import likelion12.puzzle.DTO.EventDTO.UpdateRequestEvent;
+//import likelion12.puzzle.DTO.EventDTO.DeleteEvents;
+//import likelion12.puzzle.DTO.EventDTO.EventAllRequestExceptImage;
+//import likelion12.puzzle.DTO.EventDTO.RequestEvent;
+//import likelion12.puzzle.DTO.EventDTO.ResponseEvent;
 import likelion12.puzzle.domain.Event;
 import likelion12.puzzle.service.EventService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
