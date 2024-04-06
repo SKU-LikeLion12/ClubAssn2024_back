@@ -21,7 +21,7 @@ public class EventDTO {
         @Schema(description = "이벤트 이름", example = "동아리페스티벌")
         private String name;
 
-        @Schema(description = "이벤트 일자", example = "2024-03-31")
+        @Schema(description = "이벤트 일자", example = "2024-04-06T11:14:51.57", type = "string")
         private LocalDateTime date;
 
         @Schema(description = "이벤트 포스터", example = "")
@@ -39,10 +39,9 @@ public class EventDTO {
     public static class RequestEvent {
         @Schema(description = "이벤트 이름", example = "동아리페스티벌")
         private String name;
-        @Schema(description = "이벤트 일자", example = "2024-03-31")
+        @Schema(description = "이벤트 일자", example = "2024-04-06T11:14:51.572", type = "string")
         private LocalDateTime date;
         @Schema(description = "이벤트 이미지", example = "")
-
         private MultipartFile image;
     }
 
@@ -52,7 +51,7 @@ public class EventDTO {
         private Long id;
         @Schema(description = "이벤트 이름", example = "동아리페스티벌")
         private String name;
-        @Schema(description = "이벤트 일자", example = "2024-03-31")
+        @Schema(description = "이벤트 일자", example = "2024-04-06T11:14:51.572", type = "string")
         private LocalDateTime date;
         @Schema(description = "이벤트 이미지", example = "")
         private MultipartFile image;
@@ -63,7 +62,7 @@ public class EventDTO {
     public static class UpdateResponseEvent {
         @Schema(description = "이벤트 이름", example = "동아리페스티벌")
         private String name;
-        @Schema(description = "이벤트 일자", example = "2024-03-31")
+        @Schema(description = "이벤트 일자", example = "2024-04-06T11:14:51.572", type = "string")
         private LocalDateTime date;
         @Schema(description = "이벤트 이미지", example = "")
         private String image;
@@ -92,7 +91,7 @@ public class EventDTO {
         @Schema(description = "이벤트 이름", example = "동아리페스티벌")
         private String name;
 
-        @Schema(description = "이벤트 일자", example = "2024-03-31")
+        @Schema(description = "이벤트 일자", example = "2024-04-06T11:14:51.572", type = "string")
         private LocalDateTime date;
     }
 
@@ -107,7 +106,7 @@ public class EventDTO {
         @Schema(description = "이벤트 이미지", example = "")
         private String image;
 
-        @Schema(description = "이벤트 일자", example = "2024-03-31")
+        @Schema(description = "이벤트 일자", example = "2024-04-06T11:14:51.572", type = "string")
         private LocalDateTime date;
 
         @Schema(description = "참여여부", example = "true")

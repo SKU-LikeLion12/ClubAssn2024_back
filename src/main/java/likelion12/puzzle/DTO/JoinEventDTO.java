@@ -14,7 +14,7 @@ public class JoinEventDTO {
         @Schema(description = "행사명", example = "동아리페스티벌")
         private String name;
 
-        @Schema(description = "행사 참여 시간", example = "2024-03-31T17:04:43.982361")
+        @Schema(description = "행사 참여 시간", example = "2024-03-31T17:04:43.982361", type = "string")
         private LocalDateTime addedTime;
 
         public ResponseJoinEvent(Long id, String name, LocalDateTime dateTime) {
