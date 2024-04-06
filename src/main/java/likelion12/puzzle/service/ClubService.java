@@ -55,7 +55,9 @@ public class ClubService {
         if (logo != null) {
             club.setLogo(logo);
         }
-        club.changeClub(clubName, description);
+        String newClubName = (clubName != null ? clubName : club.getName());
+        String newDescription = (description != null ? description : club.getDescription());
+        club.changeClub(newClubName, newDescription);
 
         return club;
     }

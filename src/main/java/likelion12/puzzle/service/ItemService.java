@@ -44,7 +44,7 @@ public class ItemService {
     }
 
     @Transactional
-    public Item changeItem(Long itemId, String name, int count, MultipartFile image) throws IOException {
+    public Item changeItem(Long itemId, String name, Integer count, MultipartFile image) throws IOException {
 
         Item item = findById(itemId);
         // 사진 넣으면 바꾼 사진으로
@@ -52,6 +52,7 @@ public class ItemService {
             item.setImage(image);
         }
         String newName = (name != null ? name : item.getName());
+        int newCount = (count != null ? count : item.getCount());
         item.changeItem(newName, count);
 
         return item;

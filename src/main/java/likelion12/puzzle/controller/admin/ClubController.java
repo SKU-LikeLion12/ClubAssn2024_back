@@ -3,6 +3,7 @@ package likelion12.puzzle.controller.admin;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import likelion12.puzzle.DTO.ClubDTO.*;
 import likelion12.puzzle.DTO.ClubDTO.ClubUpdateRequest;
 import likelion12.puzzle.DTO.ClubDTO.RequestJoinClub;
 import likelion12.puzzle.domain.Club;
@@ -11,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -45,10 +45,8 @@ public class ClubController {
             responses = {@ApiResponse(responseCode = "200", description = "생성"),
                     @ApiResponse(responseCode = "", description = "")})
     @PostMapping("/add") //, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Club> addClub(@RequestParam String clubName,
-                                        @RequestParam String description,
-                                        @RequestParam(required = false) MultipartFile logo)  throws IOException {
-        Club club = clubService.addNewClub(clubName, description, logo);
+    public ResponseEntity<Club> addClub(ClubCreateRequest request)  throws IOException {
+        Club club = clubService.addNewClub(request.getClubName(), request.getDescription(), request.getLogo());
         return ResponseEntity.status(HttpStatus.CREATED).body(club);
     }
 
@@ -57,11 +55,9 @@ public class ClubController {
             responses = {@ApiResponse(responseCode = "201", description = "수정 성공 후 변경된 정보를 포함한 객체 생성 "),
                     @ApiResponse(responseCode = "", description = "")})
     @PutMapping("/{clubId}")
-    public ResponseEntity<ClubUpdateRequest> changeClub(@RequestParam String clubName,
-                                                        @RequestParam String description,
-                                                        @RequestParam(required = false) MultipartFile logo) throws IOException {
-        Club club = clubService.changeClub(clubName, description, logo);
-        return ResponseEntity.status(HttpStatus.CREATED).body(new ClubUpdateRequest(club.getName(), club.getDescription(), club.arrayToImage()));
+    public ResponseEntity<ClubUpdateResponse> changeClub(ClubUpdateRequest request) throws IOException {
+        Club club = clubService.changeClub(request.getName(), request.getDescription(), request.getLogo());
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ClubUpdateResponse(club.getName(), club.getDescription(), club.arrayToImage()));
     }
 
 //    @Operation(summary = "", description = "", tags = {"club"},

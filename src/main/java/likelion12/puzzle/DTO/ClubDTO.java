@@ -49,11 +49,14 @@ public class ClubDTO {
     @AllArgsConstructor
     public static class ClubCreateRequest{
         @NotEmpty
-        private String name;
+        @Schema(description = "동아리 이름", example = "멋쟁이사자처럼")
+        private String clubName;
         @NotEmpty
+        @Schema(description = "동아리 설명", example = "국내최대규모 IT창업동아리")
         private String description;
         @NotEmpty
-        private String logo;
+        @Schema(description = "동아리 로고", example = "")
+        private MultipartFile logo;
     }
 
 
@@ -68,7 +71,19 @@ public class ClubDTO {
         @Schema(description = "동아리 설명", example = "국내최대규모 IT창업동아리")
         private String description;
 
-        @NotEmpty
+        @Schema(description = "동아리 로고", example = "")
+        private MultipartFile logo;
+    }
+
+    @Data
+    @AllArgsConstructor
+    public static class ClubUpdateResponse{
+        @Schema(description = "동아리 이름", example = "멋쟁이사자처럼")
+        private String name;
+
+        @Schema(description = "동아리 설명", example = "국내최대규모 IT창업동아리")
+        private String description;
+
         @Schema(description = "동아리 로고", example = "")
         private String logo;
     }

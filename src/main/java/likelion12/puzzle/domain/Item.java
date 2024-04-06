@@ -35,7 +35,7 @@ public class Item {
         this.rentingCount = 0;
     }
 
-    public void changeItem(String name, int count) {
+    public void changeItem(String name, Integer count) {
         this.name = name;
         this.count = count;
     }
