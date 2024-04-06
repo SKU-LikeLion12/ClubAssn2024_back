@@ -8,6 +8,7 @@ import likelion12.puzzle.domain.Club;
 import likelion12.puzzle.security.JwtUtility;
 import likelion12.puzzle.service.JoinClubService;
 import likelion12.puzzle.service.MemberService;
+import likelion12.puzzle.service.MyPageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,7 +22,7 @@ import java.util.List;
 @Tag(name = "멤버 페이지: 가입된 동아리 관련")
 public class JoinClubController {
     private final JoinClubService joinClubService;
-    private final MemberService memberService;
+    private final MyPageService myPageService;
     private final JwtUtility jwtUtility;
 
     // 아이콘을 포함해서 가입되어있는 모든 조인클럽 반환.
@@ -31,18 +32,18 @@ public class JoinClubController {
                     @ApiResponse(responseCode = "403", description = "권한 없음")
             })
     public List<Club> findJoinedClubByMemberId(HttpServletRequest header){
-        String studentId = jwtUtility.getStudentId(header.getHeader("Authorization"));
+        String studentId = jwtUtility.getStudentId(jwtUtility.resolveToken(header));
         return joinClubService.findJoinedClubByMemberId(studentId);
     }
 
     // iconclub 변경
-    @PostMapping("/changeIconClub/{clubName}")
-    @Operation(summary = "(택원) 대표 동아리 변경", description = "jwt, 동아리명 필요",
+    @PostMapping("/changeIconClub")
+    @Operation(summary = "(택원) 대표 동아리 변경", description = "header:jwt, body:동아리명 필요",
             responses = {@ApiResponse(responseCode="200", description="변경 성공"),
                     @ApiResponse(responseCode = "403", description = "권한 없음")
             })
-    public void changeIconClub(HttpServletRequest header, @PathVariable("clubName") String clubName){
-        String studentId = jwtUtility.getStudentId(header.getHeader("Authorization"));
-        memberService.changeIconClub(studentId, clubName);
+    public void changeIconClub(HttpServletRequest header, String clubName){
+        String studentId = jwtUtility.getStudentId(jwtUtility.resolveToken(header));
+        myPageService.updateIconClub(studentId, clubName);
     }
 }

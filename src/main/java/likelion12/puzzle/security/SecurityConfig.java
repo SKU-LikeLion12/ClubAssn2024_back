@@ -16,7 +16,6 @@ public class SecurityConfig {
 
     private final JwtUtility jwtUtility;
     private final CustomUserDetailsService customUserDetailsService;
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.httpBasic(AbstractHttpConfigurer::disable) // spring security 기본 인증 해제 -> jwt 사용

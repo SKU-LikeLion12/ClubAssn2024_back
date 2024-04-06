@@ -6,8 +6,10 @@ import likelion12.puzzle.domain.Club;
 import likelion12.puzzle.domain.JoinClub;
 import likelion12.puzzle.domain.Member;
 import likelion12.puzzle.exception.NoJoinedClubException;
+import likelion12.puzzle.exception.NotExistJoinClubException;
 import likelion12.puzzle.repository.JoinClubRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,22 +42,39 @@ public class JoinClubService {
     }
 
     // 학번으로 어느 동아리 가입되어있는지 조회
-    public List<JoinClub> findByStudentId(String studentId) {
-        return joinClubRepository.findByMemberId(studentId);
-    }
+//    public List<JoinClub> findByStudentId(String studentId) {
+//        return joinClubRepository.findByMemberId(studentId);
+//    }
 
+    // 학번으로 어느 동아리 가입되어있는지 조회
     public List<Club> findJoinedClubByMemberId(String studentId){
         return joinClubRepository.findJoinedClubByMemberId(studentId);
     }
 
     // 동아리에서 학생 탈퇴
     @Transactional
-    public boolean deleteJoinClub(String student, String clubName) {
-        Member member = memberService.findByStudentId(student);
+    public void deleteJoinClub(String studentId, String clubName) {
+        Member member = memberService.findByStudentId(studentId);
         Club club = clubService.findByName(clubName);
+
+        if (member.getIconClub().equals(club)) {
+            member.setIconClub(null);
+        }
+
         JoinClub joinClub = joinClubRepository.findJoinClub(club, member);
 
-        return joinClubRepository.deleteJoinClub(joinClub);
+        joinClubRepository.deleteJoinClub(joinClub);
+    }
+
+    public boolean findJoinClub(String studentId, String clubName){
+        Member member = memberService.findByStudentId(studentId);
+        Club club = clubService.findByName(clubName);
+        try{
+            joinClubRepository.findJoinClub(club, member);
+            return true;
+        }catch (NotExistJoinClubException e){
+            return false;
+        }
     }
 
     // 동아리원 검색
@@ -77,15 +96,5 @@ public class JoinClubService {
         return joinClubRepository.findJoinedClubUnJoinedClub(studentId);
     }
 
-    // 로그인을 위해서 member조회할 때 iconClub이 null이면 이 함수 사용할 것.
-    @Transactional
-    public void setRandomIconClub(String studentId){
-        List<Club> joinedClubs = findByStudentIdClub(studentId);
-        if (joinedClubs.isEmpty()){
-            throw new NoJoinedClubException("가입된 club 없음.");
-        } else{
-            Member member = memberService.findByStudentId(studentId);
-            member.updateIconClub(joinedClubs.get(0));
-        }
-    }
+
 }

@@ -42,11 +42,14 @@ public class ItemDTO {
     @Data
     @AllArgsConstructor
     public static class ItemUpdateRequest{
+        @Schema(description = "물품 번호(id)", example = "1")
+        private Long itemId;
+
         @Schema(description = "물품명", example = "방석")
         private String name;
 
         @Schema(description = "물품 총개수", example = "13")
-        private int count;
+        private Integer count;
 
         @Schema(description = "물품 사진", example = "")
         private MultipartFile image;

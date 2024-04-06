@@ -47,4 +47,9 @@ public class GlobalExceptionController {
     public ResponseEntity<String> handleEventException(CustomEventException e) {
         return ResponseEntity.status(e.getStatus()).body(e.getMessage());
     }
+
+    @ExceptionHandler(NoJoinedClubException.class)
+    public ResponseEntity<String> handleNoJoinedClubException(NoJoinedClubException e) {
+        return ResponseEntity.status(e.getStatus()).body(e.getMessage());
+    }
 }
