@@ -149,7 +149,7 @@ public class ItemRentDTO {
         @Schema(description = "지연여부", example = "NO_DELAY or DELAY or LONG_DELAY")
         private DelayStatus status;
 
-        public AdminRentListDTO(Long itemRentId, String studentId, String itemName, String iconClub, Integer count, LocalDateTime rentTime) {
+        public AdminRentListDTO(Long itemRentId, String studentId, String name, String itemName, String iconClub, Integer count, LocalDateTime rentTime) {
             this.itemRentId = itemRentId;
             this.studentId = studentId;
             this.itemName = itemName;
