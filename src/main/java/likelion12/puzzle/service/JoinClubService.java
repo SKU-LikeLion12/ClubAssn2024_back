@@ -8,6 +8,7 @@ import likelion12.puzzle.domain.Member;
 import likelion12.puzzle.exception.NoJoinedClubException;
 import likelion12.puzzle.repository.JoinClubRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -87,9 +88,10 @@ public class JoinClubService {
     @Transactional
     public void setRandomIconClub(String studentId){
         List<Club> joinedClubs = findByStudentIdClub(studentId);
-        if (joinedClubs.isEmpty()){
-            throw new NoJoinedClubException("가입된 club 없음.");
-        } else{
+
+        if (joinedClubs.isEmpty()) {
+            throw new NoJoinedClubException("동아리 연합회 소속이 아닙니다.", HttpStatus.BAD_REQUEST);
+        } else {
             Member member = memberService.findByStudentId(studentId);
             member.updateIconClub(joinedClubs.get(0));
         }

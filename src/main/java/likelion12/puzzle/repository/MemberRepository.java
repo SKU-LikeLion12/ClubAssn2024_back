@@ -35,7 +35,7 @@ public class MemberRepository {
             return em.createQuery("select m from Member m where m.studentId =:id", Member.class)
                     .setParameter("id", studentId).getSingleResult();
         } catch (Exception e) {
-            throw new MemberLoginException("동아리원만 이용 가능합니다.\n학번과 이름을 확인해주세요.", HttpStatus.BAD_REQUEST);
+            return null;
         }
     }
 
