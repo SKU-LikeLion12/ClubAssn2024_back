@@ -54,7 +54,7 @@ public class ClubController {
     @Operation(summary = "(민규) 동아리 수정", description = "동아리 id, 동아리명, 동아리 설명 필요, 이미지는 안바꾸고 싶으면 안넣으면 됨",
             responses = {@ApiResponse(responseCode = "201", description = "수정 성공 후 변경된 정보를 포함한 객체 생성 "),
                     @ApiResponse(responseCode = "", description = "")})
-    @PutMapping("/{clubId}")
+    @PutMapping("")
     public ResponseEntity<ClubUpdateResponse> changeClub(ClubUpdateRequest request) throws IOException {
         Club club = clubService.changeClub(request.getName(), request.getDescription(), request.getLogo());
         return ResponseEntity.status(HttpStatus.CREATED).body(new ClubUpdateResponse(club.getName(), club.getDescription(), club.arrayToImage()));

@@ -48,7 +48,7 @@ public class JoinEventDTO {
     }
 
     @Data
-    public static class RequestMember{
+    public static class RequestMemberId {
         @Schema(description = "조회학번", example = "00000000")
         private String studentId;
     }

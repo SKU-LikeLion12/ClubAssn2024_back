@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import likelion12.puzzle.DTO.JoinEventDTO.RequestJoinEvent;
 import likelion12.puzzle.DTO.JoinEventDTO.RequestJoinEventForDelete;
-import likelion12.puzzle.DTO.JoinEventDTO.RequestMember;
+import likelion12.puzzle.DTO.JoinEventDTO.RequestMemberId;
 import likelion12.puzzle.DTO.JoinEventDTO.ResponseJoinEvent;
 import likelion12.puzzle.service.JoinEventService;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ public class JoinEventAdminController {
     // 회원 퍼즐 조각 관리 페이지
     @Operation(summary = "(호주) 회원의 이벤트 리스트 조회", description = "관리자 토큰 필요, 바디에 학번 필요")
     @PostMapping("")
-    public ResponseEntity<List<ResponseJoinEvent>> manageEvents(@RequestBody RequestMember request) {
+    public ResponseEntity<List<ResponseJoinEvent>> manageEvents(@RequestBody RequestMemberId request) {
         List<ResponseJoinEvent> responsePuzzles = joinEventService.findAllJoinEvents(request.getStudentId());
 
         return ResponseEntity.ok(responsePuzzles);
@@ -41,7 +41,7 @@ public class JoinEventAdminController {
     // 회원 퍼즐 조각 추가 페이지(참여 안한거만 나오게)
     @Operation(summary = "(호주) 회원의 미참여 이벤트 리스트 조회", description = "관리자 토큰 필요, 바디에 학번 필요")
     @GetMapping("")
-    public ResponseEntity<List<ResponsePuzzleForNotPart>> pageForAddEvent(@RequestBody RequestMember request) {
+    public ResponseEntity<List<ResponsePuzzleForNotPart>> pageForAddEvent(@RequestBody RequestMemberId request) {
         List<ResponsePuzzleForNotPart> responseEvents = joinEventService.findNotPartEventsExceptImage(request.getStudentId());
 
         return ResponseEntity.ok(responseEvents);

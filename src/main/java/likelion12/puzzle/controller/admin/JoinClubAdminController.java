@@ -5,7 +5,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import likelion12.puzzle.DTO.JoinEventDTO.*;
 import likelion12.puzzle.DTO.MemberClubDTO.*;
-import likelion12.puzzle.service.ClubService;
 import likelion12.puzzle.service.JoinClubService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -72,9 +71,9 @@ public class JoinClubAdminController {
     }
 
     // 특정 멤버의 가입 동아리, 미가입 동아리 리스트
-    @Operation(summary = "(택원) 학생이 가입한 동아리와 가입하지 않은 동아리 반환 API", description = "url에 학번 입력")
-    @GetMapping("/info")
-    public ResponseEntity<MemberJoinedUnjoinedClubDTO> findJoinedClubUnJoinedClub(@RequestBody RequestMember request){
+    @Operation(summary = "(택원) 학생이 가입한 동아리와 가입하지 않은 동아리 반환 API", description = "")
+    @PostMapping("/info")
+    public ResponseEntity<MemberJoinedUnjoinedClubDTO> findJoinedClubUnJoinedClub(@RequestBody RequestMemberId request){
         return ResponseEntity.ok().body(joinClubService.findJoinedClubUnJoinedClub(request.getStudentId()));
     }
 }
