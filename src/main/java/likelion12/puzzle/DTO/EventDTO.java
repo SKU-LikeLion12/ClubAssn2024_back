@@ -42,7 +42,6 @@ public class EventDTO {
         @Schema(description = "이벤트 일자", example = "2024-03-31")
         private LocalDateTime date;
         @Schema(description = "이벤트 이미지", example = "")
-
         private MultipartFile image;
     }
 

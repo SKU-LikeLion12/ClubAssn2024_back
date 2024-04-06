@@ -35,7 +35,6 @@ public class EventAdminController {
     @PostMapping("/add")
     public ResponseEntity<ResponseEvent> addEvent(RequestEvent request) throws IOException {
         Event event = eventService.addEvent(request.getName(), request.getImage(), request.getDate());
-
         ResponseEvent responseEvent = new ResponseEvent(event.getId(), event.getName(), event.arrayToImage(), event.getDate());
         return ResponseEntity.ok(responseEvent);
     }
