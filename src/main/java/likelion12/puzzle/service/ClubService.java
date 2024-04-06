@@ -49,13 +49,15 @@ public class ClubService {
     }
 
     @Transactional
-    public Club changeClub(Long clubId, String clubName, String description, MultipartFile logo) throws IOException {
-        Club club = findById(clubId);
+    public Club changeClub(String clubName, String description, MultipartFile logo) throws IOException {
+        Club club = findByName(clubName);
 
         if (logo != null) {
             club.setLogo(logo);
         }
-        club.changeClub(clubName, description);
+        String newClubName = (clubName != null ? clubName : club.getName());
+        String newDescription = (description != null ? description : club.getDescription());
+        club.changeClub(newClubName, newDescription);
 
         return club;
     }

@@ -32,13 +32,9 @@ public class ClubDTO {
 
     @Data
     public static class ResponseClub {
-        @Schema(description = "동아리 번호", example = "1")
         private Long id;
-        @Schema(description = "동아리 이름", example = "멋쟁이사자처럼")
         private String name;
-        @Schema(description = "동아리 설명", example = "국내최대규모 IT창업동아리")
         private String description;
-        @Schema(description = "동아리 로고", example = "")
         private String logo;
 
         public ResponseClub(Long id, String name, String description, String logo) {
@@ -54,7 +50,7 @@ public class ClubDTO {
     public static class ClubCreateRequest{
         @NotEmpty
         @Schema(description = "동아리 이름", example = "멋쟁이사자처럼")
-        private String name;
+        private String clubName;
         @NotEmpty
         @Schema(description = "동아리 설명", example = "국내최대규모 IT창업동아리")
         private String description;
@@ -62,37 +58,32 @@ public class ClubDTO {
         @Schema(description = "동아리 로고", example = "")
         private MultipartFile logo;
     }
+
 
     @Data
     @AllArgsConstructor
     public static class ClubUpdateRequest{
         @NotEmpty
-        @Schema(description = "동아리 번호", example = "1")
-        private Long id;
-        @NotEmpty
         @Schema(description = "동아리 이름", example = "멋쟁이사자처럼")
         private String name;
+
         @NotEmpty
         @Schema(description = "동아리 설명", example = "국내최대규모 IT창업동아리")
         private String description;
-        @NotEmpty
+
         @Schema(description = "동아리 로고", example = "")
         private MultipartFile logo;
     }
 
-
     @Data
     @AllArgsConstructor
     public static class ClubUpdateResponse{
-        @NotEmpty
         @Schema(description = "동아리 이름", example = "멋쟁이사자처럼")
         private String name;
 
-        @NotEmpty
         @Schema(description = "동아리 설명", example = "국내최대규모 IT창업동아리")
         private String description;
 
-        @NotEmpty
         @Schema(description = "동아리 로고", example = "")
         private String logo;
     }
@@ -107,4 +98,3 @@ public class ClubDTO {
         private String description;
     }
 }
-
