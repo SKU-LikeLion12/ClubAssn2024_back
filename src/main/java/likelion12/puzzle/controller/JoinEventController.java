@@ -27,7 +27,7 @@ public class JoinEventController {
                     @ApiResponse(responseCode = "", description = "")})
     @PostMapping("/puzzle")
     public ResponseEntity<List<AllEvents>> findEventsInfo(HttpServletRequest header){
-        String studentId = jwtUtility.getStudentId(header.getHeader("Authorization"));
+        String studentId = jwtUtility.getStudentId(jwtUtility.resolveToken(header));
         return ResponseEntity.ok().body(joinEventService.findEventsInfo(studentId));
     }
 }

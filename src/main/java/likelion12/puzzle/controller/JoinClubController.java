@@ -32,7 +32,7 @@ public class JoinClubController {
                     @ApiResponse(responseCode = "403", description = "권한 없음")
             })
     public List<Club> findJoinedClubByMemberId(HttpServletRequest header){
-        String studentId = jwtUtility.getStudentId(header.getHeader("Authorization"));
+        String studentId = jwtUtility.getStudentId(jwtUtility.resolveToken(header));
         return joinClubService.findJoinedClubByMemberId(studentId);
     }
 
@@ -43,7 +43,7 @@ public class JoinClubController {
                     @ApiResponse(responseCode = "403", description = "권한 없음")
             })
     public void changeIconClub(HttpServletRequest header, String clubName){
-        String studentId = jwtUtility.getStudentId(header.getHeader("Authorization"));
+        String studentId = jwtUtility.getStudentId(jwtUtility.resolveToken(header));
         myPageService.updateIconClub(studentId, clubName);
     }
 }

@@ -36,7 +36,7 @@ public class ItemRentController {
             })
     @PostMapping("")
     public ResponseEntity<BookDTO> bookRequest(HttpServletRequest header, @RequestBody BookRequestDTO request) {
-        BookDTO bookDTO = itemRentService.bookItem(jwtUtility.getStudentId(header.getHeader("Authorization")), request.getItemId(), request.getCount());
+        BookDTO bookDTO = itemRentService.bookItem(jwtUtility.getStudentId(jwtUtility.resolveToken(header)), request.getItemId(), request.getCount());
         return ResponseEntity.status(HttpStatus.OK).body(bookDTO);
     }
 
@@ -45,21 +45,21 @@ public class ItemRentController {
             })
     @DeleteMapping("")
     public ResponseEntity<?> cancelItem(HttpServletRequest header, @RequestBody CancelRequestDTO request){
-        itemRentService.cancelRent(jwtUtility.getStudentId(header.getHeader("Authorization")),request.getItemRentId());
+        itemRentService.cancelRent(jwtUtility.getStudentId(jwtUtility.resolveToken(header)),request.getItemRentId());
         return ResponseEntity.ok().build();
     }
 
     @Operation(summary = "(민지) 특정 멤버가 예약중인 물품 리스트", description = "헤더에 토큰 필요")
     @GetMapping("/book-list")
     public ResponseEntity<List<BookDTO>> memberBookList(HttpServletRequest header){
-        List<BookDTO> list = itemRentService.memberBookList(jwtUtility.getStudentId(header.getHeader("Authorization")));
+        List<BookDTO> list = itemRentService.memberBookList(jwtUtility.getStudentId(jwtUtility.resolveToken(header)));
         return ResponseEntity.ok().body(list);
     }
 
     @Operation(summary = "(민지) 특정 멤버가 대여중인 물품 리스트", description = "헤더에 토큰 필요")
     @GetMapping("/rent-list")
     public ResponseEntity<List<RentDTO>> memberRentList(HttpServletRequest header){
-        List<RentDTO> list = itemRentService.memberRentList(jwtUtility.getStudentId(header.getHeader("Authorization")));
+        List<RentDTO> list = itemRentService.memberRentList(jwtUtility.getStudentId(jwtUtility.resolveToken(header)));
         return ResponseEntity.ok().body(list);
     }
 }
