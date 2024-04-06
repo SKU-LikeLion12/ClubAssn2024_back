@@ -13,12 +13,12 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class DateCheck {
     @Id @GeneratedValue
-    Long id;
+    private Long id;
 
-    LocalDate date;
+    private LocalDate date;
 
-    LocalDate nextBizDay;
-    LocalDate nextWeekBizDay;
+    private LocalDate nextBizDay;
+    private LocalDate nextWeekBizDay;
     public DateCheck(LocalDate date, LocalDate nextBizDay, LocalDate nextWeekBizDay){
         this.date = date;
         this.nextBizDay = nextBizDay;

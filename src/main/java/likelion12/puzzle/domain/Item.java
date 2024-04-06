@@ -17,11 +17,11 @@ import java.io.IOException;
 public class Item {
 
     @Id @GeneratedValue @Column(name="item_id")
-    Long id;
+    private Long id;
 
-    String name;
-    Integer count;
-    Integer rentingCount;
+    private String name;
+    private Integer count;
+    private Integer rentingCount;
 
     // 이미지를 담는 byte 배열을 BLOB(Binary Large Object) 형식으로 저장
     @Lob
