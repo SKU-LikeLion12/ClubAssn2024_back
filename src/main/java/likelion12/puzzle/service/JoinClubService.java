@@ -6,6 +6,7 @@ import likelion12.puzzle.domain.Club;
 import likelion12.puzzle.domain.JoinClub;
 import likelion12.puzzle.domain.Member;
 import likelion12.puzzle.exception.NoJoinedClubException;
+import likelion12.puzzle.exception.NotExistJoinClubException;
 import likelion12.puzzle.repository.JoinClubRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -57,12 +58,23 @@ public class JoinClubService {
         Club club = clubService.findByName(clubName);
 
         if (member.getIconClub().equals(club)) {
-            setRandomIconClub(studentId);
+            member.setIconClub(null);
         }
 
         JoinClub joinClub = joinClubRepository.findJoinClub(club, member);
 
         joinClubRepository.deleteJoinClub(joinClub);
+    }
+
+    public boolean findJoinClub(String studentId, String clubName){
+        Member member = memberService.findByStudentId(studentId);
+        Club club = clubService.findByName(clubName);
+        try{
+            joinClubRepository.findJoinClub(club, member);
+            return true;
+        }catch (NotExistJoinClubException e){
+            return false;
+        }
     }
 
     // 동아리원 검색
@@ -84,16 +96,5 @@ public class JoinClubService {
         return joinClubRepository.findJoinedClubUnJoinedClub(studentId);
     }
 
-    // 로그인을 위해서 member조회할 때 iconClub이 null이면 이 함수 사용할 것.
-    @Transactional
-    public void setRandomIconClub(String studentId){
-        List<Club> joinedClubs = findByStudentIdClub(studentId);
 
-        if (joinedClubs.isEmpty()) {
-            throw new NoJoinedClubException("동아리 연합회 소속이 아닙니다.", HttpStatus.BAD_REQUEST);
-        } else {
-            Member member = memberService.findByStudentId(studentId);
-            member.updateIconClub(joinedClubs.get(0));
-        }
-    }
 }
