@@ -64,7 +64,7 @@ public class JoinEventRepository {
 
         // 해당 학생이 참여한 이벤트의 ID 목록 조회
         List<Long> joinedEventIds = em.createQuery(
-                        "SELECT je.event.id FROM JoinEvent je WHERE je.student.id = :studentId", Long.class)
+                        "SELECT je.event.id FROM JoinEvent je WHERE je.member.studentId = :studentId", Long.class)
                 .setParameter("studentId", studentId)
                 .getResultList();
 
