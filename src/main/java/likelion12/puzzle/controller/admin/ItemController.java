@@ -50,8 +50,8 @@ public class ItemController {
     }
 
     @Operation(summary = "(택원) 관리자가 대여 물품 삭제하는 API", description = "물품의 id입력")
-    @DeleteMapping("/{itemId}")
-    public void deleteItem(@PathVariable("itemId") Long itemId) {
+    @DeleteMapping("")
+    public void deleteItem(Long itemId) {
         itemService.delete(itemId);
     }
 

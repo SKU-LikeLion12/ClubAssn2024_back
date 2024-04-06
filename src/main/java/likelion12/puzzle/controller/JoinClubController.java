@@ -36,12 +36,12 @@ public class JoinClubController {
     }
 
     // iconclub 변경
-    @PostMapping("/changeIconClub/{clubName}")
-    @Operation(summary = "(택원) 대표 동아리 변경", description = "jwt, 동아리명 필요",
+    @PostMapping("/changeIconClub")
+    @Operation(summary = "(택원) 대표 동아리 변경", description = "header:jwt, body:동아리명 필요",
             responses = {@ApiResponse(responseCode="200", description="변경 성공"),
                     @ApiResponse(responseCode = "403", description = "권한 없음")
             })
-    public void changeIconClub(HttpServletRequest header, @PathVariable("clubName") String clubName){
+    public void changeIconClub(HttpServletRequest header, String clubName){
         String studentId = jwtUtility.getStudentId(header.getHeader("Authorization"));
         memberService.changeIconClub(studentId, clubName);
     }
