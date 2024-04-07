@@ -203,7 +203,7 @@ public class ItemRentService {
             returnTime = itemRent.getReturnDate();//만약 이미 반납했으면 반납시간으로 변경
         }
 
-        return checkDelay(itemRent.getOfferDate(), returnTime);
+        return checkDelay(itemRent.getReceiveDate(), returnTime);
     }
 
     public DelayStatus checkDelay(LocalDateTime rentTime, LocalDateTime returnTime){
