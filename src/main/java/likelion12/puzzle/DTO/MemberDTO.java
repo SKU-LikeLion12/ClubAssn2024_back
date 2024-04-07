@@ -98,4 +98,10 @@ public class MemberDTO {
             this.role = role;
         }
     }
+
+    @Data
+    public static class changeIconClub {
+        @Schema(description = "바꿀 동아리명", example = "멋쟁이사자처럼")
+        private String clubName;
+    }
 }

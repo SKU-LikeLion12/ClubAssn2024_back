@@ -4,16 +4,14 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
+import likelion12.puzzle.DTO.MemberDTO.*;
 import likelion12.puzzle.domain.Club;
 import likelion12.puzzle.security.JwtUtility;
 import likelion12.puzzle.service.JoinClubService;
 import likelion12.puzzle.service.MemberService;
 import likelion12.puzzle.service.MyPageService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -42,8 +40,9 @@ public class JoinClubController {
             responses = {@ApiResponse(responseCode="200", description="변경 성공"),
                     @ApiResponse(responseCode = "403", description = "권한 없음")
             })
-    public void changeIconClub(HttpServletRequest header, String clubName){
+    public void changeIconClub(HttpServletRequest header, @RequestBody changeIconClub request){
         String studentId = jwtUtility.getStudentId(jwtUtility.resolveToken(header));
-        myPageService.updateIconClub(studentId, clubName);
+        System.out.println("request = " + request);
+        myPageService.updateIconClub(studentId, request.getClubName());
     }
 }
