@@ -51,6 +51,7 @@ public class ClubService {
     @Transactional
     public Club changeClub(String clubName, String description, MultipartFile logo) throws IOException {
         Club club = findByName(clubName);
+        System.out.println("logo = " + logo);
 
         if (logo != null) {
             club.setLogo(logo);
