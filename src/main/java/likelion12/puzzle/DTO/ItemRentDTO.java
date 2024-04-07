@@ -51,7 +51,7 @@ public class ItemRentDTO {
             this.itemRentId = itemRent.getId();
             this.studentId = itemRent.getRenter().getStudentId();
             this.itemName = itemRent.getItem().getName();
-            this.image = image;
+            this.image = ImageUtility.encodeImage(itemRent.getItem().getImage());
             this.count = itemRent.getCount();
             this.bookTime = itemRent.getOfferDate();
             this.needReceiveTime = needReceiveTime;
