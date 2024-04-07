@@ -1,6 +1,9 @@
 package likelion12.puzzle.controller.admin;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import likelion12.puzzle.DTO.ItemRentDTO.AdminBookListDTO;
 import likelion12.puzzle.DTO.ItemRentDTO.AdminRentListDTO;
@@ -20,7 +23,10 @@ public class ItemRentAdminController {
 
     private final ItemRentService itemRentService;
 
-    @Operation(summary = "(민지) 물품 예약 리스트", description = "헤더에 관리자 토큰 필요")
+    @Operation(summary = "(민지) 물품 예약 리스트", description = "헤더에 관리자 토큰 필요",
+            parameters = {
+                    @Parameter(name = "Authorization", description = "Access Token", required = true, in = ParameterIn.HEADER, schema = @Schema(implementation = String.class), example = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkxvcmV0IiwiaWF0IjoxNjQ0NTcwODAwLCJleHAiOjE2NDQ1NzQ0MDB9.sN5z7tC035_7207f-1042_41042_41042_41042_41042_41042_41042_41042_41042")
+            })
     @GetMapping("/book-list")
     public ResponseEntity<List<AdminBookListDTO>> itemBookList(){
         List<AdminBookListDTO> adminBookList = itemRentService.allBookList();

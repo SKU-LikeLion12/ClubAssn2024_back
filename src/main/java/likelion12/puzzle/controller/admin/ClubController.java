@@ -70,19 +70,14 @@ public class ClubController {
 //    }
 
 
-    @Operation(summary = "(민규) 모든 동아리 조회", description = "모든 동아리에 대한 동아리 아이디, 동아리명, 동아리 설명 조회",
-            responses = {@ApiResponse(responseCode = "200", description = "조회를 하면 동아리의 아이디, 동아리명, 동아리 설명이 나타난다."),
+    @Operation(summary = "(민규) 모든 동아리 조회", description = "모든 동아리에 대한 정보 조회",
+            responses = {@ApiResponse(responseCode = "200", description = "조회를 하면 동아리의 아이디, 동아리명, 동아리 설명, 로고들을 묶은 리스트가 출력."),
                     @ApiResponse(responseCode = "", description = "")})
     @GetMapping("/all")
-    public ResponseEntity<List<ClubAllRequest>> findAllClubs() {
+    public ResponseEntity<List<Club>> findAllClubs() {//프론트측 요청으로 그냥 Club 객체 그대로 뽑기로 결정
         List<Club> clubs = clubService.findAll();
-        List<ClubAllRequest> clubDTOS = new ArrayList<>();
 
-        for (Club club : clubs) {
-            ClubAllRequest dto = new ClubAllRequest(club.getName(), club.getDescription());
-            clubDTOS.add(dto);
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(clubDTOS);
+        return ResponseEntity.status(HttpStatus.OK).body(clubs);
     }
 
     @Operation(summary = "동아리 삭제", description = "동아리 이름 넣으면 해당 동아리 삭제",
