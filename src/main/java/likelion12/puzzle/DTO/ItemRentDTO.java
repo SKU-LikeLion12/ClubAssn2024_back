@@ -153,6 +153,7 @@ public class ItemRentDTO {
             this.itemRentId = itemRentId;
             this.studentId = studentId;
             this.itemName = itemName;
+            this.name = name;
             this.iconClub = iconClub;
             this.count = count;
             this.rentTime = rentTime;
