@@ -110,7 +110,7 @@ public class ItemRentRepository {
 
     public List<RestItemListDTO> findRestItemList(LocalDateTime localDateTime){
         return em.createQuery("SELECT new RestItemListDTO(i.id, i.name, i.count, i.image, i.rentingCount, COALESCE(SUM(ir.count), 0)) " +
-                                "FROM ItemRent ir RIGHT JOIN Item i ON i = ir.item and ir.offerDate >= :localDateTime GROUP BY i", RestItemListDTO.class)
+                                "FROM ItemRent ir RIGHT JOIN Item i ON i = ir.item and ir.offerDate >= :localDateTime and ir.item.isActive = true GROUP BY i", RestItemListDTO.class)
                 .setParameter("localDateTime",localDateTime).getResultList();
     }
 

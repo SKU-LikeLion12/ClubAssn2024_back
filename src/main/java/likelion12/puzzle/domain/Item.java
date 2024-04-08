@@ -28,11 +28,14 @@ public class Item {
     @Column(name = "image", columnDefinition = "MEDIUMBLOB") // TINYBLOB: ~255Byte BLOB: ~64KB  MEDIUMBLOB: ~16MB LONGBLOB: ~4GB
     private byte[] image;
 
+    private boolean isActive;
+
     public Item(String name, int count, byte[] image){
         this.name = name;
         this.count = count;
         this.image = image;
         this.rentingCount = 0;
+        this.isActive = true;
     }
 
     public void changeItem(String name, Integer count) {
@@ -52,5 +55,9 @@ public class Item {
 
     public void setImage(MultipartFile image) throws IOException {
         this.image = image.getBytes();
+    }
+
+    public void changeStatus(){
+        this.isActive = false;
     }
 }

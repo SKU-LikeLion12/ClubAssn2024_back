@@ -40,7 +40,7 @@ public class ItemService {
     @Transactional
     public void delete(Long id) {
         Item item = findById(id);
-        itemRepository.delete(item);
+        item.changeStatus();
     }
 
     @Transactional

@@ -32,7 +32,7 @@ public class ItemRepository {
     }
 
     public List<ItemAllRequestExceptImage> findAllExceptImage() {
-        return em.createQuery("SELECT new ItemAllRequestExceptImage(i.id, i.name, i.count) FROM Item i", ItemAllRequestExceptImage.class)
+        return em.createQuery("SELECT new ItemAllRequestExceptImage(i.id, i.name, i.count) FROM Item i WHERE i.isActive=true", ItemAllRequestExceptImage.class)
                 .getResultList();
     }
 }
