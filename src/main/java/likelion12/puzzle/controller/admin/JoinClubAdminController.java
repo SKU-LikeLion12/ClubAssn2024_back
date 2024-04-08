@@ -46,11 +46,11 @@ public class JoinClubAdminController {
 
     @Operation(summary = "(민규) 동아리원 검색", description = "학번, 이름, 동아리를 검색하면 알맞은 동아리원 정보가 나옴")
     @GetMapping("/search")
-    public ResponseEntity<List<CreateJC>> CMManageSearch(@RequestBody KeywordRequest request) {
+    public ResponseEntity<List<CreateJC>> CMManageSearch(@RequestParam String keyword) {
 //        if (keyword == null || keyword.trim().isEmpty()) {
 //            return ResponseEntity.noContent().build();
 //        }
-        List<CreateJC> results = joinClubService.searchByKeyword(request.getKeyword());
+        List<CreateJC> results = joinClubService.searchByKeyword(keyword);
         if(results.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } else {
