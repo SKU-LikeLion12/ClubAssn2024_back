@@ -64,6 +64,7 @@ public class JwtUtility {
         JwtUtility jwtUtility = new JwtUtility();
         String token = jwtUtility.generateToken("00000000");
         System.out.println("token = " + token);
-        System.out.println("getStudentId(token) = " + jwtUtility.getStudentId(token));
+        System.out.println("getStudentId(token) = " + jwtUtility.getStudentId(token.substring(7)));
+        System.out.println("asdf = " + jwtUtility.validateToken(token.substring(7)));
     }
 }

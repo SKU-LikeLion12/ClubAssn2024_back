@@ -55,8 +55,8 @@ public class ClubDTO {
         @NotEmpty
         @Schema(description = "동아리 설명", example = "국내최대규모 IT창업동아리")
         private String description;
-        @Nullable
-        @Schema(description = "동아리 로고(생략가능)", example = "")
+
+        @Schema(description = "동아리 로고", example = "")
         private MultipartFile logo;
     }
 
@@ -64,6 +64,9 @@ public class ClubDTO {
     @Data
     @AllArgsConstructor
     public static class ClubUpdateRequest{
+        @Schema(description = "동아리 아이디", example = "1")
+        Long id;
+
         @NotEmpty
         @Schema(description = "동아리 이름", example = "멋쟁이사자처럼")
         private String name;
@@ -72,7 +75,8 @@ public class ClubDTO {
         @Schema(description = "동아리 설명", example = "국내최대규모 IT창업동아리")
         private String description;
 
-        @Schema(description = "동아리 로고", example = "")
+        @Nullable
+        @Schema(description = "동아리 로고(생략가능)", example = "")
         private MultipartFile logo;
     }
 

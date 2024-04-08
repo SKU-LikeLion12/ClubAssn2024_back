@@ -56,7 +56,7 @@ public class ClubController {
                     @ApiResponse(responseCode = "", description = "")})
     @PutMapping("")
     public ResponseEntity<ClubUpdateResponse> changeClub(ClubUpdateRequest request) throws IOException {
-        Club club = clubService.changeClub(request.getName(), request.getDescription(), request.getLogo());
+        Club club = clubService.changeClub(request.getId(), request.getName(), request.getDescription(), request.getLogo());
         return ResponseEntity.status(HttpStatus.CREATED).body(new ClubUpdateResponse(club.getName(), club.getDescription(), club.arrayToImage()));
     }
 
