@@ -1,6 +1,7 @@
 package likelion12.puzzle.DTO;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -54,8 +55,8 @@ public class ClubDTO {
         @NotEmpty
         @Schema(description = "동아리 설명", example = "국내최대규모 IT창업동아리")
         private String description;
-        @NotEmpty
-        @Schema(description = "동아리 로고", example = "")
+        @Nullable
+        @Schema(description = "동아리 로고(생략가능)", example = "")
         private MultipartFile logo;
     }
 

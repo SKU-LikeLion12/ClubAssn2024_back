@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -26,14 +27,14 @@ public class EventService {
 
     // 이벤트 추가
     @Transactional
-    public Event addEvent(String name, MultipartFile image, LocalDateTime date) throws IOException {
+    public Event addEvent(String name, MultipartFile image, LocalDate date) throws IOException {
         byte[] imageBytes = image.getBytes();
         Event event = new Event(name, imageBytes, date);
         return eventRepository.addEvent(event);
     }
 
     @Transactional
-    public Event changeEvent(Long eventId, String name, LocalDateTime date, MultipartFile poster) throws IOException {
+    public Event changeEvent(Long eventId, String name, LocalDate date, MultipartFile poster) throws IOException {
 
         Event event = findByEventId(eventId);
         // 사진 넣으면 바꾼 사진으로

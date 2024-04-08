@@ -1,6 +1,7 @@
 package likelion12.puzzle.DTO;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -51,7 +52,8 @@ public class ItemDTO {
         @Schema(description = "물품 총개수", example = "13")
         private Integer count;
 
-        @Schema(description = "물품 사진", example = "")
+        @Nullable
+        @Schema(description = "물품 사진(생략가능)", example = "")
         private MultipartFile image;
     }
 

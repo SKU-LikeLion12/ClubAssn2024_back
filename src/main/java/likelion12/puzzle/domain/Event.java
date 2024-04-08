@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -27,9 +28,9 @@ public class Event {
     @Column(nullable = false, name = "poster", columnDefinition = "MEDIUMBLOB") // 아직 어떻게 넣을지 몰라서
     private byte[] poster; // 행사 포스터, 자료형은 미정
 
-    private LocalDateTime date; // 행사 날짜
+    private LocalDate date; // 행사 날짜
 
-    public Event(String name, byte[] poster, LocalDateTime date) {
+    public Event(String name, byte[] poster, LocalDate date) {
         this.name = name;
         this.poster = poster;
         this.date = date;
@@ -42,7 +43,7 @@ public class Event {
         return ImageUtility.encodeImage(this.poster);
     }
 
-    public void changeEvent(String name, LocalDateTime date) {
+    public void changeEvent(String name, LocalDate date) {
         this.name = name;
         this.date = date;
     }
