@@ -69,7 +69,7 @@ public class MyPageService {
             throw new MemberLoginException("개인정보 동의가 필요합니다.", HttpStatus.UNAUTHORIZED);
         }
 
-        return new MemberDTO.ResponseLogin(jwtUtility.generateToken(member.getStudentId()));
+        return new MemberDTO.ResponseLogin(jwtUtility.generateToken(member.getStudentId()), member.getRole());
     }
 
 }

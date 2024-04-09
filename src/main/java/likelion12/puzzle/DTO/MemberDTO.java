@@ -67,10 +67,16 @@ public class MemberDTO {
     public static class ResponseLogin {
         @Schema(description = "JWT 토큰", example = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDAwMDAwMCIsImlhdCI6MTcxMTgxMDc2NSwiZXhwIjoyMDcxODEwNzY1fQ.2gbH5s0ODmTE59NRrFi9Fd8kqahHsfQqgHu6NQjjte1_4abMHmI6VfSKVI46SjftueKXSDFVr8WATiuf1ZMNzg")
         private String accessToken;
+        private RoleType role;
 
-        public ResponseLogin(String accessToken) {
+        public ResponseLogin(String accessToken, RoleType role) {
             this.accessToken = accessToken;
+            this.role = role;
         }
+
+//        public ResponseLogin(String accessToken) {
+//            this.accessToken = accessToken;
+//        }
     }
 
     @Data
