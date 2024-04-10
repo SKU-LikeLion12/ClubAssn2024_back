@@ -55,6 +55,13 @@ public class ItemRentRepository {
                 .getResultList();
     }
 
+    public List<ItemRent> findRentingBooking(Member member, LocalDateTime localDateTime) {
+        return em.createQuery("select ir from ItemRent ir where ir.renter = :member and ((ir.status = :book and ir.offerDate >= :time) or ir.status = :rent)", ItemRent.class)
+                .setParameter("member",member).setParameter("book", RentStatus.BOOK).setParameter("time",localDateTime).setParameter("rent",RentStatus.RENT)
+                .getResultList();
+    }
+
+
 //    public List<ItemRent> findByItemStatus(Item item, RentStatus status){
 //        return em.createQuery("select ir from ItemRent ir where ir.item = :item and ir.status = :status", ItemRent.class)
 //                .setParameter("status",status).setParameter("item", item).getResultList();
@@ -83,8 +90,8 @@ public class ItemRentRepository {
 //    }
 
     public Long findBookWithItem(Item item, LocalDateTime localDateTime){
-        return em.createQuery("select COALESCE(SUM(ir.count), 0) from ItemRent ir where ir.item = :item and ir.offerDate >= :localDateTime",Long.class)
-                .setParameter("item",item).setParameter("localDateTime",localDateTime)
+        return em.createQuery("select COALESCE(SUM(ir.count), 0) from ItemRent ir where ir.item = :item and ir.offerDate >= :localDateTime and ir.status = :status",Long.class)
+                .setParameter("item",item).setParameter("localDateTime",localDateTime).setParameter("status",RentStatus.BOOK)
                 .getSingleResult();
     }
 

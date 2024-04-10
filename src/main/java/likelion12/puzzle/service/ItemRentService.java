@@ -6,9 +6,11 @@ import likelion12.puzzle.domain.Member;
 import likelion12.puzzle.domain.RentStatus;
 import likelion12.puzzle.exception.HavePenaltyException;
 import likelion12.puzzle.exception.LimitRentException;
+import likelion12.puzzle.exception.MessageException;
 import likelion12.puzzle.exception.NotEnoughItemException;
 import likelion12.puzzle.repository.ItemRentRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,6 +36,7 @@ public class ItemRentService {
     //대여예약
     @Transactional
     public BookDTO bookItem(String studentId, long itemId, int count){
+        if(count<=0) throw new MessageException("물품 대여 개수가 잘못되었습니다.", HttpStatus.NOT_ACCEPTABLE);
 
         Member renter = memberService.findByStudentId(studentId);
         Item item = itemService.findById(itemId);
@@ -158,11 +161,10 @@ public class ItemRentService {
         Member member = memberService.findByStudentId(studentId);
         Set<Long> set = new HashSet<>();
         int count = 0;
-        for (ItemRent itemRent : itemRentRepository.findByMemberStatus(member, RentStatus.usingGroup)) {
-            if(itemRent.getStatus().isUsingGroup()) {
-                set.add(itemRent.getId());
-                count += itemRent.getCount();
-            }
+        LocalDateTime beforeBuzTime = dateCheckService.beforeBuzDay(ItemRent.getNow().toLocalDate()).atStartOfDay();
+        for (ItemRent itemRent : itemRentRepository.findRentingBooking(member, beforeBuzTime)) {
+            set.add(itemRent.getId());
+            count += itemRent.getCount();
         }
         return new MemberRentingSize(set, count);
     }
