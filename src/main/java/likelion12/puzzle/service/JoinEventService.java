@@ -44,14 +44,14 @@ public class JoinEventService {
         try{
             findJoinEvent(studentId,eventId);
         }catch(NotExistJoinEventException e){
-            throw new ExistJoinEventException("이미 이벤트를 참여한 적이 있습니다.", HttpStatus.NOT_ACCEPTABLE);
+            Member member = memberService.findByStudentId(studentId);
+            Event event = eventService.findByEventId(eventId);
+
+            JoinEvent joinEvent = new JoinEvent(member, event);
+
+            return joinEventRepository.addJoinEvent(joinEvent);
         }
-        Member member = memberService.findByStudentId(studentId);
-        Event event = eventService.findByEventId(eventId);
-
-        JoinEvent joinEvent = new JoinEvent(member, event);
-
-        return joinEventRepository.addJoinEvent(joinEvent);
+        throw new ExistJoinEventException("이미 이벤트를 참여한 적이 있습니다.", HttpStatus.NOT_ACCEPTABLE);
     }
 
     // (관리자용) 멤버의 이벤트(퍼즐) 삭제 => 잘못 넣었을 경우
