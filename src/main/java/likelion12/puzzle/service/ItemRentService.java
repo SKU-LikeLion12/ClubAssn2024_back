@@ -163,7 +163,7 @@ public class ItemRentService {
         int count = 0;
         LocalDateTime beforeBuzTime = dateCheckService.beforeBuzDay(ItemRent.getNow().toLocalDate()).atStartOfDay();
         for (ItemRent itemRent : itemRentRepository.findRentingBooking(member, beforeBuzTime)) {
-            set.add(itemRent.getId());
+            set.add(itemRent.getItem().getId());
             count += itemRent.getCount();
         }
         return new MemberRentingSize(set, count);
