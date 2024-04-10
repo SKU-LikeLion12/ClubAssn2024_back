@@ -34,7 +34,7 @@ public class ClubRepository {
             return em.createQuery("select c from Club c where c.name =:clubName", Club.class)
                     .setParameter("clubName", clubName).getSingleResult();
         } catch (Exception e) {
-            throw new NotExistClubException("해당 이름의 동아리가 없습니다.", HttpStatus.BAD_REQUEST);
+            throw new NotExistClubException("동아리 이름을 확인해주세요.", HttpStatus.BAD_REQUEST);
         }
     }
 

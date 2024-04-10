@@ -48,6 +48,7 @@ public class JoinEventService {
         }
         Member member = memberService.findByStudentId(studentId);
         Event event = eventService.findByEventId(eventId);
+
         JoinEvent joinEvent = new JoinEvent(member, event);
 
         return joinEventRepository.addJoinEvent(joinEvent);

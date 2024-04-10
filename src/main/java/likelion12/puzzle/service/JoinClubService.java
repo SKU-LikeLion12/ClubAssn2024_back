@@ -75,7 +75,7 @@ public class JoinClubService {
         try{
             joinClubRepository.findJoinClub(club, member);
             return true;
-        }catch (NotExistJoinClubException e){
+        } catch (NotExistJoinClubException e) {
             return false;
         }
     }
