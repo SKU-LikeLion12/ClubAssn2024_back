@@ -6,8 +6,11 @@ import likelion12.puzzle.DTO.JoinEventDTO;
 import likelion12.puzzle.domain.Event;
 import likelion12.puzzle.domain.JoinEvent;
 import likelion12.puzzle.domain.Member;
+import likelion12.puzzle.exception.ExistJoinEventException;
+import likelion12.puzzle.exception.NotExistJoinEventException;
 import likelion12.puzzle.repository.JoinEventRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,6 +41,11 @@ public class JoinEventService {
     // 관리자 인증 로직 추가해야함
     @Transactional
     public JoinEvent saveJoinEvent(String studentId, Long eventId) {
+        try{
+            findJoinEvent(studentId,eventId);
+        }catch(NotExistJoinEventException e){
+            throw new ExistJoinEventException("이미 이벤트를 참여한 적이 있습니다.", HttpStatus.NOT_ACCEPTABLE);
+        }
         Member member = memberService.findByStudentId(studentId);
         Event event = eventService.findByEventId(eventId);
         JoinEvent joinEvent = new JoinEvent(member, event);

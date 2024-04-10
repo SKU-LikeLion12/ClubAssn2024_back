@@ -23,33 +23,43 @@ public class GlobalExceptionController {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body("물품의 잔여 개수가 부족합니다.");
     }
 
-    @ExceptionHandler(MemberExistException.class)
-    public ResponseEntity<String> alreadyExistMember(MemberExistException e) {
+    @ExceptionHandler(MessageException.class)
+    public ResponseEntity<String> runtimeException(MessageException e){
         return ResponseEntity.status(e.getStatus()).body(e.getMessage());
     }
 
-    @ExceptionHandler(MemberLoginException.class)
-    public ResponseEntity<String> handleMemberLoginException(MemberLoginException e) {
-        return ResponseEntity.status(e.getStatus()).body(e.getMessage());
-    }
-
-    @ExceptionHandler(NotExistJoinEventException.class)
-    public ResponseEntity<String> handleJoinEventException(NotExistJoinEventException e) {
-        return ResponseEntity.status(e.getStatus()).body(e.getMessage());
-    }
-
-    @ExceptionHandler(NotExistJoinClubException.class)
-    public ResponseEntity<String> handleJoinEventException(NotExistJoinClubException e) {
-        return ResponseEntity.status(e.getStatus()).body(e.getMessage());
-    }
-
-    @ExceptionHandler(CustomEventException.class)
-    public ResponseEntity<String> handleEventException(CustomEventException e) {
-        return ResponseEntity.status(e.getStatus()).body(e.getMessage());
-    }
-
-    @ExceptionHandler(NoJoinedClubException.class)
-    public ResponseEntity<String> handleNoJoinedClubException(NoJoinedClubException e) {
-        return ResponseEntity.status(e.getStatus()).body(e.getMessage());
-    }
+//    @ExceptionHandler(MemberExistException.class)
+//    public ResponseEntity<String> alreadyExistMember(MemberExistException e) {
+//        return ResponseEntity.status(e.getStatus()).body(e.getMessage());
+//    }
+//
+//    @ExceptionHandler(MemberLoginException.class)
+//    public ResponseEntity<String> handleMemberLoginException(MemberLoginException e) {
+//        return ResponseEntity.status(e.getStatus()).body(e.getMessage());
+//    }
+//
+//    @ExceptionHandler(NotExistJoinEventException.class)
+//    public ResponseEntity<String> handleJoinEventException(NotExistJoinEventException e) {
+//        return ResponseEntity.status(e.getStatus()).body(e.getMessage());
+//    }
+//
+//    @ExceptionHandler(NotExistJoinClubException.class)
+//    public ResponseEntity<String> handleJoinEventException(NotExistJoinClubException e) {
+//        return ResponseEntity.status(e.getStatus()).body(e.getMessage());
+//    }
+//
+//    @ExceptionHandler(CustomEventException.class)
+//    public ResponseEntity<String> handleEventException(CustomEventException e) {
+//        return ResponseEntity.status(e.getStatus()).body(e.getMessage());
+//    }
+//
+//    @ExceptionHandler(NoJoinedClubException.class)
+//    public ResponseEntity<String> handleNoJoinedClubException(NoJoinedClubException e) {
+//        return ResponseEntity.status(e.getStatus()).body(e.getMessage());
+//    }
+//
+//    @ExceptionHandler(ExistJoinClubException.class)
+//    public ResponseEntity<String> handleExistJoinClubException(NoJoinedClubException e) {
+//        return ResponseEntity.status(e.getStatus()).body(e.getMessage());
+//    }
 }

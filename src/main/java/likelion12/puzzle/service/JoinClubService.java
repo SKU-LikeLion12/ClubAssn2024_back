@@ -5,6 +5,7 @@ import likelion12.puzzle.DTO.MemberClubDTO.*;
 import likelion12.puzzle.domain.Club;
 import likelion12.puzzle.domain.JoinClub;
 import likelion12.puzzle.domain.Member;
+import likelion12.puzzle.exception.ExistJoinClubException;
 import likelion12.puzzle.exception.NoJoinedClubException;
 import likelion12.puzzle.exception.NotExistJoinClubException;
 import likelion12.puzzle.repository.JoinClubRepository;
@@ -30,8 +31,10 @@ public class JoinClubService {
     public JoinClub saveNewMember(String studentId, String clubName) {
         Member member = memberService.findByStudentId(studentId);
         Club club = clubService.findByName(clubName);
+        if(findJoinClub(studentId, clubName)) {
+            throw new ExistJoinClubException("이미 추가된 동아리원입니다.",HttpStatus.NOT_ACCEPTABLE);
+        }
         JoinClub joinClub = new JoinClub(club, member);
-
         return joinClubRepository.saveNewMemberForClub(joinClub);
     }
 

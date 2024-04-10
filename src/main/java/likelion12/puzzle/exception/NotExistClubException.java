@@ -3,14 +3,9 @@ package likelion12.puzzle.exception;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
-@Getter
-public class NotExistClubException extends RuntimeException {
-    private HttpStatus status;
-    private String message;
+public class NotExistClubException extends MessageException {
 
-    public NotExistClubException(String message, HttpStatus httpStatus) {
-        super(message);
-        this.message = message;
-        this.status = httpStatus;
+    public NotExistClubException(String message, HttpStatus status) {
+        super(message, status);
     }
 }
