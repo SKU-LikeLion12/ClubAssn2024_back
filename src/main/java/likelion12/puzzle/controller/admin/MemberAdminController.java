@@ -8,10 +8,8 @@ import likelion12.puzzle.DTO.MemberDTO.AddRequestMember;
 import likelion12.puzzle.domain.Member;
 import likelion12.puzzle.service.MemberService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,5 +26,15 @@ public class MemberAdminController {
         Member member = memberService.addNewMember(request.getStudentId(), request.getName(), request.getRole());
 
         return new AddMemberResponse(member.getStudentId(), member.getName(), member.getRole());
+    }
+
+    @Operation(summary = "(호주) 학생 삭제", description = "request: 학번 <br> response: 삭제되었습니다.",
+            responses = {@ApiResponse(responseCode = "200", description = "삭제 후 삭제 성공 메세지 반환"),
+                    @ApiResponse(responseCode = "400", description = "올바르지 않은 학번 입력 시 \"학번이 올바른지 확인해주세요.\" 메세지 반환")})
+    @DeleteMapping("/member/delete")
+    public ResponseEntity<String> deleteMember(@RequestParam String studentId) {
+        memberService.deleteMember(studentId);
+
+        return ResponseEntity.ok().body("삭제되었습니다.");
     }
 }

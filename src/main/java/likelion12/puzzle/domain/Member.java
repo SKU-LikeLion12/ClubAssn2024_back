@@ -54,7 +54,6 @@ public class Member {
 //        return member;
     }
 
-
     public void updateIsAgree() {
         this.isAgree = true;
     }

@@ -104,10 +104,9 @@ public class MemberService {
 
     // 학생 삭제
     @Transactional
-    public boolean deleteMember(String studentId) {
+    public void deleteMember(String studentId) {
         Member member = findByStudentId(studentId);
-
-        return memberRepository.deleteMember(member);
+        memberRepository.deleteMember(member);
     }
 
 
