@@ -60,7 +60,7 @@ public class JoinClubService {
         Member member = memberService.findByStudentId(studentId);
         Club club = clubService.findByName(clubName);
 
-        if (member.getIconClub().equals(club)) {
+        if (member.getIconClub()!=null && member.getIconClub().equals(club)) {
             member.setIconClub(null);
         }
 
