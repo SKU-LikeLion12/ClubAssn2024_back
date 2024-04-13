@@ -3,6 +3,7 @@ package likelion12.puzzle.controller.admin;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import likelion12.puzzle.DTO.MemberDTO;
 import likelion12.puzzle.DTO.MemberDTO.AddMemberResponse;
 import likelion12.puzzle.DTO.MemberDTO.AddRequestMember;
 import likelion12.puzzle.domain.Member;
@@ -10,6 +11,8 @@ import likelion12.puzzle.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -37,4 +40,13 @@ public class MemberAdminController {
 
         return ResponseEntity.ok().body("삭제되었습니다.");
     }
+
+    @Operation(summary = "(민지) 등록된 학생 조회(동아리와 무관)", description = "학번 또는 이름으로 학생 정보 조회",
+            responses = {@ApiResponse(responseCode = "200", description = "조회 성공")})
+    @GetMapping("/member/find")
+    public ResponseEntity<List<MemberDTO.MemberInfo>> findMemberWithKeyword(@RequestParam String keyword) {
+
+        return ResponseEntity.ok().body(memberService.findByKeyword(keyword));
+    }
+
 }

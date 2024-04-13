@@ -1,14 +1,11 @@
 package likelion12.puzzle.service;
 
-import jakarta.servlet.http.HttpServletRequest;
 import likelion12.puzzle.DTO.MemberDTO;
 import likelion12.puzzle.domain.Club;
 import likelion12.puzzle.domain.Member;
-import likelion12.puzzle.domain.RoleType;
 import likelion12.puzzle.exception.MemberLoginException;
 import likelion12.puzzle.exception.NoJoinedClubException;
 import likelion12.puzzle.exception.NotExistJoinClubException;
-import likelion12.puzzle.repository.JoinClubRepository;
 import likelion12.puzzle.security.JwtUtility;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -53,7 +49,7 @@ public class MyPageService {
 
     // 로그인
     @Transactional
-    public MemberDTO.ResponseLogin login(MemberDTO.RequestMember request) {
+    public MemberDTO.ResponseLogin login(MemberDTO.MemberInfo request) {
         Member member = memberService.findByStudentId(request.getStudentId());
         System.out.println("request = " + request);
 

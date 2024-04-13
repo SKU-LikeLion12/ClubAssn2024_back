@@ -1,8 +1,11 @@
 package likelion12.puzzle.repository;
 
 import jakarta.persistence.EntityManager;
+import likelion12.puzzle.DTO.JoinClubDTO;
 import likelion12.puzzle.DTO.MemberClubDTO;
 
+import likelion12.puzzle.DTO.MemberDTO;
+import likelion12.puzzle.DTO.MemberDTO.MemberInfo;
 import likelion12.puzzle.domain.Club;
 import likelion12.puzzle.domain.JoinClub;
 import likelion12.puzzle.domain.Member;
@@ -56,5 +59,13 @@ public class MemberRepository {
         em.remove(member);
 
         return true;
+    }
+
+    public List<MemberInfo> findByKeyword(String keyword) {
+        return em.createQuery("SELECT new MemberInfo(m.studentId, m.name) " +
+                        "FROM Member m " +
+                        "WHERE m.name LIKE :keyword OR m.studentId LIKE :keyword", MemberInfo.class)
+                .setParameter("keyword", "%" + keyword + "%")
+                .getResultList();
     }
 }

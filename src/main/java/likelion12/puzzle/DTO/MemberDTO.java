@@ -1,14 +1,9 @@
 package likelion12.puzzle.DTO;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import likelion12.puzzle.domain.Member;
 import likelion12.puzzle.domain.RoleType;
-import likelion12.puzzle.service.ImageUtility;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 public class MemberDTO {
     @Data
@@ -29,12 +24,17 @@ public class MemberDTO {
 
     // 로그인 할 때
     @Data
-    public static class RequestMember {
+    public static class MemberInfo {
         @Schema(description = "학번", example = "20190826")
         private String studentId;
 
         @Schema(description = "이름", example = "홍길동")
         private String name;
+
+        public MemberInfo(String studentId, String name) {
+            this.studentId = studentId;
+            this.name = name;
+        }
     }
 
     @Data

@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
-import likelion12.puzzle.DTO.MemberDTO.RequestMember;
+import likelion12.puzzle.DTO.MemberDTO.MemberInfo;
 import likelion12.puzzle.DTO.MemberDTO.ResponseLogin;
 import likelion12.puzzle.DTO.MemberDTO.ResponseMain;
 import likelion12.puzzle.domain.Member;
@@ -28,7 +28,7 @@ public class MemberController {
                     @ApiResponse(responseCode = "400", description = "학번 혹은 이름이 틀렸을 경우"),
                     @ApiResponse(responseCode = "401", description = "개인정보 동의하지 않았을 경우")})
     @PostMapping("/login")
-    public ResponseEntity<ResponseLogin> login(@RequestBody RequestMember request) {
+    public ResponseEntity<ResponseLogin> login(@RequestBody MemberInfo request) {
         System.out.println("request = " + request.getName());
         return ResponseEntity.ok(myPageService.login(request));
     }
@@ -36,7 +36,7 @@ public class MemberController {
     @Operation(summary = "(호주) 개인정보 동의서 api", description = "request: 학번, 이름\nresponse: jwt",
             responses = {@ApiResponse(responseCode = "200", description = "로그인 성공")})
     @PostMapping("/agree")
-    public ResponseEntity<ResponseLogin> checkAgree(@RequestBody RequestMember request) {
+    public ResponseEntity<ResponseLogin> checkAgree(@RequestBody MemberInfo request) {
         memberService.updateAgree(request);
 
         return ResponseEntity.ok(myPageService.login(request));

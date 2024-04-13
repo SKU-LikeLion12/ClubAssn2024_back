@@ -1,9 +1,8 @@
 package likelion12.puzzle.service;
 
 import jakarta.servlet.http.HttpServletRequest;
-import likelion12.puzzle.domain.Club;
+import likelion12.puzzle.DTO.MemberDTO;
 import likelion12.puzzle.domain.Member;
-import likelion12.puzzle.exception.DuplicatedStudentIdException;
 import likelion12.puzzle.DTO.MemberDTO.*;
 import likelion12.puzzle.domain.RoleType;
 import likelion12.puzzle.exception.MemberExistException;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -38,7 +36,7 @@ public class MemberService {
 
     // 동의 체크
     @Transactional
-    public void updateAgree(RequestMember request) {
+    public void updateAgree(MemberInfo request) {
         Member member = memberRepository.findByStudentId(request.getStudentId());
 
         if (member != null) {
@@ -107,6 +105,10 @@ public class MemberService {
     public void deleteMember(String studentId) {
         Member member = findByStudentId(studentId);
         memberRepository.deleteMember(member);
+    }
+
+    public List<MemberDTO.MemberInfo> findByKeyword(String keyword){
+        return memberRepository.findByKeyword(keyword);
     }
 
 
