@@ -1,6 +1,7 @@
 package likelion12.puzzle.security;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -8,6 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import likelion12.puzzle.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,33 +30,38 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        String token = jwtUtility.resolveToken(request);
+//        System.out.println("1");
+        String path = request.getRequestURI();
+        if (path.equals("/login")) {
+            filterChain.doFilter(request, response);
+//            System.out.println("2");
+            return;
+        }
 
-        if (token != null) {
-            try {
-                Claims claims = jwtUtility.validateToken(token);
-
-                if (claims != null) {
-                    // 유효한지 검사부터
-                    String studentId = claims.getSubject();
-
-                    UserDetails userDetails = customUserDetailsService.loadUserByUsername(studentId);
-
-                    // 인증 객체 생성(매번 생성하는거 맞음)
-                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                            userDetails, null, userDetails.getAuthorities());
-
-                    // SecurityContext에 인증 객체 저장
-                    SecurityContextHolder.getContext().setAuthentication(authentication);
-                }
-            } catch (Exception e) {
-                System.out.println("e = " + e);
-                SecurityContextHolder.clearContext(); // 인증 실패 시, 컨텍스트 클리어
+        try {
+            String token = jwtUtility.resolveToken(request);
+//            System.out.println("3");
+            if (token != null && jwtUtility.validateToken(token)) {
+                Authentication auth = getAuthentication(token);
+                SecurityContextHolder.getContext().setAuthentication(auth);
+            } else {
+                SecurityContextHolder.clearContext();
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                return; // 필터 체인을 계속 진행하지 않고 종료
+                return;
             }
+        } catch (Exception e) {
+            System.out.println("e: " + e);
+            SecurityContextHolder.clearContext();
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return;
         }
 
         filterChain.doFilter(request, response);    // 다음 필터로 요청과 응답을 전달
+    }
+
+    // 인증객체 생성
+    private Authentication getAuthentication(String token) {
+        UserDetails userDetails = customUserDetailsService.loadUserByUsername(jwtUtility.getStudentId(token));
+        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 }

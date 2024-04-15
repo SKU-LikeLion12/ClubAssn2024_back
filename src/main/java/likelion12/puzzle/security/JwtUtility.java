@@ -1,9 +1,6 @@
 package likelion12.puzzle.security;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.SignatureException;
+import io.jsonwebtoken.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -29,26 +26,30 @@ public class JwtUtility {
                 .compact();
     }
 
-    // JWT 유효성 검사
-    public Claims validateToken(String token) {
+    // JWT 클레임 반환
+    public String getStudentId(String token) {
+        // 토큰 파싱 및 클레임 반환
+        return Jwts.parser()
+                .setSigningKey(secret.getBytes(StandardCharsets.UTF_8))
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject(); // 유효한 경우, 클레임 반환
+    }
+
+    // JWT 유효성 검증
+    public boolean validateToken(String token) {
         try {
-            // 토큰 파싱 및 클레임 반환
-            return Jwts.parser()
-                    .setSigningKey(secret.getBytes(StandardCharsets.UTF_8))
-                    .parseClaimsJws(token)
-                    .getBody(); // 유효한 경우, 클레임 반환
-        } catch (Exception ex) {
-            throw ex;
+            Jwts.parser().setSigningKey(secret.getBytes(StandardCharsets.UTF_8)).parseClaimsJws(token);
+            return true;
+        } catch (ExpiredJwtException e) {
+            System.out.println("Token expired");
+        } catch (SignatureException e) {
+            System.out.println("Invalid signature");
+        } catch (MalformedJwtException e) {
+            System.out.println("Invalid token");
         }
+        return false;
     }
-
-    // 토큰으로 학번 추출
-    public String getStudentId(String token){
-        Claims claims = validateToken(token);
-        return claims.getSubject();
-    }
-
-    //
 
     // 토큰 추출
     public String resolveToken(HttpServletRequest request) {
@@ -60,11 +61,11 @@ public class JwtUtility {
         return null;
     }
 
-    public static void main(String[] args) {
-        JwtUtility jwtUtility = new JwtUtility();
-        String token = jwtUtility.generateToken("00000000");
-        System.out.println("token = " + token);
-        System.out.println("getStudentId(token) = " + jwtUtility.getStudentId(token.substring(7)));
-        System.out.println("asdf = " + jwtUtility.validateToken(token.substring(7)));
-    }
+//    public static void main(String[] args) {
+//        JwtUtility jwtUtility = new JwtUtility();
+//        String token = jwtUtility.generateToken("00000000");
+//        System.out.println("token = " + token);
+//        System.out.println("getStudentId(token) = " + jwtUtility.getStudentId(token.substring(7)));
+//        System.out.println("asdf = " + jwtUtility.validateToken(token.substring(7)));
+//    }
 }
